@@ -14,6 +14,7 @@
 #include "Intersection.h"
 #include "ODNode.h"
 #include "CSNode.h"
+#include "NCSNode.h"
 #include "RoadEntity.h"
 #include "Section.h"
 #include "Signal.h"
@@ -97,6 +98,23 @@ vector<CSNode*> RoadMap::csNodes()
         if (dynamic_cast<CSNode*>((*iti).second))
         {
             vec.push_back(dynamic_cast<CSNode*>((*iti).second));
+        }
+        iti++;
+    }
+    return vec;
+}
+
+//======================================================================
+vector<NCSNode*> RoadMap::ncsNodes()
+{
+    vector<NCSNode*> vec;
+    ITRMAPI iti = _intersections.begin();
+    while (iti!=_intersections.end())
+    {
+        // (*iti).secondの型がNCSNodeであるかどうかチェックする
+        if (dynamic_cast<NCSNode*>((*iti).second))
+        {
+            vec.push_back(dynamic_cast<NCSNode*>((*iti).second));
         }
         iti++;
     }
@@ -273,9 +291,9 @@ void RoadMap::renewAgentLine()
     for (unsigned int i=0; i<_usedBundles.size(); i++)
     {
         _usedBundles[i]->renewAgentLine();
-        if (typeid(*_usedBundles[i])==typeid(ODNode))
+        if (typeid(*_usedBundles[i])==typeid(ODNode) || typeid(*_usedBundles[i])==typeid(NCSNode))
         {
-            // ODNodeであればdeleteArrivedAgentを予約
+            // ODNodeかNCSNodeであればdeleteArrivedAgentを予約
             _usedODNodes.push_back(
                 dynamic_cast<ODNode*>(_usedBundles[i]));
         }

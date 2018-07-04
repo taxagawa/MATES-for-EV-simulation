@@ -1,0 +1,80 @@
+交差点ID:9170
+Intersection file is needed due to invalid numbers of straight lanes.
+
+交差点ID:9699
+Intersection file is needed due to invalid numbers of straight lanes.
+
+交差点ID:9818
+Intersection file is needed due to invalid numbers of straight lanes.
+
+交差点ID:11413
+Numbers of lanes in 2 sections are invalid.
+
+交差点ID:11414
+Numbers of lanes in 2 sections are invalid.
+
+交差点ID:20112
+Intersection file is needed due to invalid numbers of straight lanes.
+
+単路の交差点ID:9512-20045
+Distance is too short.
+
+単路の交差点ID:9747-11385
+Distance is too short.
+
+単路の交差点ID:9750-20042
+Distance is too short.
+
+単路の交差点ID:10248-20015
+Distance is too short.
+
+単路の交差点ID:10274-20023
+Distance is too short.
+
+単路の交差点ID:10278-20025
+Distance is too short.
+
+単路の交差点ID:11357-11385
+Distance is too short.
+
+単路の交差点ID:11362-11406
+Distance is too short.
+
+単路の交差点ID:11362-20038
+Distance is too short.
+
+単路の交差点ID:11362-11405
+Distance is too short.
+
+単路の交差点ID:11384-20048
+Distance is too short.
+
+単路の交差点ID:11403-20032
+Distance is too short.
+
+単路の交差点ID:11407-11409
+Distance is too short.
+
+単路の交差点ID:20017-20022
+Distance is too short.
+
+単路の交差点ID:20018-20022
+Distance is too short.
+
+単路の交差点ID:20036-20037
+Distance is too short.
+
+単路の交差点ID:20039-20040
+Distance is too short.
+
+単路の交差点ID:20046-20047
+Distance is too short.
+
+単路の交差点ID:20049-20050
+Distance is too short.
+
+単路の交差点ID:20123-20131
+Distance is too short.
+
+
+総計 交差点数 6 単路数 20

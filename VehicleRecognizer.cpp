@@ -10,6 +10,8 @@
 #include "AmuPoint.h"
 #include "AmuVector.h"
 #include "Random.h"
+#include "CSNode.h"
+#include "NCSNode.h"
 #include <iostream>
 #include <typeinfo>
 #include <cassert>
@@ -457,11 +459,22 @@ void Vehicle::_searchFrontAgent(double threshold)
 
         while (totalLength < threshold)
         {
+
             // 探索がレーン束を超える場合
             if (!(lookupBundle->isNextLaneMine(lookupLane)))
             {
+                LaneBundle* prevBundle = lookupBundle;
                 lookupBundle
                     = lookupBundle->nextBundle(lookupLane);
+
+                // by uchida 2017/12/29
+                //　これやっていいんだけっか？
+                if (!lookupBundle)
+                {
+                    //cout << "no lookupBundle (id) : " << _id << " @" << _lane->parent()->id() << endl;
+                    break;
+                }
+
                 // ODノードに到達したら探索を打ち切る
                 if (typeid(*lookupBundle)==typeid(ODNode))
                 {
@@ -469,6 +482,11 @@ void Vehicle::_searchFrontAgent(double threshold)
                 }
                 // CSノードに到達したら探索を打ち切る
                 if (typeid(*lookupBundle)==typeid(CSNode))
+                {
+                    break;
+                }
+                // NCSノードに到達したら探索を打ち切る
+                if (typeid(*lookupBundle)==typeid(NCSNode))
                 {
                     break;
                 }
@@ -525,11 +543,21 @@ void Vehicle::_searchFrontSpeedLimit(double threshold)
 
     while (totalLength < threshold)
     {
+
         // 探索がレーン束を超える場合
         if (!(lookupBundle->isNextLaneMine(lookupLane)))
         {
+
             lookupBundle
                 = lookupBundle->nextBundle(lookupLane);
+
+            // by uchida 2017/12/29
+            //　これやっていいんだけっか？
+            if (!lookupBundle)
+            {
+                break;
+            }
+
             // ODノードに到達したら探索を打ち切る
             if (typeid(*lookupBundle)==typeid(ODNode))
             {
@@ -537,6 +565,11 @@ void Vehicle::_searchFrontSpeedLimit(double threshold)
             }
             // CSノードに到達したら探索を打ち切る
             if (typeid(*lookupBundle)==typeid(CSNode))
+            {
+                break;
+            }
+            // NCSノードに到達したら探索を打ち切る
+            if (typeid(*lookupBundle)==typeid(NCSNode))
             {
                 break;
             }
@@ -1026,6 +1059,11 @@ bool Vehicle::_isStoppedByShortSpace()
     // _localRouteの最後には交差点通過後の最初のレーン入っている
     RoadOccupant* tail = _localRoute.last()->tailAgent();
     if (!tail)
+    {
+        return false;
+    }
+
+    if (dynamic_cast<NCSNode*>(_localRoute.last()->parent()))
     {
         return false;
     }

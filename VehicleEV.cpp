@@ -3,6 +3,7 @@
 #include "Random.h"
 #include "SubNode.h"
 #include "GVManager.h"
+#include "Lane.h"
 //#include "ObjManager.h"
 #include <cassert>
 
@@ -30,15 +31,32 @@ VehicleEV::VehicleEV():_parent(){
 
   // debug by uchida 2016/5/22
   // 充電残量は乱数で変化させる設定
-  double rnd = 0;
+  // double rnd = 0;
+  _initialSoC = 0.0;
 
   // by uchida 2017/1/26
-  // 0.1 < rnd < 0.8
+  // 0.3 < rnd < 0.8
+  // by takusagawa 2018/01/07
+  // OD距離に応じて初期SoCを変化させるようにした
+  /*
   rnd = Random::uniform(_rnd);
-  rnd = (rnd * 0.5) + 0.3;
-  _initialSoC = rnd;
+  rnd = (rnd * 0.5) + 0.8 * (_parent->getOdDistance(this) / 35000); //35000は最大値を超えないように適当に与えた
+  cout << _parent->id(this) << endl;
+  if (rnd > 0.85)
+  {
+    _initialSoC = 0.85;
+  }
+  else if (rnd < 0.2)
+  {
+    _initialSoC = 0.2;
+  }
+  else
+  {
+    _initialSoC = rnd;
+  }
+  */
 
-  _batteryRemain = _batteryCapacity * _initialSoC;
+  _batteryRemain = 0.0;
 //  _batteryRemain = _batteryCapacity;
   instantaneousValue = 0.0;
   accessory = 200.0;//[Wsec/100msec]
@@ -278,37 +296,104 @@ void VehicleEV::charge()
     _swapTime = 0;
 
     // by uchida 2016/5/23
-    CSNode* _csNode = dynamic_cast<CSNode*>(_intersection);
-    _csNode->sumCharge(_chargingValue);
-
-    // これよりちょっと小さいはずだけどとりあえず検証は後で
-    // データによると急速CSにおける最大は50kW
-    // 家庭用は2kW程度の模様
-    // その場合以下の式は25　*　1000になるか
-    _chargingValue = _csNode->outPower() * 1000.0 * (TimeManager::unit() / 1000.0);
-    _batteryRemain += _chargingValue;
-
-    // SOCが0.8以上であれば出発する
-    // 急速充電でこれ以上にすることないようなので
-    if (SOC() >= 0.8)
+    CSNode* _csNode   = dynamic_cast<CSNode*>(_intersection);
+    NCSNode* _ncsNode = dynamic_cast<NCSNode*>(_intersection);
+    if (_csNode)
     {
-        offChargeflag();
-        _onCharging = false;
-        _csNode->removeEV();
-        Vehicle::_runCS2Section();
-        // 充電時間の分だけ滞在時間が過大評価になるのを回避
-        // (追記)　by uchida ここで回避しているのはあくまでSectionの滞在時間
-        // 旅行時間全体を適正化するために_restartTimeを設定
-        _entryTime = TimeManager::time();
+        _csNode->sumCharge(_chargingValue);
 
-        // by uchida 2017/2/8
-        // CS出庫時刻の登録
-        setRestartTime(TimeManager::time());
+        /* debug by takusagawa 2018/3/26
+        if (_csNode->id() == "900106")
+        {
+          cout << "instantaneousCharge_" << _csNode->id() << " : "
+          << _csNode->instantaneousCharge() << endl;
+        }
+        */
 
+        // これよりちょっと小さいはずだけどとりあえず検証は後で
+        // データによると急速CSにおける最大は50kW
+        // 家庭用は2kW程度の模様
+        // その場合以下の式は25　*　1000になるか
+        _chargingValue = _csNode->outPower() * 1000.0 * (TimeManager::unit() / 1000.0);
+        _batteryRemain += _chargingValue;
+
+        // SOCが0.8以上であれば出発する
+        // 急速充電でこれ以上にすることないようなので
+        if (SOC() >= 0.8)
+        {
+            offChargeflag();
+            _onCharging = false;
+            _csNode->removeEV();
+            Vehicle::_runCS2Section();
+            // 充電時間の分だけ滞在時間が過大評価になるのを回避
+            // (追記)　by uchida ここで回避しているのはあくまでSectionの滞在時間
+            // 旅行時間全体を適正化するために_restartTimeを設定
+            _entryTime = TimeManager::time();
+
+            // by uchida 2017/2/8
+            // CS出庫時刻の登録
+            setRestartTime(TimeManager::time());
+
+        }
+        else
+        {
+            _sleepTime = TimeManager::unit() * 2;
+        }
     }
-    else
+    else if (_ncsNode)
     {
-        _sleepTime = TimeManager::unit() * 2;
+        _ncsNode->sumCharge(_chargingValue);
+
+        // debug by takusagawa 2018/3/26
+        //if (_ncsNode->id() == "000232")
+        //{
+        //  cout << "_chargingValue" << _ncsNode->id() << " : "
+        //  << _chargingValue << endl;
+        //}
+
+
+        _chargingValue = _ncsNode->outPower() * 1000.0 * (TimeManager::unit() / 1000.0);
+        _batteryRemain += _chargingValue;
+        if (SOC() >= 0.8)
+        {
+            offChargeflag();
+            _onCharging = false;
+            _ncsNode->removeEV();
+        }
+        else
+        {
+            _sleepTime = TimeManager::unit() * 2;
+        }
     }
 
+}
+
+// by takusagawa 2018/01/12
+//====================================================================
+void VehicleEV::setInitSoC()
+{
+  double rnd = 0;
+
+  // by uchida 2017/1/26
+  // 0.3 < rnd < 0.8
+  // by takusagawa 2018/01/07
+  // OD距離に応じて初期SoCを変化させるようにした
+  rnd = Random::uniform(_rnd);
+  rnd = (rnd * 0.5) + 0.6 * (getOdDistance() / 35000);
+  //35000は最大値を超えないように適当に与えた
+
+  if (rnd > 0.85)
+  {
+    _initialSoC = 0.85;
+  }
+  else if (rnd < 0.2)
+  {
+    _initialSoC = 0.2;
+  }
+  else
+  {
+    _initialSoC = rnd;
+  }
+
+  _batteryRemain = _batteryCapacity * _initialSoC;
 }

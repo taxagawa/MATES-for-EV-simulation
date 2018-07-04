@@ -323,7 +323,7 @@ void GenerateVehicleController::generateVehicleGhostEV(Vehicle* vehicle)
     bool result = ObjManager::addVehicleToReal(newVehicle);
     assert(result);
 
-    
+
 }
 
 //======================================================================
@@ -723,6 +723,15 @@ Vehicle* GenerateVehicleController::_createVehicle(
     // 走行モードの設定
     // by uchida
     tmpVehicle->setRunningMode(_runningMode);
+
+    // by takusagawa 2018/01/05
+    // OD距離を設定
+    tmpVehicle->setOdDistance();
+
+    if (VehicleFamily::isEV_Passenger(vehicleType))
+    {
+      dynamic_cast<VehicleEV*>(tmpVehicle)->setInitSoC();
+    }
 
     // 経路選択は関数の外に出す
     // tmpVehicle->reroute(section, past);

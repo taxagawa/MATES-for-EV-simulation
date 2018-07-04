@@ -141,7 +141,7 @@ Simulator* AppMates::simulator()
 
 //======================================================================
 int AppMates::optionIndex;
-string AppMates::shortOptions = "HhD:d:R:r:T:t:SsLlMmGgQq:e:";
+string AppMates::shortOptions = "HhD:d:R:r:T:t:SsLlMmGgQq:e:c:";
 struct option AppMates::longOptions[] =
 {
     {"help",                 0, 0, 'h'},
@@ -319,13 +319,16 @@ void AppMates::parseArgument(int argc, char** argv)
         case 'e': // EV発生及びCS設置をonに(sim/calcデフォルトでoff)
             GVManager::resetFlag("FLAG_GEN_EVs", true);
             GVManager::resetFlag("FLAG_GEN_CSs", true);
-
             if (atoi((optarg)) >= 1 && atoi((optarg)) <= 9)
             {
                 GVManager::resetFlag("FLAG_OUTPUT_SCORE", true);
-                GVManager::resetNumeric("SCOREING_METHOD", atoi((optarg)));
+                GVManager::resetNumeric("SCORING_METHOD", atoi((optarg)));
             }
+            break;
 
+        case 'c': // CSの充電量を出力をonに(sim/calcデフォルトでoff)
+            GVManager::resetFlag("FLAG_OUTPUT_CSs", true);
+            GVManager::resetNumeric("OUTPUT_CSs_INTERVAL", atoi((optarg)));
             break;
 
         case 'D': // 以下はここでは使用しない
@@ -380,7 +383,8 @@ void AppMates::printUsage()
         " -q \n"
         " [or --no-verbose]  : hide detail information.\n"
 #endif //USE_MINGW
-        " -e                 : EVs are generated.\n"
+        " -e                 : generate EVs.\n"
+        " -c                 : output charge value of CSs.\n"
          << endl;
 }
 

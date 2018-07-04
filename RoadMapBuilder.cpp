@@ -12,6 +12,7 @@
 #include "Intersection.h"
 #include "ODNode.h"
 #include "CSNode.h"
+#include "NCSNode.h"
 #include "Section.h"
 #include "Lane.h"
 #include "SpeedLimitCell.h"
@@ -253,9 +254,9 @@ bool RoadMapBuilder::createIntersection(const string& fNetwork)
                     {
                         vector<string> vec;
                         vec = *citr;
+
                         if(vec[0] == id)
                         {
-//                            cout << "CS : " << id << endl;
                             _isCSNode = true;
                             //ここでCSnodeを作成
 
@@ -291,6 +292,8 @@ bool RoadMapBuilder::createIntersection(const string& fNetwork)
                 {
 
                     // _csListからidを検索
+                    // commented by uchida 2017/12/25
+                    // なんでここでcsListから引っ掛ける必要があったんだっけ？なくない？
                     vector< vector<string> >::iterator citr;
                     bool _isInter = false;
                     for(citr = _csList.begin(); citr != _csList.end(); citr++)
@@ -316,16 +319,43 @@ bool RoadMapBuilder::createIntersection(const string& fNetwork)
                     if(!_isInter)
                     {
                         // ODノードの作成
-                        ptInter
-                          = new ODNode
-                          (AmuConverter::formatId
-                           (id, NUM_FIGURE_FOR_INTERSECTION),
-                           type,
-                           _currentRoadMap);
-//                          cout << "OD : " << id << endl;
+                        // もしCSであればNCSクラスとして先に作成しODNodeに登録
+                        vector< vector<string> >::iterator citr;
+                        bool _isCSNode = false;
+                        for(citr = _csList.begin(); citr != _csList.end(); citr++)
+                        {
+                            vector<string> vec;
+                            vec = *citr;
+
+                            if(vec[0] == id)
+                            {
+                                cout << "###" << id << endl;
+                                _isCSNode = true;
+                                //ここでCSnodeを作成
+
+                                NCSNode* ptNCS
+                                    =new NCSNode
+                                   (AmuConverter::formatId
+                                    (id, NUM_FIGURE_FOR_INTERSECTION),
+                                    type,
+                                    _currentRoadMap);
+                                // vec[1]は収容台数
+                                // vec[2]はkW性能
+                                ptNCS->setCapacity(AmuConverter::strtoul(vec[1]));
+                                ptNCS->setOutPower(AmuConverter::strtod(vec[2]));
+
+                                ptInter = dynamic_cast<ODNode*>(ptNCS);
+                            }
+                        }
+                        if (!_isCSNode)
+                        {
+                            ptInter
+                            = new ODNode
+                               (AmuConverter::formatId(id, NUM_FIGURE_FOR_INTERSECTION),
+                                type,
+                                _currentRoadMap);
+                        }
                     }
-
-
                 }
                 _currentRoadMap->addIntersection(ptInter);
             }

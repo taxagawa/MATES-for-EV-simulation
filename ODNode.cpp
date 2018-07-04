@@ -276,10 +276,15 @@ void ODNode::setWaitingToPushVehicle(bool flag)
 void ODNode::deleteAgent()
 {
     ITRMAPLAN itl;
-
     for (itl=_lanes.begin(); itl!=_lanes.end(); itl++)
     {
         vector<RoadOccupant*>* agentsOfLane = (*itl).second->agents();
+
+//if(TimeManager::time() > 1930000)
+//{
+//    if(_id == "048501") cout << " " << agentsOfLane->size();
+//}
+
         if (!agentsOfLane->empty())
         {
             (*itl).second->setUsed();
@@ -288,6 +293,7 @@ void ODNode::deleteAgent()
         {
             if (dynamic_cast<Vehicle*>((*agentsOfLane)[i]))
             {
+//if(_id == "048501" && dynamic_cast<Vehicle*>((*agentsOfLane)[i])->type() < 80) cout << (*agentsOfLane)[i]->id() << endl;
 
                 // debug by uchida 2017/6/27
                 // if (dynamic_cast<Vehicle*>((*agentsOfLane)[i])->type() >= 80)
@@ -297,6 +303,18 @@ void ODNode::deleteAgent()
                 //          << " tripLength " << dynamic_cast<Vehicle*>((*agentsOfLane)[i])->tripLength()
                 //          << " id " << dynamic_cast<Vehicle*>((*agentsOfLane)[i])->id() << endl;
                 // }
+
+                // 2017/12/26 by uchida
+                // 充電中もしくは充電待ちならEVを消去しない
+                // あれ、weiting中でもNCS前に滞留するんだっけ？
+                if (dynamic_cast<VehicleEV*>((*agentsOfLane)[i]))
+                {
+                    if (dynamic_cast<VehicleEV*>((*agentsOfLane)[i])->onCharging() ||
+                        dynamic_cast<VehicleEV*>((*agentsOfLane)[i])->isWaiting())
+                    {
+                        break;
+                    }
+                }
 
                 if (GVManager::getFlag("FLAG_OUTPUT_TRIP_INFO"))
                 {
@@ -318,6 +336,7 @@ void ODNode::deleteAgent()
 
                 ObjManager::deleteVehicle(
                     dynamic_cast<Vehicle*>((*agentsOfLane)[i]));
+
             }
         }
     }

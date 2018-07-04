@@ -40,6 +40,9 @@ class VehicleEV : public Vehicle{
 
   void charge();
 
+  // by takusagawa 2018/01/12
+  void setInitSoC();
+
   // 目的のCSに向かうため経路を探索する
 //  bool CSreroute(const Section* section, const Intersection* start, string stopCS);
 

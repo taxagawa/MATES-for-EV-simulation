@@ -15,6 +15,7 @@ class LaneBundle;
 class Intersection;
 class ODNode;
 class CSNode;
+class NCSNode;
 class Section;
 class Lane;
 class RoadEntity;
@@ -125,6 +126,9 @@ public:
 
     /// CSノードを返す
     std::vector<CSNode*> csNodes();
+
+    /// NCSノードを返す
+    std::vector<NCSNode*> ncsNodes();
 
     /// 識別番号 @p id の交差点を返す
     Intersection* intersection(const std::string& id) const;

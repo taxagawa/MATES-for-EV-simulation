@@ -1,0 +1,135 @@
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -H/home/t_takusagawa/Downloads/trunk -B/home/t_takusagawa/Downloads/trunk --check-build-system CMakeFiles/Makefile.cmake 0
+-- PLATFORM: linux
+-- CMAKE_BUILD_TYPE: release
+-- CMAKE_INSTALL_PREFIX: /home/t_takusagawa/ADVENTURE
+-- PLATFORM: linux
+-- CMAKE_BUILD_TYPE: release
+-- configuring for release ...
+-- Finding OpenGL ... TRUE
+-- Finding GTK2 ... true
+-- CMAKE_BUILD_TYPE: release
+-- configuring for release ...
+-- CMAKE_BUILD_TYPE: release
+-- configuring for release ...
+-- Finding doxygen ... YES
+-- PLATFORM: linux
+-- CMAKE_BUILD_TYPE: release
+-- CMAKE_INSTALL_PREFIX: /home/t_takusagawa/ADVENTURE
+-- configuring for release ...
+-- Finding zlib ... TRUE
+-- Finding OpenGL ... TRUE
+-- Finding GTK2 ... true
+-- Finding OpenMP ... TRUE
+-- Finding doxygen ... YES
+-- cmake status:
+-- 	USE_OPENMP      : ON
+-- 	EXCLUDE_VEHICLES: OFF
+-- 	MEASURE_TIME    : OFF
+-- CMAKE_INSTALL_PREFIX: /home/t_takusagawa/ADVENTURE
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/t_takusagawa/Downloads/trunk
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_progress_start /home/t_takusagawa/Downloads/trunk/CMakeFiles /home/t_takusagawa/Downloads/trunk/solver/CMakeFiles/progress.marks
+cd /home/t_takusagawa/Downloads/trunk && make -f CMakeFiles/Makefile2 solver/all
+make[1]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make -f solver/CMakeFiles/mates-util.dir/build.make solver/CMakeFiles/mates-util.dir/depend
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk/solver/CMakeFiles/mates-util.dir/DependInfo.cmake --color=
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f solver/CMakeFiles/mates-util.dir/build.make solver/CMakeFiles/mates-util.dir/build
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[2]: 'solver/CMakeFiles/mates-util.dir/build' に対して行うべき事はありません.
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[  8%] Built target mates-util
+make -f solver/CMakeFiles/matesGL.dir/build.make solver/CMakeFiles/matesGL.dir/depend
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk/solver/CMakeFiles/matesGL.dir/DependInfo.cmake --color=
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f solver/CMakeFiles/matesGL.dir/build.make solver/CMakeFiles/matesGL.dir/build
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[2]: 'solver/CMakeFiles/matesGL.dir/build' に対して行うべき事はありません.
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[ 14%] Built target matesGL
+make -f solver/CMakeFiles/mates.dir/build.make solver/CMakeFiles/mates.dir/depend
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk/solver/CMakeFiles/mates.dir/DependInfo.cmake --color=
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f solver/CMakeFiles/mates.dir/build.make solver/CMakeFiles/mates.dir/build
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[2]: 'solver/CMakeFiles/mates.dir/build' に対して行うべき事はありません.
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[ 76%] Built target mates
+make -f lib/mt19937/CMakeFiles/mt19937.dir/build.make lib/mt19937/CMakeFiles/mt19937.dir/depend
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/mt19937 /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/mt19937 /home/t_takusagawa/Downloads/trunk/lib/mt19937/CMakeFiles/mt19937.dir/DependInfo.cmake --color=
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f lib/mt19937/CMakeFiles/mt19937.dir/build.make lib/mt19937/CMakeFiles/mt19937.dir/build
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[2]: 'lib/mt19937/CMakeFiles/mt19937.dir/build' に対して行うべき事はありません.
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[ 78%] Built target mt19937
+make -f lib/XSadd/CMakeFiles/xsadd.dir/build.make lib/XSadd/CMakeFiles/xsadd.dir/depend
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/XSadd /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/XSadd /home/t_takusagawa/Downloads/trunk/lib/XSadd/CMakeFiles/xsadd.dir/DependInfo.cmake --color=
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f lib/XSadd/CMakeFiles/xsadd.dir/build.make lib/XSadd/CMakeFiles/xsadd.dir/build
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[2]: 'lib/XSadd/CMakeFiles/xsadd.dir/build' に対して行うべき事はありません.
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[ 80%] Built target xsadd
+make -f lib/autogl/CMakeFiles/autogl.dir/build.make lib/autogl/CMakeFiles/autogl.dir/depend
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/autogl /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/autogl /home/t_takusagawa/Downloads/trunk/lib/autogl/CMakeFiles/autogl.dir/DependInfo.cmake --color=
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f lib/autogl/CMakeFiles/autogl.dir/build.make lib/autogl/CMakeFiles/autogl.dir/build
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[2]: 'lib/autogl/CMakeFiles/autogl.dir/build' に対して行うべき事はありません.
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[ 95%] Built target autogl
+make -f solver/CMakeFiles/advmates-sim.dir/build.make solver/CMakeFiles/advmates-sim.dir/depend
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/solver /home/t_takusagawa/Downloads/trunk/solver/CMakeFiles/advmates-sim.dir/DependInfo.cmake --color=
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f solver/CMakeFiles/advmates-sim.dir/build.make solver/CMakeFiles/advmates-sim.dir/build
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+[ 96%] Linking CXX executable advmates-sim
+cd /home/t_takusagawa/Downloads/trunk/lib/mt19937 && make
+make[3]: ディレクトリ '/home/t_takusagawa/Downloads/trunk/lib/mt19937' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -H/home/t_takusagawa/Downloads/trunk -B/home/t_takusagawa/Downloads/trunk --check-build-system CMakeFiles/Makefile.cmake 0
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_progress_start /home/t_takusagawa/Downloads/trunk/CMakeFiles /home/t_takusagawa/Downloads/trunk/lib/mt19937/CMakeFiles/progress.marks
+cd /home/t_takusagawa/Downloads/trunk && make -f CMakeFiles/Makefile2 lib/mt19937/all
+make[4]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make -f lib/mt19937/CMakeFiles/mt19937.dir/build.make lib/mt19937/CMakeFiles/mt19937.dir/depend
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/mt19937 /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/mt19937 /home/t_takusagawa/Downloads/trunk/lib/mt19937/CMakeFiles/mt19937.dir/DependInfo.cmake --color=
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f lib/mt19937/CMakeFiles/mt19937.dir/build.make lib/mt19937/CMakeFiles/mt19937.dir/build
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[5]: 'lib/mt19937/CMakeFiles/mt19937.dir/build' に対して行うべき事はありません.
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[100%] Built target mt19937
+make[4]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+/usr/bin/cmake -E cmake_progress_start /home/t_takusagawa/Downloads/trunk/CMakeFiles 0
+make[3]: ディレクトリ '/home/t_takusagawa/Downloads/trunk/lib/mt19937' から出ます
+cd /home/t_takusagawa/Downloads/trunk/lib/autogl && make
+make[3]: ディレクトリ '/home/t_takusagawa/Downloads/trunk/lib/autogl' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -H/home/t_takusagawa/Downloads/trunk -B/home/t_takusagawa/Downloads/trunk --check-build-system CMakeFiles/Makefile.cmake 0
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_progress_start /home/t_takusagawa/Downloads/trunk/CMakeFiles /home/t_takusagawa/Downloads/trunk/lib/autogl/CMakeFiles/progress.marks
+cd /home/t_takusagawa/Downloads/trunk && make -f CMakeFiles/Makefile2 lib/autogl/all
+make[4]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make -f lib/autogl/CMakeFiles/autogl.dir/build.make lib/autogl/CMakeFiles/autogl.dir/depend
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+cd /home/t_takusagawa/Downloads/trunk && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/autogl /home/t_takusagawa/Downloads/trunk /home/t_takusagawa/Downloads/trunk/lib/autogl /home/t_takusagawa/Downloads/trunk/lib/autogl/CMakeFiles/autogl.dir/DependInfo.cmake --color=
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make -f lib/autogl/CMakeFiles/autogl.dir/build.make lib/autogl/CMakeFiles/autogl.dir/build
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' に入ります
+make[5]: 'lib/autogl/CMakeFiles/autogl.dir/build' に対して行うべき事はありません.
+make[5]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+[100%] Built target autogl
+make[4]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+/usr/bin/cmake -E cmake_progress_start /home/t_takusagawa/Downloads/trunk/CMakeFiles 0
+make[3]: ディレクトリ '/home/t_takusagawa/Downloads/trunk/lib/autogl' から出ます
+cd /home/t_takusagawa/Downloads/trunk/solver && /usr/bin/cmake -E cmake_link_script CMakeFiles/advmates-sim.dir/link.txt --verbose=1
+g++   -O3 -Wno-sign-compare -fopenmp    CMakeFiles/advmates-sim.dir/mainSim.cpp.o  -o advmates-sim  -L/home/t_takusagawa/Downloads/trunk/solver/../lib/autogl  -L/home/t_takusagawa/Downloads/trunk/solver/../lib/mt19937  -L/home/t_takusagawa/Downloads/trunk/solver/../lib/XSadd -rdynamic -lz libmates.a libmatesGL.a libmates-util.a ../lib/mt19937/libmt19937.a ../lib/XSadd/libxsadd.a ../lib/autogl/libautogl.a -lm -lGLU -lGL -lglib-2.0 -lgobject-2.0 -latk-1.0 -lgio-2.0 -lgthread-2.0 -lgmodule-2.0 -lgdk_pixbuf-2.0 -lcairo -lpango-1.0 -lpangocairo-1.0 -lpangoft2-1.0 -lpangoxft-1.0 -lgdk-x11-2.0 -lgtk-x11-2.0 -lz -Wl,-rpath,/home/t_takusagawa/Downloads/trunk/solver/../lib/autogl:/home/t_takusagawa/Downloads/trunk/solver/../lib/mt19937:/home/t_takusagawa/Downloads/trunk/solver/../lib/XSadd: 
+make[2]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます
+make[1]: ディレクトリ '/home/t_takusagawa/Downloads/trunk' から出ます

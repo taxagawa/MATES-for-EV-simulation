@@ -786,8 +786,9 @@ void Lane::outputAgents()
     cout << "size: " << _agents.size() << endl;
     for (unsigned int i=0; i<_agents.size(); i++)
     {
-        cout << i+1 << "/" << _agents.size() << " : " << _agents[i]->id();
+        cout << i+1 << "/" << _agents.size() << " : " << _agents[i]->id() << " ";
     }
+    cout << endl;
 }
 
 //======================================================================
@@ -803,13 +804,6 @@ void Lane::renewAgentLine()
     _tmpAgents.clear();
     // _isUsedをクリア
     _isUsed = false;
-
-for(unsigned int i=0; i<_agents.size(); i++)
-{
-// renewAgentLine
-//if(_agents[i]->id()=="000017") cout <<"renewAgentLine"<<endl;//uchida
-}
-
 }
 
 //======================================================================

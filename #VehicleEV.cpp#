@@ -1,0 +1,184 @@
+#include "VehicleEV.h"
+#include <cassert>
+
+//======================================================================
+VehicleEV::VehicleEV(){
+  //_cruise          = 160000;
+  //  _cruise = 1600;
+
+  // 重量[kg]（車体重量+乗員重量）
+  _mass = 1640.0;
+  
+//  double r;
+//  if (Random::uniform()<0.95)
+//    r = Random::normal(0.8, 0.2);
+//  else
+//    r = Random::normal(0.5, 0.2);
+//  if (r>1)
+//    _batteryRemain = 1.0;
+//  else if (r<0.1)
+//    _batteryRemain = 0.1;
+//  else
+//    _batteryRemain = r;
+
+//  _chargeThreshold = 0.5;
+//  _chargeFlag      = 0;
+
+//  _startSearchTime = 0;
+//  _arrivalTime     = 0;
+
+    // 電池容量10kWhとした場合
+    // [W]=[kg * m2 / s3]
+    // ( 1kWh = 1,000 * 3,600 Wsec )
+    _batteryCapacity = 10.0 * 1000 * 3600;
+    _batteryRemain = _batteryCapacity;
+    _stateOfCharge = _batteryRemain / _batteryCapacity;
+}
+
+//======================================================================
+VehicleEV::~VehicleEV(){
+}
+
+//======================================================================
+void VehicleEV::run(){
+  // 本来、バッテリー残量0では走行できない
+  // 現状では追い抜き等未実装であるため停車は考慮しない
+  /*
+  if (_batteryRemain<=0) {
+    _velocity = 0.0;
+    // レーンへの登録は必要
+    _lane->putAgent(this);
+    return;
+  }
+  */
+
+//  // 充電後にフラグを戻す
+//  if (_chargeFlag!=0 && _batteryRemain>=_chargeThreshold)
+//    _chargeFlag = 0;
+
+  Vehicle::run();
+
+  // 走行距離に応じてバッテリーを消費
+  //_batteryRemain -=
+
+    // 1タイムステップの電力消費量[W]
+    // _velocity, _accelは[msec]→[sec]変換
+    double instantaneousValue =
+        // 転がり摩擦抵抗
+      ( RROLL * _mass * GRA
+        // 空気抵抗
+        + RHO * CD * _fronralProjectedArea * pow(_velocity * 1000, 2) / 2
+        // 勾配抵抗
+        + _mass * GRA * phi()
+        // 加速抵抗
+        + (1 + KROT) * _mass * _accel * pow(1000, 2))
+        * _velocity * 1000 / ETAEPC;
+
+    // [W]→[Wsec]変換
+    _batteryRemain -= instantaneousValue * 1000 / TimeManager::unit();
+
+//  _batteryRemain -= _velocity*TimeController::unit()/_cruise;
+//  cout << "-----------------------" << endl;
+//  cout << "id:       " << _id       << endl;
+//  cout << "accel:    " << _accel    << endl;
+//  cout << "velocity: " << _velocity << endl;
+//  cout << "phi:      " << phi()     << endl;
+//  cout << "length:   " << length()  << endl;
+//  cout << "-----------------------" << endl;
+
+  
+
+//  // 残量が閾値を下回った場合はステーションを消極的探索
+//  if (_chargeFlag == 0
+//      && _section
+//      && _batteryRemain<_chargeThreshold) {
+//    _chargeFlag = 1;
+//  }
+//  // 残量が閾値を下回った場合はステーションを積極的探索
+//  if (_chargeFlag != 2
+//      && _section
+//      && _batteryRemain<_chargeThreshold*0.5) {
+//    _chargeFlag = 2;
+//    bool isStationSearched = _searchStation();
+//    _startSearchTime = TimeController::time();
+//    if (!isStationSearched) {
+//      cout << _id << " station is not found." << endl;
+//    }
+//  }
+}
+
+//======================================================================
+double VehicleEV::batteryRemain(){
+  return _batteryRemain;
+}
+
+//======================================================================
+double VehicleEV::stateOfCharge(){
+  double _stateOfCharge = _batteryRemain / _batteryCapacity;
+  assert(_stateOfCharge < 0 || _stateOfCharge > 1);
+  return _stateOfCharge;
+}
+
+////======================================================================
+//void VehicleEV::chargeBattery(double charge){
+//  if (_batteryRemain+charge<0.95)
+//    _batteryRemain += charge;
+//  else
+//    _batteryRemain = 0.95;
+//  _startSearchTime = 0;
+//}
+
+////======================================================================
+//int VehicleEV::chargeFlag() const{
+//  return _chargeFlag;
+//}
+
+////======================================================================
+//ulint VehicleEV::startSearchTime() const{
+//  return _startSearchTime;
+//}
+
+////======================================================================
+//void VehicleEV::setStartSearchTime(ulint time){
+//  _startSearchTime = time;
+//}
+
+////======================================================================
+//ulint VehicleEV::arrivalTime() const{
+//  return _arrivalTime;
+//}
+
+////======================================================================
+//void VehicleEV::setArrivalTime(ulint time){
+//  _arrivalTime = time;
+//}
+
+////======================================================================
+//bool VehicleEV::_searchStation(){
+//  // 最寄りの充電ステーションを探索
+//  const vector<ChargeStation*>* stations = _roadMap->stations();
+//  const Intersection* target = NULL;
+//  double minDist = -1;
+//  for (int i=0; i<stations->size(); i++) {
+//    Point center = (*stations)[i]->intersection()->center();
+//    double dist = Point(x(),y(),z()).distance(center);
+//    if (minDist==-1 || dist<minDist) {
+//      target = (*stations)[i]->intersection();
+//      minDist = dist;
+//    }
+//  }
+//  if (minDist==-1 || target==NULL) {
+//    return false;
+//  }
+
+//  // 経路探索
+//  //cout << "EV: " << _id << " found station " << target->id() << endl;
+
+//  _router->insertIntersection(const_cast<Intersection*>(target));
+//  reroute(_section, _section->intersection(!(_section->isUp(_lane))));
+//  _localRouter.clear();
+//  _localRouter.localReroute(_section, _lane, _length);
+//  _decideNextLane(_section, _lane);
+
+//  return true;
+//}

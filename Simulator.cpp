@@ -6,12 +6,14 @@
 #include "GVManager.h"
 #include "GVInitializer.h"
 #include "RoadMapBuilder.h"
+#include "RoadMap.h"
 #include "ObjManager.h"
 #include "FileManager.h"
 #include "LaneBundle.h"
 #include "Intersection.h"
 #include "ODNode.h"
 #include "CSNode.h"
+#include "NCSNode.h"
 #include "Section.h"
 #include "Lane.h"
 #include "RoadEntity.h"
@@ -42,6 +44,7 @@
 #include <fstream>
 #include <cmath>
 #include <map>
+#include <vector>
 #ifdef _OPENMP
 #include <omp.h>
 #endif //_OPENMP
@@ -459,50 +462,79 @@ bool Simulator::timeIncrement()
             csNodes[i]->integrated(csNodes[i]->charged());
             csNodes[i]->initCharge();
         }
-
-        // **sec毎に充電電力量を出力
-        int interval = 60000;
-        if (TimeManager::time() % interval == 0)
+        vector<NCSNode*> ncsNodes = _roadMap->ncsNodes();
+        for (int i = 0; i < ncsNodes.size(); i++)
         {
+            //if (ncsNodes[i]->id() == "000232")
+            //{
+            //    cout << ncsNodes[i]->id() << ": " << ncsNodes[i]->charged() << endl;
+            //}
+            ncsNodes[i]->integrated(ncsNodes[i]->charged());
+            ncsNodes[i]->initCharge();
+        }
 
-            string outputDir, prefixD;
-            GVManager::getVariable("RESULT_OUTPUT_DIRECTORY", &outputDir);
-
-            if (!outputDir.empty())
+        // CSの充電出力を出力する
+        if (GVManager::getFlag("FLAG_GEN_CSs"))
+        {
+            // **sec毎に充電電力量を出力
+            int interval = GVManager::getNumeric("OUTPUT_CSs_INTERVAL");
+            if (TimeManager::time() % interval == 0)
             {
-                string fLog = outputDir + "chargeLog.csv.";
-                ofstream outLogFile(fLog.c_str(), ios::app);
 
-                if (!outLogFile.fail())
+                string outputDir, prefixD;
+                GVManager::getVariable("RESULT_OUTPUT_DIRECTORY", &outputDir);
+
+                if (!outputDir.empty())
                 {
-                    if (TimeManager::time() == interval)
+                    string fLog = outputDir + "chargeLog001.csv";
+                    ofstream outLogFile(fLog.c_str(), ios::app);
+
+                    const RMAPI* intersections = _roadMap->intersections();
+                    CITRMAPI iti = intersections->begin();
+                    if (!outLogFile.fail())
                     {
-                        outLogFile << " ,";
-                        for (int i = 0; i < csNodes.size(); i++)
+                        if (TimeManager::time() == interval)
                         {
-                            outLogFile << csNodes[i]->id() << ",";
+                            outLogFile << " ,";
+                            for (int i = 0; i < intersections->size(); i++)
+                            {
+                                if (dynamic_cast<CSNode*>((*iti).second))
+                                {
+                                    outLogFile << ((*iti).second)->id() << ",";
+                                }
+                                else if (dynamic_cast<NCSNode*>((*iti).second))
+                                {
+                                    outLogFile << ((*iti).second)->id() << ",";
+                                }
+                                iti++;
+                            }
+                            outLogFile << endl;
+                        }
+
+
+                        outLogFile << TimeManager::time() << ",";
+                    	iti = intersections->begin();
+                        for (int i = 0; i < intersections->size(); i++)
+                        {
+                            if (dynamic_cast<CSNode*>((*iti).second))
+                            {
+                                CSNode* node = dynamic_cast<CSNode*>((*iti).second);
+                                outLogFile << node->integratedCharge()/(1000.0*3600.0) << ",";
+                                node->initIntegrated();
+                            }
+                            else if (dynamic_cast<NCSNode*>((*iti).second))
+                            {
+                                NCSNode* node = dynamic_cast<NCSNode*>((*iti).second);
+                                outLogFile << node->integratedCharge()/(1000.0*3600.0) << ",";
+                                node->initIntegrated();
+                            }
+                            iti++;
                         }
                         outLogFile << endl;
                     }
-
-                    outLogFile << TimeManager::time() << ",";
-                    for (int i = 0; i < csNodes.size(); i++)
-                    {
-                        outLogFile << csNodes[i]->integratedCharge()/(1000.0*3600.0) << ",";
-                        csNodes[i]->initIntegrated();
-                    }
-                    outLogFile << endl;
                 }
             }
         }
-
-//        if (TimeManager::time()%1000==0)
-//        {
-//            cout << ",,,,,,,,,," << charge << endl;
-//        }
-
-//    }
-
 
 #ifdef MEASURE_TIME
     TimeManager::stopClock("RENEW_PASSTIME");

@@ -38,6 +38,10 @@ public:
     // 充電電力量を初期化する
     void initCharge();
 
+    // by takusagawa 2018/3/26
+    // 充電電力量（瞬時）[Wsec]を返す
+    double instantaneousCharge();
+
     // by uchida 2017/11/24
     // 充電電力を時間方向に積算する．
     void integrated(double instantaneousCharge);

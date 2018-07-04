@@ -100,6 +100,9 @@ Vehicle::Vehicle():_id()
     // EV側では基本的に_SOCを参照しない
     _SOC = -1;
 
+    // by takusagawa 2018/01/05
+    _odDistance = 0;
+
     _startSN  = NULL;
     _startSec = NULL;
 
@@ -211,6 +214,14 @@ string Vehicle::sSOC() const
     double tmpSOC = _SOC * 100000;
     return AmuConverter::itos((int)tmpSOC, 6);
 }
+
+// by takusagawa 2018/01/05
+//======================================================================
+double Vehicle::getOdDistance()
+{
+    return _odDistance;
+}
+
 
 //======================================================================
 double Vehicle::SOC()
@@ -725,14 +736,14 @@ void Vehicle::_searchCSSumCost()
 
     Intersection* goal;
     vector<CSNode*> csNodes = _roadMap->csNodes();
-    double min = 1000000;// 十分大きいということで
+    double min = 100000;// 十分大きいということで
     int min_index = 0;
     int step;
     double GV;
 
     for (int i = 0; i < csNodes.size(); i++)
     {
-        step = 10000;
+        step = 100000;
         goal = dynamic_cast<Intersection*>(csNodes[i]);
 
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
@@ -1116,6 +1127,12 @@ void Vehicle::setonCharging(bool flag)
 void Vehicle::setWaiting(bool flag)
 {
     _waiting = flag;
+}
+
+//====================================================================
+bool Vehicle::isWaiting()
+{
+    return _waiting;
 }
 
 //by uchida 2017/2/10
@@ -1538,7 +1555,7 @@ void Vehicle::scoringSubNodes()
     {
         double x = i/_allsubnodes.size();
 
-        switch ((int)(GVManager::getNumeric("SCOREING_METHOD")))
+        switch ((int)(GVManager::getNumeric("SCORING_METHOD")))
         {
             case 1:
                 // (1)一定
@@ -1583,4 +1600,11 @@ void Vehicle::scoringSubNodes()
     _allsubnodes.erase(_allsubnodes.begin(), _allsubnodes.end());
     _startSN  = NULL;
     _startSec = NULL;
+}
+
+// by takusagawa 2018/01/05
+//====================================================================
+void Vehicle::setOdDistance()
+{
+    _odDistance = _router->start()->center().distance(_router->goal()->center());
 }

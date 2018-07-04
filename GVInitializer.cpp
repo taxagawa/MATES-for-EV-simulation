@@ -57,14 +57,21 @@ void GVInitializer::init(const string& dataPath)
     // EVを発生・CSを設置するか
     GVManager::setNewFlag("FLAG_GEN_EVs", false);
     GVManager::setNewFlag("FLAG_GEN_CSs", false);
+    //by uchida 2017/12/26
+    //CSの充電出力を出力するか
+    GVManager::setNewFlag("FLAG_OUTPUT_CSs", false);
+    //出力の集計間隔（標準では10分）
+    GVManager::setNewNumeric("OUTPUT_CSs_INTERVAL", 600000);
+
     // by uchida 2017/3/6
-    // 時系列のスコアを出力するか
+    // 時系列のCS配置スコアを出力するか
     GVManager::setNewFlag("FLAG_OUTPUT_SCORE", false);
+
 
     // by uchida 2017/3/6
     GVManager::setNewString("RESULT_SCORE_PREFIX",
                             "score");
-    GVManager::setNewNumeric("SCOREING_METHOD",
+    GVManager::setNewNumeric("SCORING_METHOD",
                              1);
 
 

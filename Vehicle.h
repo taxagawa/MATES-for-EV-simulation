@@ -18,6 +18,7 @@
 #include "TimeManager.h"
 #include "GenerateVehicleRunningMode.h"
 #include "CSNode.h"
+#include "NCSNode.h"
 
 class RoadMap;
 class LaneBundle;
@@ -294,6 +295,9 @@ public:
     /// SOCをdoubleで返す
     virtual double SOC();
 
+    // by takusagawa 2018/01/05
+    // ODの距離を返す
+    double getOdDistance();
 
     //@}
 
@@ -555,6 +559,9 @@ protected:
     // by uchida 2016/5/22
     double _SOC;
 
+    // by takusagawa 2018/01/05
+    double _odDistance;
+
     //@}
 
     //====================================================================
@@ -752,6 +759,8 @@ public:
     // _waitingを設定する
     void setWaiting(bool flag);
 
+    bool isWaiting();
+
     //by uchida 2017/2/10
     // 最近傍のSubNodeを探す
     void nearestSubNode();
@@ -780,6 +789,11 @@ public:
     // スコアリング用に必要
     // routeが書き換えられるとrouteが使えないので
     vector<Intersection*> _realPassedRoute;
+
+    // by takusagawa 2018/01/05
+    // OD距離を計算して格納する
+    void setOdDistance();
+
 };
 
 #endif //__VEHICLE_H__

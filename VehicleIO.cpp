@@ -30,7 +30,7 @@
 #ifdef USE_ZLIB
 #include <zlib.h>
 #define fzopen   gzopen
-#define fzclose  gzclose 
+#define fzclose  gzclose
 #define fzprintf gzprintf
 #define fz_ok    Z_OK
 #else // USE_ZLIB
@@ -99,7 +99,7 @@ bool VehicleIO::writeVehiclesDynamicData(const ulint time,
         paths.push_back(resultDir+"vehicle/");
         string strTime
             = AmuConverter::itos(time,
-                                 NUM_FIGURE_FOR_TIMELINE_FILENAME); 
+                                 NUM_FIGURE_FOR_TIMELINE_FILENAME);
         paths.push_back(strTime.substr(0,3)+"/");
         paths.push_back(strTime.substr(3,3)+"/");
 #ifdef USE_ZLIB
@@ -181,7 +181,7 @@ bool VehicleIO::writeVehiclesDynamicData(const ulint time,
                                    &fVehicleCount);
             ofstream& ofsVC = FileManager::getOFStream(fVehicleCount);
             // オープンに失敗した場合は関数内で落ちるはず
-            
+
             // 車両台数等の動的グローバル情報の書き出し
             nAll = static_cast<signed int>((*vehicles).size());
             ofsVC << time << "," << nAll << "," << nVisible << endl;
@@ -206,15 +206,15 @@ bool VehicleIO::writeVehiclesDynamicData(const ulint time,
         {
             // vehicleCount.txtのオープン
             string fVehicleCount;
-            GVManager::getVariable("RESULT_VEHICLE_COUNT_FILE", 
+            GVManager::getVariable("RESULT_VEHICLE_COUNT_FILE",
                                    &fVehicleCount);
             ofstream& ofsVC = FileManager::getOFStream(fVehicleCount);
             // オープンに失敗した場合は関数内で落ちるはず
-            
+
             // 車両台数等の動的グローバル情報の書き出し
             nAll = static_cast<signed int>((*vehicles).size());
             ofsVC << time << "," << nAll << "," << nVisible << endl;
-        }   
+        }
     }
 
     return true;
@@ -238,7 +238,7 @@ bool VehicleIO::_writeVehicleDynamicData(Vehicle* vehicle)
     if (theta<0)
         theta += 360;
     double phi = atan(vehicle->lane()->gradient()/100.0)*180*M_1_PI;
-  
+
     stringstream ss;
     ss.str("");
     ss << vehicle->id() << ","
@@ -347,7 +347,7 @@ bool VehicleIO::_makeDirectories(vector<string> paths) const
 }
 
 //======================================================================
-bool VehicleIO::writeVehicleStaticData(Vehicle* vehicle) 
+bool VehicleIO::writeVehicleStaticData(Vehicle* vehicle)
 {
     bool result = false;
 
@@ -422,7 +422,7 @@ bool VehicleIO::writeAllVehiclesDistanceData()
             if ((*vehicles)[i]->onCharging())
             {
                 // 充電中であれば
-                _tripOut << 
+                _tripOut <<
                 ((*vehicles)[i]->startChargingTime() - (*vehicles)[i]->startTime()) << ",";
             }
             else

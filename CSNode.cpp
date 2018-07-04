@@ -80,6 +80,13 @@ void CSNode::initCharge()
     _instantaneousCharge = 0.0;
 }
 
+// by takusagawa 2018/3/26
+////======================================================================
+double CSNode::instantaneousCharge()
+{
+    return _instantaneousCharge;
+}
+
 // by uchida 2017/11/24
 ////======================================================================
 void CSNode::integrated(double instantaneousCharge)

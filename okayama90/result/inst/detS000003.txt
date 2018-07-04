@@ -1,0 +1,6 @@
+#section:000130020166, isUP:1, length:-5, interval:300000, detectors:4
+#lane0:00030103
+#lane1:00040102
+#lane2:00050101
+#lane3:00060100
+#begintime, endtime, total(conv), total(simple), total_p,total_t, volume_p,volume_t, volume0p,volume0t, volume1p,volume1t, ...

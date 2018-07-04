@@ -307,11 +307,12 @@ void Router::searchSegment(const Intersection* start,
     }
     else
     {
-        cout << "Router cannot find route."<< endl
-             << "  Origin: " << _start->id()
-             << ", Destination: " << _goal->id() << endl
-             << "     dump data:"<<endl;
-        _tree->print(cout);
+      //  cout << "Router cannot find route."<< endl
+      //       << "  Origin: " << _start->id()
+      //       << ", Destination: " << _goal->id() << endl;
+      //       << "     dump data:"<<endl;
+      //  _tree->print(cout);
+      // by takusagawa
     }
 }
 
@@ -766,7 +767,8 @@ bool Router::CSsearch(const Section* section,
         {
             //探索失敗
             result_route = NULL;
-            cout << "CS cannot find" << endl;
+            //by takusagawa 2018/3/27
+            //cout << "CS cannot find" << endl;
             return false;
         }
 

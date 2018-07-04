@@ -173,6 +173,11 @@ bool LaneBundle::isNextLaneMine(const Lane* lane) const
     bool flag = false;
     if (isMyLane(lane))
     {
+        // 2017/12/27 by uchida
+        if (lane->nextLanes()->size() == 0)
+        {
+            return flag;
+        }
         if (isMyLane(lane->nextLane(0)))
         {
             flag = true;

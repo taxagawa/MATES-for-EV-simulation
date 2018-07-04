@@ -9,6 +9,7 @@
 #include "GVManager.h"
 #include "Random.h"
 #include "AmuPoint.h"
+#include "NCSNode.h"
 #include <cassert>
 
 using namespace std;
@@ -321,7 +322,6 @@ void Vehicle::_runSection2CS()
 {
     _intersection = _section->nextIntersection(_lane);
     assert(_intersection);
-
     //最後に通過した交差点として新しい交差点を登録。
     if(_prevIntersection == NULL)
     {
@@ -353,10 +353,8 @@ void Vehicle::_runSection2CS()
             _intersection->addWatchedVehicle(this);
         }
     }
-
     _section = _intersection->nextSection(_route->inter(2));
     _lane = _section->lanesFrom(_intersection)[0];
-
     _stopCS = "";
 
     dynamic_cast<CSNode*>(_intersection)->addEV(this);
@@ -451,44 +449,6 @@ void Vehicle::_runSection2Section()
 //======================================================================
 void Vehicle::_runSection2Intersection()
 {
-
-//by uchida
-//ここで転回の処理をしているが強引
-//  if (_section->nextIntersection(_lane)->id() == "000006" /*&& _router->goal()->id() == "000001"*/)
-//  {
-//        _nextLane = _section->lanesFrom(_section->nextIntersection(_lane))[0];
-//        _intersection = _section->nextIntersection(_lane);
-//
-//        //最後に通過した交差点として新しい交差点を登録。
-//        if(_prevIntersection == NULL)
-//        {
-//            _route
-//                ->setLastPassedIntersection(_intersection);
-//        }
-//        else
-//        {
-//            _route
-//                ->setLastPassedIntersection(_prevIntersection,
-//                                            _intersection);
-//        }
-//        //最後に通過した経由地として新しい交差点を登録。
-//        _router
-//            ->setLastPassedStopPoint(_intersection->id());
-
-//        //10s停止（充電的な）
-//        _sleepTime = 30 * 1000;
-//        _runIntersection2Section();
-//  }
-//  else
-//  {
-
-//by uchida
-//    if (_section->nextIntersection(_lane)->id() == "000006" && _router->goal()->id() == "000002")
-//    {
-//        //10s停止（充電的な）
-//        _sleepTime = 30 * 1000;
-//    }
-
     _intersection = _section->nextIntersection(_lane);
     assert(_intersection);
 
@@ -496,10 +456,12 @@ void Vehicle::_runSection2Intersection()
     // とりあえず車線変更を緊急中断
     if (_laneShifter.isActive())
     {
+        /*
         cerr << "WARNING: would enter intersection while lane shifting."
              << endl
              << "vehicle:" << _id
              << " in section:" << _section->id() << endl;
+        */
         _laneShifter.abortShift();
     }
 
@@ -540,8 +502,17 @@ void Vehicle::_runSection2Intersection()
     {
         _decideNextLane(_intersection, _lane);
     }
+    // // ガソリン車でODノードに入ったなら
+    // else if (_type < 80)
+    // {
+    //     _leaders
+    // }
 
-//  }
+    // NCSNode(=OD)に入るEVは必ず充電する
+    if (dynamic_cast<NCSNode*>(_intersection) && _type >= 80)
+    {
+        dynamic_cast<NCSNode*>(_intersection)->addEV(this);
+    }
 
 }
 

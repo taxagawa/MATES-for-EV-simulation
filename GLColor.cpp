@@ -9,7 +9,8 @@
 //######################################################################
 void GLColor::setBackground()
 {
-  AutoGL_SetBackgroundColor(0.75, 0.8, 1.0);
+  //AutoGL_SetBackgroundColor(0.75, 0.8, 1.0);
+  AutoGL_SetBackgroundColor(1.0, 1.0, 1.0);
 }
 //----------------------------------------------------------------------
 void GLColor::setGround()
@@ -19,7 +20,8 @@ void GLColor::setGround()
 //----------------------------------------------------------------------
 void GLColor::setSimpleNetwork()
 {
-  AutoGL_SetColor(1.0, 1.0, 1.0);
+  //AutoGL_SetColor(1.0, 1.0, 1.0);
+  AutoGL_SetColor(0, 0, 0);
 }
 
 //######################################################################
