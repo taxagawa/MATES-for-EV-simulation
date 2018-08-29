@@ -8,10 +8,13 @@ test/
 ###############
 *.a
 *.csv
+*.csv#
 *.ppm
 
 core*
 log*
+
+無題のドキュメント
 
 ###############
 advmates-calc
