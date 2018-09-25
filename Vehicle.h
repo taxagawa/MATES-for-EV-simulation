@@ -454,6 +454,14 @@ public:
                                  const Section* section,
                                  const Intersection* intersection);
 
+    // by takusagawa 2018/9/25
+    // CS探索 経由ありの経路探索 推定待ち時間考慮
+    void _searchCSWaitingTimeSumCost();
+    // 出発時の_intersection・_section直接指定版
+    std::string _searchCSWaitingTimeSumCost(RoadMap* roadMap,
+                                 const Section* section,
+                                 const Intersection* intersection);
+
     // by uchida 2016/5/31
     // drawerからrouter()呼べなかったので
     /// 最終目的地Dを返す
@@ -692,6 +700,12 @@ protected:
     /// 交差点に侵入するときに一旦停止したかどうか
     bool _hasPaused;
 
+    // by takusagawa 2018/9/25
+    // 各CSから定期配信される推定待ち時間情報を受け取れるかどうか
+    // default: false
+    //
+    bool _isReceiveWaitingInfo;
+
     /// 休止時間[msec]
     /**
      * 休止状態の車両は全ての通行優先権を失う
@@ -794,6 +808,13 @@ public:
     // OD距離を計算して格納する
     void setOdDistance();
 
+    // by takusagawa 2018/9/25
+    // 充電待ち行列中のEVが必要としている電力量を計算して返す
+    double requiredChagingPowerCalc();
+
+    // by takusagawa 2018/9/25
+    // 待ち時間情報を取得可能にする
+    void setReceiveWaitingInfo();
 };
 
 #endif //__VEHICLE_H__

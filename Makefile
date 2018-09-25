@@ -51,10 +51,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t_takusagawa/trunk/solver
+CMAKE_SOURCE_DIR = /home/t_takusagawa/dev/master/solver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t_takusagawa/trunk/solver
+CMAKE_BINARY_DIR = /home/t_takusagawa/dev/master/solver
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -116,9 +116,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t_takusagawa/trunk/solver/CMakeFiles /home/t_takusagawa/trunk/solver/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/t_takusagawa/dev/master/solver/CMakeFiles /home/t_takusagawa/dev/master/solver/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t_takusagawa/trunk/solver/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/t_takusagawa/dev/master/solver/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

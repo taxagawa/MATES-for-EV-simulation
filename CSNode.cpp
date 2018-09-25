@@ -38,6 +38,8 @@ CSNode::CSNode(const string& id,
     // by uchida 2016/5/23
     _isCS = true;
     _integratedCharge = 0.0;
+    // by takusagawa 2018/9/25
+    _estimatedWaitingTime = 0.0;
 
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
@@ -174,6 +176,43 @@ void CSNode::setOutPower(double outPower)
 double CSNode::outPower()
 {
     return _outPower;
+}
+
+////======================================================================
+double CSNode::estimatedWaitingTime() const
+{
+    return _estimatedWaitingTime;
+}
+
+////======================================================================
+void CSNode::estimatedWaitingTimeCalc()
+{
+    // 初期化
+    _estimatedWaitingTime = 0.0;
+
+    // 待機列が空かどうかチェック
+    // 空なら待ち時間は0秒
+    if (waitingLine.empty())
+    {
+        return;
+    }
+
+    vector<Vehicle*>::iterator itr = waitingLine.begin();
+    for (int i = 0; i < _capacity; i++)
+    {
+        if (itr == waitingLine.end())
+        {
+            break;
+        }
+        else
+        {
+            double requiredChagingPower = (*itr)->requiredChagingPowerCalc();
+            _estimatedWaitingTime += requiredChagingPower / (_outPower * 1000.0 * (TimeManager::unit() / 1000.0));
+            itr++;
+        }
+    }
+    //cout << "@@@@@@@@@@@@@@@@@@@@@@  test: " << _estimatedWaitingTime << endl;
+    return;
 }
 
 ////======================================================================

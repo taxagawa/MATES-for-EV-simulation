@@ -77,6 +77,15 @@ public:
     // kW性能を返す
     double outPower();
 
+    // by takusagawa 2018/9/25
+    //推定待ち時間[sec]
+    double _estimatedWaitingTime;
+
+    //推定待ち時間を返す
+    double estimatedWaitingTime() const;
+    //推定待ち時間を計算する
+    void estimatedWaitingTimeCalc();
+
 //    //====================================================================
 //    /** @name 車両の発生と消去にかかわる関数 */
 //    /// @{

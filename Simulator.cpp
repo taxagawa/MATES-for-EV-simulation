@@ -321,6 +321,20 @@ bool Simulator::timeIncrement()
 
     }
 
+    // by takusagawa 2018/9/25
+    // 30秒ごとに全CSの推定待ち時間を更新
+    // 一定時間ごとに一斉更新するか,EVからの問い合わせがあるごとに最新の推定待ち時間を返すかの
+    // ２つの方法が考えられるが,充電車両が多くなると後者は計算時間が大きくなりそうなので
+    // とりあえず前者にしておく.
+    if (TimeManager::time() % 30000 == 0)
+    {
+        vector<CSNode*> csNodes = _roadMap->csNodes();
+        for (int i = 0; i < csNodes.size(); i++)
+        {
+            csNodes[i]->estimatedWaitingTimeCalc();
+        }
+    }
+
     // by uchida 2017/2/27
     if (TimeManager::time() % 60000 == 0 && GVManager::getFlag("FLAG_OUTPUT_SCORE"))
     {

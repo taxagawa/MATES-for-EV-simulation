@@ -166,7 +166,7 @@ void RoadEntityDrawer::drawSignals(const RoadEntity& entity) const
                 else
                 {
                     AutoGL_SetColor(0,0,0);
-                }	  
+                }
                 AutoGL_DrawQuadrangle(point.x()-0.4, point.y(),     point.z()+4.0,
                                       point.x(),     point.y()-0.4, point.z()+4.0,
                                       point.x()+0.4, point.y(),     point.z()+4.0,
@@ -306,7 +306,7 @@ void SignalDrawer::draw(const Intersection& inter) const
                     else
                     {
                         AutoGL_SetColor(0,0,0);
-                    }	  
+                    }
                     AutoGL_DrawTriangle(point.x()+0.6, point.y()+0.6, point.z()+4.0,
                                         point.x()+0.6, point.y()-0.6, point.z()+4.0,
                                         point.x()-0.6, point.y()+0.6, point.z()+4.0);
@@ -366,7 +366,7 @@ IntersectionDrawer& IntersectionDrawer::instance()
 //----------------------------------------------------------------------
 void IntersectionDrawer::draw(const Intersection& inter) const
 {
-    drawSubsections(inter); 
+    drawSubsections(inter);
     if (GVManager::getFlag("VIS_LANE_INTER"))
     {
         drawLanes(inter);
@@ -689,10 +689,10 @@ void RoadMapDrawer::draw(const RoadMap& roadMap) const
         const RMAPI* intersections = roadMap.intersections();
         CITRMAPI iti = (*intersections).begin();
         while (iti!=(*intersections).end()) {
-            _intersectionDrawer->draw(*((*iti).second)); 
+            _intersectionDrawer->draw(*((*iti).second));
             iti++;
         }
-  
+
         const RMAPS* sections = roadMap.sections();
         CITRMAPS its = (*sections).begin();
         while (its!=(*sections).end()) {
@@ -818,7 +818,7 @@ void VehicleDrawer::draw(const Vehicle& vehicle) const
             break;
         case 1:
             AutoGL_GetContourColor(&r, &g, &b,
-                                   vehicle.aveVelocity()); 
+                                   vehicle.aveVelocity());
             break;
         default:
             vehicle.getBodyColor(&r, &g, &b);
@@ -876,7 +876,7 @@ void VehicleDrawer::draw(const Vehicle& vehicle) const
 
 }
 //----------------------------------------------------------------------
-void VehicleDrawer::drawSimple(const Vehicle& vehicle, 
+void VehicleDrawer::drawSimple(const Vehicle& vehicle,
                                double size) const
 {
     double x = vehicle.x();
@@ -907,7 +907,7 @@ void VehicleDrawer::drawSimple(const Vehicle& vehicle,
         break;
     case 1:
         AutoGL_GetContourColor(&r, &g, &b,
-                               vehicle.aveVelocity()); 
+                               vehicle.aveVelocity());
         break;
     default:
         vehicle.getBodyColor(&r, &g, &b);

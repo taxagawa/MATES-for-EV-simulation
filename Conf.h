@@ -46,6 +46,13 @@
 #endif
 //@}
 
+/** @name 特殊なEVの発生割合 */
+//@{
+#ifndef CAN_RECEIVE_WAITING_INFO_RATE
+#define CAN_RECEIVE_WAITING_INFO_RATE   0.6
+#endif
+//@}
+
 /** @name 識別番号の桁数の設定 */
 //@{
 
@@ -95,7 +102,7 @@
 //@{
 
 /// スプリットの最大数
-#define NUM_MAX_SPLIT 20 
+#define NUM_MAX_SPLIT 20
 
 //@}
 

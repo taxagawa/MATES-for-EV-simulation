@@ -117,6 +117,9 @@ void VehicleEV::run(){
     assert(_batteryRemain > 0 || _batteryRemain <= 1);
     Vehicle::run();
 
+    // commented by takusagawa 2018/09/22
+    // runningModeはおそらく走行試験用のモードで、
+    // ある時刻のときの速度を正確に定めてある
     if (_runningMode->isExist())
     {
         ulint elapsedTime = TimeManager::time() - _startTime;
@@ -372,7 +375,7 @@ void VehicleEV::charge()
 //====================================================================
 void VehicleEV::setInitSoC()
 {
-  double rnd = 0;
+  double rnd = 0.0;
 
   // by uchida 2017/1/26
   // 0.3 < rnd < 0.8
@@ -381,6 +384,7 @@ void VehicleEV::setInitSoC()
   rnd = Random::uniform(_rnd);
   rnd = (rnd * 0.5) + 0.6 * (getOdDistance() / 35000);
   //35000は最大値を超えないように適当に与えた
+  //TODO いずれはマップ内の全交差点間の最長距離を設定したい
 
   if (rnd > 0.85)
   {

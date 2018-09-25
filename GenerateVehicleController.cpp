@@ -731,6 +731,16 @@ Vehicle* GenerateVehicleController::_createVehicle(
     if (VehicleFamily::isEV_Passenger(vehicleType))
     {
       dynamic_cast<VehicleEV*>(tmpVehicle)->setInitSoC();
+      // by takusagawa 2018/9/25
+      // 一定割合で待ち時間情報を取得可能なEVを発生させる
+      double rnd = 0.0;
+      rnd = Random::uniform(_rnd);
+      //cout << "rnd: " << rnd << endl;
+
+      if (rnd <= CAN_RECEIVE_WAITING_INFO_RATE)
+      {
+          dynamic_cast<VehicleEV*>(tmpVehicle)->setReceiveWaitingInfo();
+      }
     }
 
     // 経路選択は関数の外に出す

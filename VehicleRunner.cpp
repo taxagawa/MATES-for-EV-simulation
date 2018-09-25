@@ -261,7 +261,16 @@ void Vehicle::_runIntersection2Section()
             // 2017/5/23
             // ここをonすることでconventional・offとすることでghost
             // 3
-            _searchCSSumCost();
+            // by takusagawa 2018/9/25
+            // 待ち時間情報の受け取りができる場合はその情報を考慮したCS選択を行う
+            if (!_isReceiveWaitingInfo)
+            {
+                _searchCSSumCost();
+            }
+            else
+            {
+                _searchCSWaitingTimeSumCost();
+            }
             CSreroute(_section, _intersection, _stopCS);
 
         }
@@ -295,7 +304,16 @@ void Vehicle::_runIntersection2Section()
                 //CSreroute(_section, _intersection, _stopCS);
 
                 // 3
-                _searchCSSumCost();
+                // by takusagawa 2018/9/25
+                // 待ち時間情報の受け取りができる場合はその情報を考慮したCS選択を行う
+                if (!_isReceiveWaitingInfo)
+                {
+                    _searchCSSumCost();
+                }
+                else
+                {
+                    _searchCSWaitingTimeSumCost();
+                }
                 CSreroute(_section, _intersection, _stopCS);
 
             }
