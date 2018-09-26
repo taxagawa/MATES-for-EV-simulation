@@ -858,7 +858,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
 
     Intersection* goal;
     vector<CSNode*> csNodes = _roadMap->csNodes();
-    double min = 100000;// 十分大きいということで
+    double min = 10000000;// 十分大きいということで
     int min_index = 0;
     int step;
     double GV;
@@ -872,12 +872,15 @@ void Vehicle::_searchCSWaitingTimeSumCost()
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
            + csNodes[i]->estimatedWaitingTime();
 
+        cout << "i: " << i << " , GV: " << GV << " , estimatedWaitingTime" << csNodes[i]->estimatedWaitingTime() << endl;
+
         if (min >= GV)
         {
             min = GV;
             min_index = i;
         }
     }
+    cout << "min_index: " << min_index << endl;
     assert(min_index >= 0);
 
     // 暫定的に選択されたCSまでのコスト
@@ -921,7 +924,7 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
 
     Intersection* goal;
     vector<CSNode*> csNodes = _roadMap->csNodes();
-    double min = 1000000;// 十分大きいということで
+    double min = 10000000;// 十分大きいということで
     int min_index = -1;
     int step;
     double GV;
@@ -1747,4 +1750,11 @@ double Vehicle::requiredChagingPowerCalc()
 void Vehicle::setReceiveWaitingInfo()
 {
     _isReceiveWaitingInfo = true;
+}
+
+// by takusagawa 2018/9/26
+//====================================================================
+bool Vehicle::receiveWaitingInfo() const
+{
+    return _isReceiveWaitingInfo;
 }

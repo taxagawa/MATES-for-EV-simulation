@@ -200,8 +200,18 @@ void ODNode::pushVehicleToReal(RoadMap* roadMap)
                     //    tmpVehicle->_searchCSCost(roadMap, section, this));
 
                     // 3
-                    tmpVehicle->CSreroute(section, this,
-                        tmpVehicle->_searchCSSumCost(roadMap, section, this));
+                    // by takusagawa 2018/9/26
+                    if (!(tmpVehicle->receiveWaitingInfo()))
+                    {
+                        tmpVehicle->CSreroute(section, this,
+                            tmpVehicle->_searchCSSumCost(roadMap, section, this));
+                    }
+                    else
+                    {
+                        tmpVehicle->CSreroute(section, this,
+                            tmpVehicle->_searchCSWaitingTimeSumCost(roadMap, section, this));
+                    }
+
                 }
 
                 // 登場時刻の記録

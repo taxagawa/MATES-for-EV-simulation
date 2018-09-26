@@ -815,6 +815,10 @@ public:
     // by takusagawa 2018/9/25
     // 待ち時間情報を取得可能にする
     void setReceiveWaitingInfo();
+
+    // by takusagawa 2018/9/26
+    // 待ち時間情報を返す
+    bool receiveWaitingInfo() const;
 };
 
 #endif //__VEHICLE_H__

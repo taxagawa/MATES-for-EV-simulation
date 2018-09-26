@@ -331,6 +331,7 @@ bool Simulator::timeIncrement()
         vector<CSNode*> csNodes = _roadMap->csNodes();
         for (int i = 0; i < csNodes.size(); i++)
         {
+            cout << "i: " << i << endl;
             csNodes[i]->estimatedWaitingTimeCalc();
         }
     }

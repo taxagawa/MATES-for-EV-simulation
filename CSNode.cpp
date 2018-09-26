@@ -178,15 +178,18 @@ double CSNode::outPower()
     return _outPower;
 }
 
+// by takusagawa 2018/9/25
 ////======================================================================
 double CSNode::estimatedWaitingTime() const
 {
     return _estimatedWaitingTime;
 }
 
+// by takusagawa 2018/9/25
 ////======================================================================
 void CSNode::estimatedWaitingTimeCalc()
 {
+    cout << "waitingLine size: " << waitingLine.size() << endl;
     // 初期化
     _estimatedWaitingTime = 0.0;
 
@@ -198,18 +201,11 @@ void CSNode::estimatedWaitingTimeCalc()
     }
 
     vector<Vehicle*>::iterator itr = waitingLine.begin();
-    for (int i = 0; i < _capacity; i++)
+    while (itr != waitingLine.end())
     {
-        if (itr == waitingLine.end())
-        {
-            break;
-        }
-        else
-        {
-            double requiredChagingPower = (*itr)->requiredChagingPowerCalc();
-            _estimatedWaitingTime += requiredChagingPower / (_outPower * 1000.0 * (TimeManager::unit() / 1000.0));
-            itr++;
-        }
+        double requiredChagingPower = (*itr)->requiredChagingPowerCalc();
+        _estimatedWaitingTime += requiredChagingPower / (_outPower * 1000.0 * (TimeManager::unit() / 1000.0));
+        itr++;
     }
     //cout << "@@@@@@@@@@@@@@@@@@@@@@  test: " << _estimatedWaitingTime << endl;
     return;
