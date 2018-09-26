@@ -739,7 +739,9 @@ void Vehicle::_searchCSSumCost()
 
     Intersection* goal;
     vector<CSNode*> csNodes = _roadMap->csNodes();
-    double min = 100000;// 十分大きいということで
+    // 時間優先にすると,マップが広い場合100000では足りない可能性がある.
+    double min = 10000000;// 十分大きいということで
+    // ここはもともとは-1になっていた.assert回避のための苦肉の策.
     int min_index = 0;
     int step;
     double GV;
@@ -751,6 +753,9 @@ void Vehicle::_searchCSSumCost()
 
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id());
+
+        // debug by takusagawa 2018/9/26
+        // cout << "i: " << i << " , GV: " << GV << endl;
 
         if (min >= GV)
         {
@@ -800,7 +805,8 @@ std::string Vehicle::_searchCSSumCost(RoadMap* roadMap,
 
     Intersection* goal;
     vector<CSNode*> csNodes = _roadMap->csNodes();
-    double min = 1000000;// 十分大きいということで
+    // 時間優先にすると,マップが広い場合100000では足りない可能性がある.
+    double min = 10000000;// 十分大きいということで
     int min_index = -1;
     int step;
     double GV;
@@ -858,6 +864,8 @@ void Vehicle::_searchCSWaitingTimeSumCost()
 
     Intersection* goal;
     vector<CSNode*> csNodes = _roadMap->csNodes();
+    // 時間優先にすると,マップが広い場合100000では足りない可能性がある.
+    // 待ち時間も考慮すると1000000でも足りないかもしれない.
     double min = 10000000;// 十分大きいということで
     int min_index = 0;
     int step;
@@ -872,7 +880,8 @@ void Vehicle::_searchCSWaitingTimeSumCost()
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
            + csNodes[i]->estimatedWaitingTime();
 
-        cout << "i: " << i << " , GV: " << GV << " , estimatedWaitingTime" << csNodes[i]->estimatedWaitingTime() << endl;
+        // debug by takusagawa 2018/9/26
+        cout << "i: " << i << " , GV: " << GV << " , estimatedWaitingTime: " << csNodes[i]->estimatedWaitingTime() << endl;
 
         if (min >= GV)
         {
@@ -880,7 +889,9 @@ void Vehicle::_searchCSWaitingTimeSumCost()
             min_index = i;
         }
     }
+    // debug by takusagawa 2018/9/26
     cout << "min_index: " << min_index << endl;
+
     assert(min_index >= 0);
 
     // 暫定的に選択されたCSまでのコスト
@@ -924,6 +935,8 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
 
     Intersection* goal;
     vector<CSNode*> csNodes = _roadMap->csNodes();
+    // 時間優先にすると,マップが広い場合100000では足りない可能性がある.
+    // 待ち時間も考慮すると1000000でも足りないかもしれない.
     double min = 10000000;// 十分大きいということで
     int min_index = -1;
     int step;

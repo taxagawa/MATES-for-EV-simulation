@@ -49,7 +49,7 @@
 /** @name 特殊なEVの発生割合 */
 //@{
 #ifndef CAN_RECEIVE_WAITING_INFO_RATE
-#define CAN_RECEIVE_WAITING_INFO_RATE   0.6
+#define CAN_RECEIVE_WAITING_INFO_RATE   0.0
 #endif
 //@}
 
