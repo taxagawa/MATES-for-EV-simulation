@@ -103,6 +103,10 @@ Vehicle::Vehicle():_id()
     // EV側では基本的に_SOCを参照しない
     _SOC = -1;
 
+    // by takusagawa 2018/9/27
+    // 諸事情によりVehicleEV.hより移動
+    _batteryCapacity = 0.0;
+
     // by takusagawa 2018/01/05
     _odDistance = 0;
 
@@ -1752,10 +1756,11 @@ void Vehicle::setOdDistance()
 
 // by takusagawa 2018/9/25
 //====================================================================
-double Vehicle::requiredChagingPowerCalc()
+double Vehicle::requiredChagingPowerCalc(double batteryCapacity)
 {
     // battery capacityが無理やりすぎるので改善が必要
-    return (0.8 - SOC()) * (10.5 * 1000.0 * 3600.0);
+    // 改善 2018/9/27
+    return (0.8 - SOC()) * batteryCapacity;
 }
 
 // by takusagawa 2018/9/25
@@ -1770,4 +1775,11 @@ void Vehicle::setReceiveWaitingInfo()
 bool Vehicle::receiveWaitingInfo() const
 {
     return _isReceiveWaitingInfo;
+}
+
+// by takusagawa 2018/9/27
+//====================================================================
+double Vehicle::getBatteryCapacity() const
+{
+    return _batteryCapacity;
 }

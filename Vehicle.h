@@ -570,6 +570,11 @@ protected:
     // by takusagawa 2018/01/05
     double _odDistance;
 
+    /// 電池容量[Wsec]
+    // CSNode::estimatedWaitingTimeCalc()内でgetするためにVehicle.hに移動
+    // by takusagawa 2018/9/27
+    double _batteryCapacity;
+
     //@}
 
     //====================================================================
@@ -810,7 +815,7 @@ public:
 
     // by takusagawa 2018/9/25
     // 充電待ち行列中のEVが必要としている電力量を計算して返す
-    double requiredChagingPowerCalc();
+    double requiredChagingPowerCalc(double batteryCapacity);
 
     // by takusagawa 2018/9/25
     // 待ち時間情報を取得可能にする
@@ -819,6 +824,10 @@ public:
     // by takusagawa 2018/9/26
     // 待ち時間情報を返す
     bool receiveWaitingInfo() const;
+
+    // by takusagawa 2018/9/27
+    // _batteryCapacityを返す仮想関数
+    virtual double getBatteryCapacity() const;
 };
 
 #endif //__VEHICLE_H__

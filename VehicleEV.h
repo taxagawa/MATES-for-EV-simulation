@@ -43,6 +43,10 @@ class VehicleEV : public Vehicle{
   // by takusagawa 2018/01/12
   void setInitSoC();
 
+  // by takusagawa 2018/9/27
+  // _batteryCapacityを返す
+  double getBatteryCapacity() const;
+
   // 目的のCSに向かうため経路を探索する
 //  bool CSreroute(const Section* section, const Intersection* start, string stopCS);
 
@@ -85,7 +89,9 @@ class VehicleEV : public Vehicle{
   double _regenerativeRate;
 
   /// 電池容量[Wsec]
-  double _batteryCapacity;
+  // CSNode::estimatedWaitingTimeCalc()内でgetするためにVehicle.hに移動
+  // by takusagawa 2018/9/27
+  // double _batteryCapacity;
 
   /// 充電残量[Wsec]
   double _batteryRemain;

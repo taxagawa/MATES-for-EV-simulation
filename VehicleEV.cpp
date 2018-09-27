@@ -401,3 +401,10 @@ void VehicleEV::setInitSoC()
 
   _batteryRemain = _batteryCapacity * _initialSoC;
 }
+
+// by takusagawa 2018/9/27
+//====================================================================
+double VehicleEV::getBatteryCapacity() const
+{
+    return _batteryCapacity;
+}

@@ -203,7 +203,8 @@ void CSNode::estimatedWaitingTimeCalc()
     vector<Vehicle*>::iterator itr = waitingLine.begin();
     while (itr != waitingLine.end())
     {
-        double requiredChagingPower = (*itr)->requiredChagingPowerCalc();
+        double batteryCapacity = (*itr)-> getBatteryCapacity();
+        double requiredChagingPower = (*itr)->requiredChagingPowerCalc(batteryCapacity);
         _estimatedWaitingTime += requiredChagingPower / (_outPower * 1000.0 * (TimeManager::unit() / 1000.0));
         itr++;
     }
