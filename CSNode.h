@@ -56,6 +56,8 @@ public:
     double _integratedCharge;
 
     // 待機列
+    // commented by takusagawa 2018/9/28
+    // 実体はVehicleEV
     vector<Vehicle*> waitingLine;
 
     // 待機列に追加する
