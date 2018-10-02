@@ -61,6 +61,9 @@ VehicleEV::VehicleEV():_parent(){
   instantaneousValue = 0.0;
   accessory = 200.0;//[Wsec/100msec]
 
+  // by takusagawa 2018/10/2
+  _maxOD = 0.0;
+
   //充電走行開始時の閾値の設定
   _threshold = 0.3;
 
@@ -382,7 +385,7 @@ void VehicleEV::setInitSoC()
   // by takusagawa 2018/01/07
   // OD距離に応じて初期SoCを変化させるようにした
   rnd = Random::uniform(_rnd);
-  rnd = (rnd * 0.5) + 0.6 * (getOdDistance() / 35000);
+  rnd = (rnd * 0.5) + 0.6 * (getOdDistance() / _maxOD);
   //35000は最大値を超えないように適当に与えた
   //TODO いずれはマップ内の全交差点間の最長距離を設定したい
 
@@ -398,7 +401,7 @@ void VehicleEV::setInitSoC()
   {
     _initialSoC = rnd;
   }
-
+  
   _batteryRemain = _batteryCapacity * _initialSoC;
 }
 
@@ -407,4 +410,10 @@ void VehicleEV::setInitSoC()
 double VehicleEV::getBatteryCapacity() const
 {
     return _batteryCapacity;
+}
+
+
+void VehicleEV::setMaxOdDistance(double max)
+{
+    _maxOD = max;
 }

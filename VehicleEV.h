@@ -47,6 +47,10 @@ class VehicleEV : public Vehicle{
   // _batteryCapacityを返す
   double getBatteryCapacity() const;
 
+  // by takusagawa 2018/10/2
+  // 最大OD間距離をセット
+  void setMaxOdDistance(double max);
+
   // 目的のCSに向かうため経路を探索する
 //  bool CSreroute(const Section* section, const Intersection* start, string stopCS);
 
@@ -127,6 +131,10 @@ class VehicleEV : public Vehicle{
 //  ulint _arrivalTime;
 
     /// 車体色を設定する]
+
+  // by takusagawa 2018/10/2
+  // マップの最大OD間距離
+  double _maxOD;
 
  protected:
   Vehicle* _parent;

@@ -734,6 +734,9 @@ Vehicle* GenerateVehicleController::_createVehicle(
 
     if (VehicleFamily::isEV_Passenger(vehicleType))
     {
+      // by takusagawa 2018/10/2
+      // 最大OD間距離をセット
+      dynamic_cast<VehicleEV*>(tmpVehicle)->setMaxOdDistance(maxOD);
       dynamic_cast<VehicleEV*>(tmpVehicle)->setInitSoC();
       // by takusagawa 2018/9/25
       // 一定割合で待ち時間情報を取得可能なEVを発生させる
@@ -1102,30 +1105,28 @@ double GenerateVehicleController::maxOdDistance()
     vector<ODNode*> odNodes = _roadMap->odNodes();
     // 最長距離
     double maxD = 0.0;
-    // 書き換え必須
-    // vector<ODNode*>::iterator ite1 = odNodes.begin();
-    // while (ite1 != odNodes.end())
-    // {
-    //     vector<ODNode*>::iterator ite2 = odNodes.begin();
-    //     while (ite2 != odNodes.end())
-    //     {
-    //         if (ite1 == ite2) continue;
-    //
-    //         double distance = (*ite1)->center().distance((*ite2)->center());
-    //
-    //         if (distance > maxD)
-    //         {
-    //             maxD = distance;
-    //             ite2++;
-    //         }
-    //         else
-    //         {
-    //             ite2++;
-    //         }
-    //     }
-    //     ite1++;
-    // }
-    cout << "@@@@@@@@@@@@@@@@@@@@@@@@@ " << maxD << " @@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+    int size = odNodes.size();
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            if (i == j)
+            {
+                continue;
+            }
+
+            double xdiff = odNodes[i]->center().x() - odNodes[j]->center().x();
+            double ydiff = odNodes[i]->center().y() - odNodes[j]->center().y();
+
+            double distance = abs(xdiff) + abs(ydiff);
+
+            if (distance > maxD)
+            {
+                maxD = distance;
+            }
+        }
+    }
     return maxD;
 }
 

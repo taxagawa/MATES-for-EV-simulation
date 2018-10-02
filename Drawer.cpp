@@ -915,56 +915,61 @@ void VehicleDrawer::drawSimple(const Vehicle& vehicle,
     }
     AutoGL_SetColor(r, g, b);
 
-//    // by uchida 2016/5/24
-//    // CSに向かう車両は青に
-//    if (vehicle.isCharge())
-//    {
-//        CSNode* target = vehicle.target();
-//        if (target != NULL)
-//        {
-//            // 目的地とEVを赤い直線で結ぶ
-////            AutoGL_SetColor(1, 0, 0);
-////            const AmuPoint goal = vehicle.destination()->center();
-////            AutoGL_DrawLine(x, y, z,
-////                            goal.x(), goal.y(), goal.z());
+    // // by uchida 2016/5/24
+    // // CSに向かう車両は青に
+    // if (vehicle.isCharge())
+    // {
+    //     CSNode* target = vehicle.target();
+    //     if (target != NULL)
+    //     {
+    //            // 目的地とEVを赤い直線で結ぶ
+    // //            AutoGL_SetColor(1, 0, 0);
+    // //            const AmuPoint goal = vehicle.destination()->center();
+    // //            AutoGL_DrawLine(x, y, z,
+    // //                            goal.x(), goal.y(), goal.z());
+    //
+    //            // CSとEVを青い直線で結ぶ
+    // //            AutoGL_SetColor(0, 0, 1);
+    // //            z0 = z0+100;
+    // //            const AmuPoint cs = target->center();
+    // //            AutoGL_DrawLine(x, y, z,
+    // //                            cs.x(), cs.y(), cs.z());
+    //     }
+    // }
 
-//            // CSとEVを青い直線で結ぶ
-////            AutoGL_SetColor(0, 0, 1);
-////            z0 = z0+100;
-////            const AmuPoint cs = target->center();
-////            AutoGL_DrawLine(x, y, z,
-////                            cs.x(), cs.y(), cs.z());
-//        }
-//    }
-
-if (vehicle.type() >= 80)
-{
-    AutoGL_SetColor(0, 0, 1);
-    z0 = z0 + 100;
-}
-else
-{
-    AutoGL_SetColor(0, 1, 0);
-}
+    if (vehicle.type() >= 80 && vehicle.isCharge())
+    {
+        AutoGL_SetColor(1, 0.7, 0);
+        z0 = z0 + 100;
+    }
+    else if (vehicle.type() >= 80)
+    {
+        AutoGL_SetColor(0, 0, 1);
+        z0 = z0 + 100;
+    }
+    else
+    {
+        AutoGL_SetColor(0, 1, 0);
+    }
 
 
     AutoGL_DrawTriangle(x0, y0, z0,
-                        x1, y1, z0,
-                        x2, y2, z0);
+        x1, y1, z0,
+        x2, y2, z0);
 
-    if (GVManager::getFlag("VIS_VEHICLE_ID"))
-    {
-        GLColor::setVehicleId();
-        AutoGL_DrawString(x, y, z+5, vehicle.id().c_str());
-    }
-
-    // by uchida 2016/5/22
-    GLColor::setVehicleId();
-    if (GVManager::getFlag("VIS_VEHICLE_SOC"))
-    {
-        if(vehicle.sSOC().substr(0,3)!="-10")
+        if (GVManager::getFlag("VIS_VEHICLE_ID"))
         {
-            AutoGL_DrawString(x, y-5, z+5, vehicle.sSOC().substr(0,3).c_str());
+            GLColor::setVehicleId();
+            AutoGL_DrawString(x, y, z+5, vehicle.id().c_str());
         }
-    }
+
+        // by uchida 2016/5/22
+        GLColor::setVehicleId();
+        if (GVManager::getFlag("VIS_VEHICLE_SOC"))
+        {
+            if(vehicle.sSOC().substr(0,3)!="-10")
+            {
+                AutoGL_DrawString(x, y-5, z+5, vehicle.sSOC().substr(0,3).c_str());
+            }
+        }
 }
