@@ -72,6 +72,10 @@ bool GenerateVehicleController::getReadyGeneration()
     _classifyODNodes();
 
     //------------------------------------------------------------------
+    // ODノード間の最大距離を格納
+    maxOD = maxOdDistance();
+
+    //------------------------------------------------------------------
     // 標準的な交通量(単路ごとの台/時) : 基本交通容量の10%
     /*
      * "レーンごと"ではない
@@ -1089,6 +1093,40 @@ int GenerateVehicleController::_odNodeGoalLevel(ODNode* node) const
         result = 2;
     }
     return result;
+}
+
+// by takusagawa 2018/10/1
+//======================================================================
+double GenerateVehicleController::maxOdDistance()
+{
+    vector<ODNode*> odNodes = _roadMap->odNodes();
+    // 最長距離
+    double maxD = 0.0;
+    // 書き換え必須
+    // vector<ODNode*>::iterator ite1 = odNodes.begin();
+    // while (ite1 != odNodes.end())
+    // {
+    //     vector<ODNode*>::iterator ite2 = odNodes.begin();
+    //     while (ite2 != odNodes.end())
+    //     {
+    //         if (ite1 == ite2) continue;
+    //
+    //         double distance = (*ite1)->center().distance((*ite2)->center());
+    //
+    //         if (distance > maxD)
+    //         {
+    //             maxD = distance;
+    //             ite2++;
+    //         }
+    //         else
+    //         {
+    //             ite2++;
+    //         }
+    //     }
+    //     ite1++;
+    // }
+    cout << "@@@@@@@@@@@@@@@@@@@@@@@@@ " << maxD << " @@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+    return maxD;
 }
 
 //======================================================================

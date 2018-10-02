@@ -828,6 +828,9 @@ public:
     // by takusagawa 2018/9/27
     // _batteryCapacityを返す仮想関数
     virtual double getBatteryCapacity() const;
+
+    // by takusagawa 2018/10/1
+    double getMaxOdDistance();
 };
 
 #endif //__VEHICLE_H__

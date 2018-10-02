@@ -83,6 +83,7 @@ vector<ODNode*> RoadMap::odNodes()
         }
         iti++;
     }
+    
     return vec;
 }
 

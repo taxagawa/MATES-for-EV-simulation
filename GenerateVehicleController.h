@@ -158,6 +158,10 @@ private:
      */
     int _odNodeGoalLevel(ODNode* node) const;
 
+    // by takusagawa 2018/10/1
+    // ODノード間の距離の最大値を計算する
+    double maxOdDistance();
+
     /// Router用パラメータの設定
     void _readRouteParameter();
 
@@ -209,6 +213,10 @@ private:
 
     /// 乱数生成器
     RandomGenerator* _rnd;
+
+    // by takusagawa 2018/10/1
+    // ODノードの最大距離
+    double maxOD;
 };
 
 #endif //__GENERATE_VEHICLE_CONTROLLER_H__

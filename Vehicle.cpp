@@ -1783,3 +1783,15 @@ double Vehicle::getBatteryCapacity() const
 {
     return _batteryCapacity;
 }
+
+// by takusagawa 2018/10/1
+//====================================================================//
+double Vehicle::getMaxOdDistance()
+{
+    double xmin, xmax, ymin, ymax;
+    _roadMap->region(xmin, xmax, ymin, ymax);
+    double xdiff = xmax - xmin;
+    double ydiff = ymax - ymin;
+
+    return xdiff;
+}
