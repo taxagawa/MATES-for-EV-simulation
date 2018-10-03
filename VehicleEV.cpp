@@ -412,7 +412,8 @@ double VehicleEV::getBatteryCapacity() const
     return _batteryCapacity;
 }
 
-
+// by takusagawa 2018/10/2
+//====================================================================
 void VehicleEV::setMaxOdDistance(double max)
 {
     _maxOD = max;
