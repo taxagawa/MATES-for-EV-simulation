@@ -319,6 +319,7 @@ void AppMates::parseArgument(int argc, char** argv)
         case 'e': // EV発生及びCS設置をonに(sim/calcデフォルトでoff)
             GVManager::resetFlag("FLAG_GEN_EVs", true);
             GVManager::resetFlag("FLAG_GEN_CSs", true);
+            GVManager::resetFlag("FLAG_OUTPUT_WAITING_LINE", true);
             if (atoi((optarg)) >= 1 && atoi((optarg)) <= 9)
             {
                 GVManager::resetFlag("FLAG_OUTPUT_SCORE", true);

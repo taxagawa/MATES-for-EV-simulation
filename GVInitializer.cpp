@@ -57,11 +57,16 @@ void GVInitializer::init(const string& dataPath)
     // EVを発生・CSを設置するか
     GVManager::setNewFlag("FLAG_GEN_EVs", false);
     GVManager::setNewFlag("FLAG_GEN_CSs", false);
+    // by takusagawa 2018/10/8
+    // 待ち行列の長さを出力するか
+    GVManager::setNewFlag("FLAG_OUTPUT_WAITING_LINE", false);
     //by uchida 2017/12/26
     //CSの充電出力を出力するか
     GVManager::setNewFlag("FLAG_OUTPUT_CSs", false);
     //出力の集計間隔（標準では10分）
     GVManager::setNewNumeric("OUTPUT_CSs_INTERVAL", 600000);
+    // 待ち行列の出力の集計間隔(標準では60秒)
+    GVManager::setNewNumeric("OUTPUT_WAITING_LINE_INTERVAL", 60000);
 
     // by uchida 2017/3/6
     // 時系列のCS配置スコアを出力するか

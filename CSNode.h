@@ -80,13 +80,17 @@ public:
     double outPower();
 
     // by takusagawa 2018/9/25
-    //推定待ち時間[sec]
+    // 推定待ち時間[sec]
     double _estimatedWaitingTime;
 
-    //推定待ち時間を返す
+    // 推定待ち時間を返す
     double estimatedWaitingTime() const;
-    //推定待ち時間を計算する
+    // 推定待ち時間を計算する
     void estimatedWaitingTimeCalc();
+
+    // by takusagawa 2018/10/8
+    // 待ち行列の長さを返す
+    int waitingLineSize() const;
 
 //    //====================================================================
 //    /** @name 車両の発生と消去にかかわる関数 */

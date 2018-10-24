@@ -200,16 +200,32 @@ void CSNode::estimatedWaitingTimeCalc()
         return;
     }
 
-    vector<Vehicle*>::iterator itr = waitingLine.begin();
-    while (itr != waitingLine.end())
+    int size = waitingLine.size();
+
+    // CSが1台でも空いていれば待ち時間はとりあえず0.0
+    if (size < _capacity)
     {
-        double batteryCapacity = (*itr)-> getBatteryCapacity();
-        double requiredChagingPower = (*itr)->requiredChagingPowerCalc(batteryCapacity);
-        _estimatedWaitingTime += requiredChagingPower / (_outPower * 1000.0 * (TimeManager::unit() / 1000.0));
-        itr++;
+        return;
     }
+
+    //cout << "size:" << size << endl;
+    for (int i = 0; i < size; i++)
+    {
+        //cout << "i: " << i << endl;
+        double batteryCapacity = waitingLine[i]->getBatteryCapacity();
+        double requiredChagingPower = waitingLine[i]->requiredChagingPowerCalc(batteryCapacity);
+        _estimatedWaitingTime += (1000.0 * requiredChagingPower) / (10 * _outPower * 1000.0 * (TimeManager::unit() / 1000.0));
+    }
+
     //cout << "@@@@@@@@@@@@@@@@@@@@@@  test: " << _estimatedWaitingTime << endl;
     return;
+}
+
+// by takusagawa 2018/10/8
+////======================================================================
+int CSNode::waitingLineSize() const
+{
+    return waitingLine.size();
 }
 
 ////======================================================================

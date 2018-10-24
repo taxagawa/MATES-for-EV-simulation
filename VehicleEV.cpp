@@ -194,7 +194,11 @@ void VehicleEV::run(){
     }
 
     // 消費電力に関係なく電装品分の電力は消費される
-    _batteryRemain -= accessory;
+    // waitingLineに存在する車両は電力を消費しない
+    if (!(onCharging() || isWaiting()))
+    {
+        _batteryRemain -= accessory;
+    }
   }
 
     // 電池残量は既定値内となる
@@ -385,9 +389,10 @@ void VehicleEV::setInitSoC()
   // by takusagawa 2018/01/07
   // OD距離に応じて初期SoCを変化させるようにした
   rnd = Random::uniform(_rnd);
-  rnd = (rnd * 0.5) + 0.6 * (getOdDistance() / _maxOD);
-  //35000は最大値を超えないように適当に与えた
-  //TODO いずれはマップ内の全交差点間の最長距離を設定したい
+  rnd = (rnd * 0.6) + 0.3 * (getOdDistance() / _maxOD);
+  // 35000は最大値を超えないように適当に与えた
+  // TODO いずれはマップ内の全交差点間の最長距離を設定したい
+  // した
 
   if (rnd > 0.85)
   {
@@ -401,7 +406,10 @@ void VehicleEV::setInitSoC()
   {
     _initialSoC = rnd;
   }
-  
+
+  // debug by takusagawa 2018/10/8
+  // _initialSoC = 0.29;
+
   _batteryRemain = _batteryCapacity * _initialSoC;
 }
 

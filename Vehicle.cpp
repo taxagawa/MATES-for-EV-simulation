@@ -746,7 +746,7 @@ void Vehicle::_searchCSSumCost()
     // 時間優先にすると,マップが広い場合100000では足りない可能性がある.
     double min = 10000000;// 十分大きいということで
     // ここはもともとは-1になっていた.assert回避のための苦肉の策.
-    int min_index = 0;
+    int min_index = -1;
     int step;
     double GV;
 
@@ -875,6 +875,8 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     int step;
     double GV;
 
+    cout << "Start: " << start->id() << ", goal:" << _router->goal()->id() << endl;
+
     for (int i = 0; i < csNodes.size(); i++)
     {
         step = 100000;
@@ -885,7 +887,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
            + csNodes[i]->estimatedWaitingTime();
 
         // debug by takusagawa 2018/9/26
-        cout << "i: " << i << " , GV: " << GV << " , estimatedWaitingTime: " << csNodes[i]->estimatedWaitingTime() << endl;
+        cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedWaitingTime: " << csNodes[i]->estimatedWaitingTime() << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
 
         if (min >= GV)
         {
@@ -894,7 +896,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
         }
     }
     // debug by takusagawa 2018/9/26
-    cout << "min_index: " << min_index << endl;
+    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
 
     assert(min_index >= 0);
 
@@ -908,6 +910,8 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     step = 10000;
     goal = const_cast<Intersection*>(_router->goal());
     GV = _router->searchSegmentGV(start, goal, past, step, "");
+
+    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     if (min_cs >= GV)
     {
