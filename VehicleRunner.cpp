@@ -356,6 +356,14 @@ void Vehicle::_runSection2CS()
     _router
         ->setLastPassedStopPoint(_intersection->id());
 
+    int from = _intersection->direction(_prevIntersection);
+    int to   = _intersection->direction(_section);
+    assert(0<=from && from<_intersection->numNext());
+    assert(0<=to && to<_intersection->numNext());
+
+    _intersection
+        ->addPassTime(from, to, TimeManager::time()-_entryTime);
+
     // by uchida 2016/5/20
     // コピペしたけど不要な気はする
     //_watchedVehiclesの登録状況の受渡し
@@ -400,18 +408,18 @@ _length = 10.0;
     }
 
     // _intersectionに交差点通過時間を通知
-    int from = _intersection->direction(_prevIntersection);
-    int to   = _intersection->direction(_section);
-    assert(0<=from && from<_intersection->numNext());
-    assert(0<=to && to<_intersection->numNext());
+    // int from = _intersection->direction(_prevIntersection);
+    // int to   = _intersection->direction(_section);
+    // assert(0<=from && from<_intersection->numNext());
+    // assert(0<=to && to<_intersection->numNext());
 
-    _intersection
-        ->addPassTime(from, to, TimeManager::time()-_entryTime);
+    // _intersection
+    //     ->addPassTime(from, to, TimeManager::time()-_entryTime);
     // commented by uchida 2016/5/22
     // 関係ない気もするけど，ここをentryTimeにすると
     // 充電時間の分だけ過大評価になる
     // ->のでVehicleEV::run()内部に移動した
-    //_entryTime = TimeManager::time();
+    // _entryTime = TimeManager::time();
 
     // _watchedVehiclesの登録状況の受渡し
     /*
