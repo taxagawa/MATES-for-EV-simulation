@@ -395,7 +395,7 @@ void Vehicle::_runCS2Section()
 {
     assert(_section);
 
-_length = 10.0;
+    _length = 10.0;
 
     // by uchida 2017/2/27
     if (_section->intersection(true) != _intersection)
