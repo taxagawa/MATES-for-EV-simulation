@@ -356,6 +356,8 @@ void Vehicle::_runSection2CS()
     _router
         ->setLastPassedStopPoint(_intersection->id());
 
+    // by takusagawa 2018/10/29
+    // 経路選択の際に待ち時間を適切に考慮するために追加
     int from = _intersection->direction(_prevIntersection);
     int to   = _intersection->direction(_section);
     assert(0<=from && from<_intersection->numNext());
@@ -407,6 +409,8 @@ void Vehicle::_runCS2Section()
         _realPassedRoute.push_back(_section->intersection(false));
     }
 
+    // by takusagawa 2018/10/29
+    // 経路選択の際, 待ち時間を二重に考慮していたため以下コメントアウト
     // _intersectionに交差点通過時間を通知
     // int from = _intersection->direction(_prevIntersection);
     // int to   = _intersection->direction(_section);
