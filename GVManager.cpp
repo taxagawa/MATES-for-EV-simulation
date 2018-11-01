@@ -64,7 +64,7 @@ unsigned long GVManager::getMaxTime()
 }
 
 //======================================================================
-bool GVManager::setNewString(const std::string& key, 
+bool GVManager::setNewString(const std::string& key,
                              const std::string& value)
 {
     // キーを探して、重複がなければ設定
@@ -80,7 +80,7 @@ bool GVManager::setNewString(const std::string& key,
 }
 
 //======================================================================
-bool GVManager::setNewNumeric(const std::string& key, 
+bool GVManager::setNewNumeric(const std::string& key,
                               const double value)
 {
     // キーを探して、重複がなければ設定
@@ -96,7 +96,7 @@ bool GVManager::setNewNumeric(const std::string& key,
 }
 
 //======================================================================
-bool GVManager::setNewNumeric(const std::string& key, 
+bool GVManager::setNewNumeric(const std::string& key,
                               const int value)
 {
     return setNewNumeric(key, (double)value);

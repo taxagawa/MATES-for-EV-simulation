@@ -60,6 +60,15 @@ void GVInitializer::init(const string& dataPath)
     // by takusagawa 2018/10/8
     // 待ち行列の長さを出力するか
     GVManager::setNewFlag("FLAG_OUTPUT_WAITING_LINE", false);
+    // by takusagawa 2018/11/1
+    // eオプション指定時に,予測待ち時間を使うか,充電フラグが立った瞬間の待ち時間を使うかを
+    // 選択できるようにするためのフラグ. init.txtにおいてtrueに変更可.
+    GVManager::setNewFlag("FLAG_USE_FUTURE_WAITING_LINE_MODE", false);
+    // by takusagawa 2018/11/1
+    // CS経由経路選択の際に予測した待ち時間を使用するかどうか.
+    // eオプションを指定し,かつinit.txtにおいて上のFLAG_USE_FUTURE_WAITING_LINE_MODEを
+    // trueにしておかなければならない.
+    GVManager::setNewFlag("FLAG_USE_FUTURE_WAITING_LINE", false);
     //by uchida 2017/12/26
     //CSの充電出力を出力するか
     GVManager::setNewFlag("FLAG_OUTPUT_CSs", false);

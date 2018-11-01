@@ -325,6 +325,11 @@ void AppMates::parseArgument(int argc, char** argv)
                 GVManager::resetFlag("FLAG_OUTPUT_SCORE", true);
                 GVManager::resetNumeric("SCORING_METHOD", atoi((optarg)));
             }
+            if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE_MODE"))
+            {
+                cout << "############################################################################" << endl;
+                GVManager::resetFlag("FLAG_USE_FUTURE_WAITING_LINE", true);
+            }
             break;
 
         case 'c': // CSの充電量を出力をonに(sim/calcデフォルトでoff)
