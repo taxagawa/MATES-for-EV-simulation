@@ -326,7 +326,11 @@ bool Simulator::timeIncrement()
     // 一定時間ごとに一斉更新するか,EVからの問い合わせがあるごとに最新の推定待ち時間を返すかの
     // ２つの方法が考えられるが,充電車両が多くなると後者は計算時間が大きくなりそうなので
     // とりあえず前者にしておく.
-    if (TimeManager::time() % 30000 == 0)
+    // by takusagawa 2018/11/1
+    // 予測待ち時間機能実装でここを変更しようとしたが,ここは不変にすべきである.
+    // 各CSは常に自分の推定待ち時間を計算する必要があるため.
+    // 無論この仕様自体が変更になる場合はその限りではない.
+    if (TimeManager::time() % CS_WAITING_TIME_UPDATE_INTERVAL == 0)
     {
         vector<CSNode*> csNodes = _roadMap->csNodes();
         for (int i = 0; i < csNodes.size(); i++)

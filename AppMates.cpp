@@ -319,12 +319,15 @@ void AppMates::parseArgument(int argc, char** argv)
         case 'e': // EV発生及びCS設置をonに(sim/calcデフォルトでoff)
             GVManager::resetFlag("FLAG_GEN_EVs", true);
             GVManager::resetFlag("FLAG_GEN_CSs", true);
+            // by takusagawa
             GVManager::resetFlag("FLAG_OUTPUT_WAITING_LINE", true);
+            
             if (atoi((optarg)) >= 1 && atoi((optarg)) <= 9)
             {
                 GVManager::resetFlag("FLAG_OUTPUT_SCORE", true);
                 GVManager::resetNumeric("SCORING_METHOD", atoi((optarg)));
             }
+            // by takusagawa 2018/11/1
             if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE_MODE"))
             {
                 GVManager::resetFlag("FLAG_USE_FUTURE_WAITING_LINE", true);

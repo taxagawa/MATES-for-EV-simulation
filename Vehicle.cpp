@@ -759,7 +759,7 @@ void Vehicle::_searchCSSumCost()
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id());
 
         // debug by takusagawa 2018/10/25
-        cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
+        // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
 
         if (min >= GV)
         {
@@ -768,7 +768,7 @@ void Vehicle::_searchCSSumCost()
         }
     }
     // debug by takusagawa 2018/10/25
-    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+    // cout << "selected CS id: " << csNodes[min_index]->id() << endl;
 
     assert(min_index >= 0);
 
@@ -783,8 +783,8 @@ void Vehicle::_searchCSSumCost()
     goal = const_cast<Intersection*>(_router->goal());
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
-    // by takusagwa 2018/10/25
-    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    // debug by takusagwa 2018/10/25
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     if (min_cs >= GV)
     {
@@ -830,7 +830,7 @@ std::string Vehicle::_searchCSSumCost(RoadMap* roadMap,
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id());
 
         // debug by takusagawa 2018/10/25
-        cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
+        // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
 
         if (min >= GV)
         {
@@ -839,7 +839,7 @@ std::string Vehicle::_searchCSSumCost(RoadMap* roadMap,
         }
     }
     // debug by takusagawa 2018/10/25
-    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+    // cout << "selected CS id: " << csNodes[min_index]->id() << endl;
 
     assert(min_index >= 0);
 
@@ -855,7 +855,7 @@ std::string Vehicle::_searchCSSumCost(RoadMap* roadMap,
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // by takusagwa 2018/10/25
-    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     // by uchida 2016/5/30
     // ここでNULLに戻す
@@ -902,7 +902,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
            + csNodes[i]->estimatedWaitingTime();
 
         // debug by takusagawa 2018/9/26
-        cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedWaitingTime: " << csNodes[i]->estimatedWaitingTime() << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
+        // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedWaitingTime: " << csNodes[i]->estimatedWaitingTime() << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
 
         if (min >= GV)
         {
@@ -911,7 +911,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
         }
     }
     // debug by takusagawa 2018/9/26
-    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+    // cout << "selected CS id: " << csNodes[min_index]->id() << endl;
 
     assert(min_index >= 0);
 
@@ -926,7 +926,8 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     goal = const_cast<Intersection*>(_router->goal());
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
-    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    // debug by takusagawa
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     if (min_cs >= GV)
     {
@@ -975,7 +976,7 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
            + csNodes[i]->estimatedWaitingTime();
 
         // debug by takusagawa 2018/10/25
-        cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedWaitingTime: " << csNodes[i]->estimatedWaitingTime() << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
+        // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedWaitingTime: " << csNodes[i]->estimatedWaitingTime() << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
 
         if (min >= GV)
         {
@@ -986,7 +987,7 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
     assert(min_index >= 0);
 
     // debug by takusagawa 2018/10/25
-    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+    // cout << "selected CS id: " << csNodes[min_index]->id() << endl;
 
     // 暫定的に選択されたCSまでのコスト
     step = 10000;
@@ -999,8 +1000,8 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
     goal = const_cast<Intersection*>(_router->goal());
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
-    // by takusagwa 2018/10/25
-    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    // debug by takusagwa 2018/10/25
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     // by uchida 2016/5/30
     // ここでNULLに戻す

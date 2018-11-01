@@ -92,6 +92,18 @@ public:
     // 待ち行列の長さを返す
     int waitingLineSize() const;
 
+    // by takusagawa 2018/11/1
+    // 過去の待ち時間履歴
+    vector<double> waitingTimeHistory;
+
+    // by takusagawa 2018/11/1
+    // 待ち時間履歴の最大保持数
+    // 一応double型にする.
+    double waitingTimeHistoryMaxSize;
+
+    // by takusagwa 2018/11/1
+    // waitingTimeHistoryに推定待ち時間を追加
+    void addWaitingTimeHistory(double estimatedTime);
 //    //====================================================================
 //    /** @name 車両の発生と消去にかかわる関数 */
 //    /// @{

@@ -40,6 +40,8 @@ CSNode::CSNode(const string& id,
     _integratedCharge = 0.0;
     // by takusagawa 2018/9/25
     _estimatedWaitingTime = 0.0;
+    // by takusagawa 2018/11/1
+    waitingTimeHistoryMaxSize = CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000);
 
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
@@ -192,24 +194,34 @@ void CSNode::estimatedWaitingTimeCalc()
     cout << "waitingLine size: " << waitingLine.size() << endl;
     // 初期化
     _estimatedWaitingTime = 0.0;
-
-    // 待機列が空かどうかチェック
-    // 空なら待ち時間は0秒
-    if (waitingLine.empty())
-    {
-        return;
-    }
-
     int size = waitingLine.size();
 
-    // CSが1台でも空いていれば待ち時間はとりあえず0.0
-    if (size < _capacity)
+    // commented by takusagawa 2018/11/1
+    // 冗長なのでif-elseで書くべきだが,面倒くさいのこのままで.
+    // CSの箇所が多くない限り,そこまで呼び出される関数ではないため.
+
+    // 待機列が空かどうかチェック
+    // 空なら待ち時間は0.0秒
+    // あるいはCSが1台でも空いていれば待ち時間はとりあえず0.0秒
+    if (waitingLine.empty() || size < _capacity)
     {
+        // by takusagawa 2018/11/1
+        // 待ち時間履歴に追加
+        if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
+        {
+            addWaitingTimeHistory(_estimatedWaitingTime);
+        }
         return;
     }
 
-    //cout << "size:" << size << endl;
-    for (int i = 0; i < size; i++)
+    // cout << "size:" << size << endl;
+    // by takusagawa 2018/11/1
+    // 仕様変更:終了判定にsizeをそのまま用いると,余分に推定待ち時間が加算されてしまう.
+    int realSize = size - _capacity + 1;
+
+    assert(realSize > 0);
+
+    for (int i = 0; i < realSize; i++)
     {
         //cout << "i: " << i << endl;
         double batteryCapacity = waitingLine[i]->getBatteryCapacity();
@@ -217,6 +229,12 @@ void CSNode::estimatedWaitingTimeCalc()
         _estimatedWaitingTime += (1000.0 * requiredChagingPower) / (10 * _outPower * 1000.0 * (TimeManager::unit() / 1000.0));
     }
 
+    // by takusagawa 2018/11/1
+    // 待ち時間履歴に追加
+    if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
+    {
+        addWaitingTimeHistory(_estimatedWaitingTime);
+    }
     //cout << "@@@@@@@@@@@@@@@@@@@@@@  test: " << _estimatedWaitingTime << endl;
     return;
 }
@@ -226,6 +244,34 @@ void CSNode::estimatedWaitingTimeCalc()
 int CSNode::waitingLineSize() const
 {
     return waitingLine.size();
+}
+
+// by takusagawa 2018/11/1
+////======================================================================
+void CSNode::addWaitingTimeHistory(double estimatedTime)
+{
+    if (waitingTimeHistory.size() < waitingTimeHistoryMaxSize)
+    {
+        waitingTimeHistory.push_back(estimatedTime);
+    }
+    else
+    {
+        // 先頭（最も古い履歴）を削除
+        vector<double>::iterator itr = waitingTimeHistory.begin();
+        waitingTimeHistory.erase(itr);
+
+        waitingTimeHistory.push_back(estimatedTime);
+    }
+
+    // debug by takusagawa 2018/11/1
+    // int size = waitingTimeHistory.size();
+    // for (int i = 0; i < size; i++)
+    // {
+    //     cout << waitingTimeHistory[i] << ", ";
+    // }
+    // cout << endl;
+
+    return;
 }
 
 ////======================================================================

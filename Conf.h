@@ -46,10 +46,27 @@
 #endif
 //@}
 
+// by takusagawa
 /** @name 特殊なEVの発生割合 */
 //@{
 #ifndef CAN_RECEIVE_WAITING_INFO_RATE
 #define CAN_RECEIVE_WAITING_INFO_RATE   0.0
+#endif
+//@}
+
+// by takusagawa 2018/11/1
+/** @name CSが推定待ち時間を更新する間隔 */
+//@{
+#ifndef CS_WAITING_TIME_UPDATE_INTERVAL
+#define CS_WAITING_TIME_UPDATE_INTERVAL   30000
+#endif
+//@}
+
+// by takusagawa 2018/11/1
+/** @name CSが待ち時間履歴を持つ上限(秒). 可能な限り推定待ち時間の更新間隔の定数倍で. */
+//@{
+#ifndef CS_WAITING_TIME_HISTORY_LIMIT
+#define CS_WAITING_TIME_HISTORY_LIMIT   600
 #endif
 //@}
 
