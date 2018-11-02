@@ -99,11 +99,24 @@ public:
     // by takusagawa 2018/11/1
     // 待ち時間履歴の最大保持数
     // 一応double型にする.
-    double waitingTimeHistoryMaxSize;
+    // 2018/11/2 やはりint型に.
+    int waitingTimeHistoryMaxSize;
 
     // by takusagwa 2018/11/1
     // waitingTimeHistoryに推定待ち時間を追加
     void addWaitingTimeHistory(double estimatedTime);
+
+    // by takusagawa 2018/11/2
+    // 未来の予測待ち時間のリスト.
+    // 先頭の要素が最も近い未来の予測待ち時間になる.
+    // (CS_WAITING_TIME_UPDATE_INTERVAL)ミリ秒ごとに中身がすべて更新される.
+    vector<double> futureWaitingTimeList;
+
+    // by takusagawa 2018/11/2
+    // 未来の予測待ち時間のリストを作成する.
+    // 予測はとりあえず一次近似.
+    void createFutureWaitingTimeList();
+
 //    //====================================================================
 //    /** @name 車両の発生と消去にかかわる関数 */
 //    /// @{

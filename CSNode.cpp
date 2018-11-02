@@ -210,6 +210,7 @@ void CSNode::estimatedWaitingTimeCalc()
         if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
         {
             addWaitingTimeHistory(_estimatedWaitingTime);
+            createFutureWaitingTimeList();
         }
         return;
     }
@@ -234,6 +235,7 @@ void CSNode::estimatedWaitingTimeCalc()
     if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
     {
         addWaitingTimeHistory(_estimatedWaitingTime);
+        createFutureWaitingTimeList();
     }
     //cout << "@@@@@@@@@@@@@@@@@@@@@@  test: " << _estimatedWaitingTime << endl;
     return;
@@ -264,16 +266,93 @@ void CSNode::addWaitingTimeHistory(double estimatedTime)
     }
 
     // debug by takusagawa 2018/11/1
-    // int size = waitingTimeHistory.size();
-    // for (int i = 0; i < size; i++)
-    // {
-    //     cout << waitingTimeHistory[i] << ", ";
-    // }
-    // cout << endl;
+    int size = waitingTimeHistory.size();
+    for (int i = 0; i < size; i++)
+    {
+        cout << waitingTimeHistory[i] << ", ";
+    }
+    cout << endl;
 
     return;
 }
 
+// by takusagawa 2018/11/2
+////======================================================================
+void CSNode::createFutureWaitingTimeList()
+{
+    futureWaitingTimeList.clear();
+
+    int futureSize = waitingTimeHistoryMaxSize-1;
+    futureWaitingTimeList.reserve(futureSize);
+
+    int historySize = waitingTimeHistory.size();
+    assert(historySize > 0);
+
+    // 最新の待ち時間
+    double latestWaitingTime = waitingTimeHistory[historySize-1];
+
+    // まず予測するためのデータが足りない場合の処理
+    if (historySize < waitingTimeHistoryMaxSize)
+    {
+        // 一番最初に待ち台数履歴が登録されたときの処理
+        if (historySize == 1)
+        {
+            for (int i = 0; i < futureSize; i++)
+            {
+                futureWaitingTimeList.push_back(latestWaitingTime);
+            }
+            // fillで埋めようとしたらメモリリークがおきたので不採用.なぜ
+            // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), latestWaitingTime);
+        }
+        else
+        {
+            // 最も古い履歴と最新の差
+            double largeTimeDiff = latestWaitingTime - waitingTimeHistory[0];
+            for (int i = 0; i < futureSize; i++)
+            {
+                futureWaitingTimeList.push_back(largeTimeDiff);
+            }
+            // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), largeTimeDiff);
+
+            for (int i = 0; i < historySize-1; i++)
+            {
+                double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
+                futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
+
+                // 場合によっては負になってしまうので,その対応
+                if (futureWaitingTimeList[i] < 0)
+                {
+                    futureWaitingTimeList[i] = 0;
+                }
+                // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < historySize-1; i++)
+        {
+            double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
+            futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
+
+            // 場合によっては負になってしまうので,その対応
+            if (futureWaitingTimeList[i] < 0)
+            {
+                futureWaitingTimeList[i] = 0;
+            }
+            // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
+        }
+    }
+
+    // debug by takusagawa 2018/11/2
+    for (int i = 0; i < futureSize; i++)
+    {
+        cout << futureWaitingTimeList[i] << ", ";
+    }
+    cout << endl;
+
+    return;
+}
 ////======================================================================
 //bool ODNode::hasWaitingVehicles() const
 //{
