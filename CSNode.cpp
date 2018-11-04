@@ -43,8 +43,7 @@ CSNode::CSNode(const string& id,
     _estimatedWaitingTime = 0.0;
     // by takusagawa 2018/11/1
     waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
-
-    // futureWaitingTimeList.reserve(waitingTimeHistoryMaxSize-1);
+    
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
 //    _isWaitingToPushVehicle = false;
@@ -282,10 +281,10 @@ void CSNode::addWaitingTimeHistory(double estimatedTime)
 ////======================================================================
 void CSNode::createFutureWaitingTimeList()
 {
-    // futureWaitingTimeList.clear();
+    futureWaitingTimeList.clear();
 
     int futureListSize = waitingTimeHistoryMaxSize-1;
-    // futureWaitingTimeList.reserve(futureListSize);
+    futureWaitingTimeList.reserve(futureListSize);
 
     int historySize = waitingTimeHistory.size();
     assert(historySize > 0);
@@ -306,52 +305,52 @@ void CSNode::createFutureWaitingTimeList()
             // fillで埋めようとしたらメモリリークがおきたので不採用.なぜ
             // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), latestWaitingTime);
         }
-        // else
-        // {
-        //     // 最も古い履歴と最新の差
-        //     double largeTimeDiff = latestWaitingTime - waitingTimeHistory[0];
-        //     for (int i = 0; i < futureListSize; i++)
-        //     {
-        //         futureWaitingTimeList[i] = largeTimeDiff;
-        //     }
-        //     // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), largeTimeDiff);
+        else
+        {
+            // 最も古い履歴と最新の差
+            double largeTimeDiff = latestWaitingTime - waitingTimeHistory[0];
+            for (int i = 0; i < futureListSize; i++)
+            {
+                futureWaitingTimeList.push_back(largeTimeDiff);
+            }
+            // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), largeTimeDiff);
 
-        //     for (int i = 0; i < historySize-1; i++)
-        //     {
-        //         double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
-        //         futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
+            for (int i = 0; i < historySize-1; i++)
+            {
+                double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
+                futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
 
-        //         // 場合によっては負になってしまうので,その対応
-        //         if (futureWaitingTimeList[i] < 0)
-        //         {
-        //             futureWaitingTimeList[i] = 0;
-        //         }
-        //         // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
-        //     }
-        // }
+                // 場合によっては負になってしまうので,その対応
+                if (futureWaitingTimeList[i] < 0)
+                {
+                    futureWaitingTimeList[i] = 0;
+                }
+                // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
+            }
+        }
     }
-    // else
-    // {
-    //     for (int i = 0; i < historySize-1; i++)
-    //     {
-    //         double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
-    //         futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
+    else
+    {
+        for (int i = 0; i < historySize-1; i++)
+        {
+            double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
+            futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
 
-    //         // 場合によっては負になってしまうので,その対応
-    //         if (futureWaitingTimeList[i] < 0)
-    //         {
-    //             futureWaitingTimeList[i] = 0;
-    //         }
-    //         // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
-    //     }
-    // }
+            // 場合によっては負になってしまうので,その対応
+            if (futureWaitingTimeList[i] < 0)
+            {
+                futureWaitingTimeList[i] = 0;
+            }
+            // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
+        }
+    }
 
     // debug by takusagawa 2018/11/2
-    for (int i = 0; i < futureListSize; i++)
-    {
-        cout << futureWaitingTimeList[i] << ", ";
-    }
-    cout << endl;
+    // for (int i = 0; i < futureListSize; i++)
+    // {
+    //     cout << futureWaitingTimeList[i] << ", ";
+    // }
+    // cout << endl;
 
     return;
 }
@@ -360,7 +359,7 @@ void CSNode::createFutureWaitingTimeList()
 // 30秒間隔で待ち時間情報を更新するので,現状では最大29秒のズレが生じる.
 // より正確を期するのであれば,CS探索リクエストが出た瞬間の時刻からの到着予想時刻と最新の待ち時間情報登録時刻の差を考慮するべき.
 ////======================================================================
-double estimatedFutureWaitingTime(double cost)
+double CSNode::estimatedFutureWaitingTime(double cost)
 {
     int index = -1;
     int icost = round(cost);
@@ -377,9 +376,7 @@ double estimatedFutureWaitingTime(double cost)
 
     assert(index>=0);
 
-    cout << waitingTimeHistory[0] << endl;
-
-    return futureWaitingTimeList[0];
+    return futureWaitingTimeList[index];
 }
 
 ////======================================================================
