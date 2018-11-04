@@ -66,7 +66,7 @@
 /** @name CSが待ち時間履歴を持つ上限(秒). 可能な限り推定待ち時間の更新間隔の定数倍で. */
 //@{
 #ifndef CS_WAITING_TIME_HISTORY_LIMIT
-#define CS_WAITING_TIME_HISTORY_LIMIT   630
+#define CS_WAITING_TIME_HISTORY_LIMIT   600
 #endif
 //@}
 

@@ -462,6 +462,14 @@ public:
                                  const Section* section,
                                  const Intersection* intersection);
 
+    // by takusagawa 2018/11/4
+    // CS探索 経由ありの経路探索 未来の推定待ち時間考慮
+    void _searchCSFutureWaitingTimeSumCost();
+    // 出発時の_intersection・_section直接指定版
+    std::string _searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
+                                 const Section* section,
+                                 const Intersection* intersection);
+
     // by uchida 2016/5/31
     // drawerからrouter()呼べなかったので
     /// 最終目的地Dを返す

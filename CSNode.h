@@ -117,6 +117,10 @@ public:
     // 予測はとりあえず一次近似.
     void createFutureWaitingTimeList();
 
+    // by takusagawa 2018/11/4
+    // CSまでの推定旅行時間から,予想到着時刻における待ち時間を返す
+    double estimatedFutureWaitingTime(double cost);
+
 //    //====================================================================
 //    /** @name 車両の発生と消去にかかわる関数 */
 //    /// @{

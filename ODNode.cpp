@@ -208,8 +208,16 @@ void ODNode::pushVehicleToReal(RoadMap* roadMap)
                     }
                     else
                     {
-                        tmpVehicle->CSreroute(section, this,
-                            tmpVehicle->_searchCSWaitingTimeSumCost(roadMap, section, this));
+                        if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
+                        {
+                            tmpVehicle->CSreroute(section, this,
+                                tmpVehicle->_searchCSFutureWaitingTimeSumCost(roadMap, section, this));
+                        }
+                        else
+                        {
+                            tmpVehicle->CSreroute(section, this,
+                                tmpVehicle->_searchCSWaitingTimeSumCost(roadMap, section, this));
+                        }
                     }
 
                 }

@@ -890,7 +890,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     int step;
     double GV;
 
-    cout << "Start: " << start->id() << ", goal:" << _router->goal()->id() << endl;
+    // cout << "Start: " << start->id() << ", goal:" << _router->goal()->id() << endl;
 
     for (int i = 0; i < csNodes.size(); i++)
     {
@@ -1001,6 +1001,158 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagwa 2018/10/25
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+
+    // by uchida 2016/5/30
+    // ここでNULLに戻す
+    _intersection = NULL;
+
+    if (min_cs >= GV)
+    {
+        _stopCS = goal->id();
+    }
+    else
+    {
+        _stopCS = csNodes[min_index]->id();
+    }
+
+    return _stopCS;
+}
+
+// by takusagawa 2018/11/4
+//======================================================================
+void Vehicle::_searchCSFutureWaitingTimeSumCost()
+{
+    Intersection* start;
+    start = _intersection->next(_intersection->direction(_section));
+    Intersection* past = const_cast<Intersection*>(_intersection);
+
+    Intersection* goal;
+    vector<CSNode*> csNodes = _roadMap->csNodes();
+    // 時間優先にすると,マップが広い場合100000では足りない可能性がある.
+    // 待ち時間も考慮すると1000000でも足りないかもしれない.
+    double min = 10000000;// 十分大きいということで
+    int min_index = 0;
+    int step;
+    double GV;
+
+    // cout << "Start: " << start->id() << ", goal:" << _router->goal()->id() << endl;
+
+    for (int i = 0; i < csNodes.size(); i++)
+    {
+        step = 100000;
+        goal = dynamic_cast<Intersection*>(csNodes[i]);
+
+        // 現在地点から候補CSまでのコスト
+        double tmpCost = _router->searchSegmentGV(start, goal, past, step, goal->id());
+
+        GV = tmpCost
+           + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
+           + csNodes[i]->estimatedFutureWaitingTime(tmpCost);
+
+        // debug by takusagawa 2018/11/4
+        cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
+
+        if (min >= GV)
+        {
+            min = GV;
+            min_index = i;
+        }
+    }
+    // debug by takusagawa 2018/11/4
+    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+
+    assert(min_index >= 0);
+
+    // 暫定的に選択されたCSまでのコスト
+    step = 10000;
+    goal = dynamic_cast<Intersection*>(csNodes[min_index]);
+    double min_cs;
+    min_cs = _router->searchSegmentGV(start, goal, past, step, goal->id());
+
+    // Dまで経由無しの場合のコスト
+    step = 10000;
+    goal = const_cast<Intersection*>(_router->goal());
+    GV = _router->searchSegmentGV(start, goal, past, step, "");
+
+    // debug by takusagawa
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+
+    if (min_cs >= GV)
+    {
+        _stopCS = goal->id();
+    }
+    else
+    {
+        _stopCS = csNodes[min_index]->id();
+    }
+}
+
+// by takusagawa 2018/11/4
+//======================================================================
+std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
+                                      const Section* section,
+                                      const Intersection* intersection)
+{
+    _roadMap = roadMap;
+    _section = const_cast<Section*>(section);
+    // by uchida 2016/5/30
+    // でも_intersectionはNULLでなくてはならないので
+    // 最後に初期化する
+    // この関数はODノードでしか呼ばれないしいいか
+    _intersection = const_cast<Intersection*>(intersection);
+
+    Intersection* start;
+    start = _intersection->next(_intersection->direction(_section));
+    Intersection* past = const_cast<Intersection*>(_intersection);
+
+    Intersection* goal;
+    vector<CSNode*> csNodes = _roadMap->csNodes();
+    // 時間優先にすると,マップが広い場合100000では足りない可能性がある.
+    // 待ち時間も考慮すると1000000でも足りないかもしれない.
+    double min = 10000000;// 十分大きいということで
+    int min_index = -1;
+    int step;
+    double GV;
+
+    for (int i = 0; i < csNodes.size(); i++)
+    {
+        step = 10000;
+        goal = dynamic_cast<Intersection*>(csNodes[i]);
+
+        // 現在地点から候補CSまでのコスト
+        double tmpCost = _router->searchSegmentGV(start, goal, past, step, goal->id());
+
+        GV = tmpCost
+           + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
+           + csNodes[i]->estimatedFutureWaitingTime(tmpCost);
+
+        // debug by takusagawa 2018/11/4
+        cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
+
+        if (min >= GV)
+        {
+            min = GV;
+            min_index = i;
+        }
+    }
+    assert(min_index >= 0);
+
+    // debug by takusagawa 2018/11/4
+    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+
+    // 暫定的に選択されたCSまでのコスト
+    step = 10000;
+    goal = dynamic_cast<Intersection*>(csNodes[min_index]);
+    double min_cs;
+    min_cs = _router->searchSegmentGV(start, goal, past, step, goal->id());
+
+    // Dまで経由無しの場合のコスト
+    step = 10000;
+    goal = const_cast<Intersection*>(_router->goal());
+    GV = _router->searchSegmentGV(start, goal, past, step, "");
+
+    // debug by takusagwa 2018/11/4
     // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     // by uchida 2016/5/30

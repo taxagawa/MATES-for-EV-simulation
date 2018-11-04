@@ -19,6 +19,7 @@
 #include "VehicleLaneShifter.h"
 #include "GVManager.h"
 #include "Random.h"
+//#include "TimeManager.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -26,6 +27,7 @@
 #include <list>
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 
 using namespace std;
 
@@ -41,7 +43,7 @@ CSNode::CSNode(const string& id,
     // by takusagawa 2018/9/25
     _estimatedWaitingTime = 0.0;
     // by takusagawa 2018/11/1
-    waitingTimeHistoryMaxSize = CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000);
+    waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
 
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
@@ -282,8 +284,8 @@ void CSNode::createFutureWaitingTimeList()
 {
     futureWaitingTimeList.clear();
 
-    int futureSize = waitingTimeHistoryMaxSize-1;
-    futureWaitingTimeList.reserve(futureSize);
+    int futureListSize = waitingTimeHistoryMaxSize-1;
+    futureWaitingTimeList.reserve(futureListSize);
 
     int historySize = waitingTimeHistory.size();
     assert(historySize > 0);
@@ -308,7 +310,7 @@ void CSNode::createFutureWaitingTimeList()
         {
             // 最も古い履歴と最新の差
             double largeTimeDiff = latestWaitingTime - waitingTimeHistory[0];
-            for (int i = 0; i < futureSize; i++)
+            for (int i = 0; i < futureListSize; i++)
             {
                 futureWaitingTimeList.push_back(largeTimeDiff);
             }
@@ -345,7 +347,7 @@ void CSNode::createFutureWaitingTimeList()
     }
 
     // debug by takusagawa 2018/11/2
-    for (int i = 0; i < futureSize; i++)
+    for (int i = 0; i < futureListSize; i++)
     {
         cout << futureWaitingTimeList[i] << ", ";
     }
@@ -353,6 +355,31 @@ void CSNode::createFutureWaitingTimeList()
 
     return;
 }
+
+// by takusagawa 2018/11/4
+// 30秒間隔で待ち時間情報を更新するので,現状では最大29秒のズレが生じる.
+// より正確を期するのであれば,CS探索リクエストが出た瞬間の時刻からの到着予想時刻と最新の待ち時間情報登録時刻の差を考慮するべき.
+////======================================================================
+double estimatedFutureWaitingTime(double cost)
+{
+    int index = -1;
+    int icost = round(cost);
+
+    index = icost / CS_WAITING_TIME_UPDATE_INTERVAL;
+
+    if (index > 19)
+    {
+        index = 19;
+    }
+
+    // debug
+    cout << "Use " << ((index + 1) * CS_WAITING_TIME_UPDATE_INTERVAL) / 1000 << "seconds ago" << endl;
+
+    assert(index>=0);
+
+    return futureWaitingTimeList[index];
+}
+
 ////======================================================================
 //bool ODNode::hasWaitingVehicles() const
 //{

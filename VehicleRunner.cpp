@@ -263,13 +263,21 @@ void Vehicle::_runIntersection2Section()
             // 3
             // by takusagawa 2018/9/25
             // 待ち時間情報の受け取りができる場合はその情報を考慮したCS選択を行う
+            // フラグが立っていた場合、待ち時間予測による情報を使用する
             if (!_isReceiveWaitingInfo)
             {
                 _searchCSSumCost();
             }
             else
             {
-                _searchCSWaitingTimeSumCost();
+                if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
+                {
+                    _searchCSFutureWaitingTimeSumCost();
+                }
+                else
+                {
+                    _searchCSWaitingTimeSumCost();
+                }
             }
             CSreroute(_section, _intersection, _stopCS);
 
@@ -306,13 +314,21 @@ void Vehicle::_runIntersection2Section()
                 // 3
                 // by takusagawa 2018/9/25
                 // 待ち時間情報の受け取りができる場合はその情報を考慮したCS選択を行う
+                // フラグが立っていた場合、待ち時間予測による情報を使用する
                 if (!_isReceiveWaitingInfo)
                 {
                     _searchCSSumCost();
                 }
                 else
                 {
-                    _searchCSWaitingTimeSumCost();
+                    if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
+                    {
+                        _searchCSFutureWaitingTimeSumCost();
+                    }
+                    else
+                    {
+                        _searchCSWaitingTimeSumCost();
+                    }
                 }
                 CSreroute(_section, _intersection, _stopCS);
 
