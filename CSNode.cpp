@@ -307,45 +307,45 @@ void CSNode::createFutureWaitingTimeList()
             // fillで埋めようとしたらメモリリークがおきたので不採用.なぜ
             // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), latestWaitingTime);
         }
-        else
-        {
-            // 最も古い履歴と最新の差
-            double largeTimeDiff = latestWaitingTime - waitingTimeHistory[0];
-            for (int i = 0; i < futureListSize; i++)
-            {
-                futureWaitingTimeList[i] = largeTimeDiff;
-            }
-            // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), largeTimeDiff);
+        // else
+        // {
+        //     // 最も古い履歴と最新の差
+        //     double largeTimeDiff = latestWaitingTime - waitingTimeHistory[0];
+        //     for (int i = 0; i < futureListSize; i++)
+        //     {
+        //         futureWaitingTimeList[i] = largeTimeDiff;
+        //     }
+        //     // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), largeTimeDiff);
 
-            for (int i = 0; i < historySize-1; i++)
-            {
-                double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
-                futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
+        //     for (int i = 0; i < historySize-1; i++)
+        //     {
+        //         double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
+        //         futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
 
-                // 場合によっては負になってしまうので,その対応
-                if (futureWaitingTimeList[i] < 0)
-                {
-                    futureWaitingTimeList[i] = 0;
-                }
-                // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
-            }
-        }
+        //         // 場合によっては負になってしまうので,その対応
+        //         if (futureWaitingTimeList[i] < 0)
+        //         {
+        //             futureWaitingTimeList[i] = 0;
+        //         }
+        //         // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
+        //     }
+        // }
     }
-    else
-    {
-        for (int i = 0; i < historySize-1; i++)
-        {
-            double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
-            futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
+    // else
+    // {
+    //     for (int i = 0; i < historySize-1; i++)
+    //     {
+    //         double timeDiff = latestWaitingTime - waitingTimeHistory[historySize-(i+2)];
+    //         futureWaitingTimeList[i] = latestWaitingTime + timeDiff;
 
-            // 場合によっては負になってしまうので,その対応
-            if (futureWaitingTimeList[i] < 0)
-            {
-                futureWaitingTimeList[i] = 0;
-            }
-            // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
-        }
-    }
+    //         // 場合によっては負になってしまうので,その対応
+    //         if (futureWaitingTimeList[i] < 0)
+    //         {
+    //             futureWaitingTimeList[i] = 0;
+    //         }
+    //         // cout << timeDiff << ":" << futureWaitingTimeList[i] << endl;
+    //     }
+    // }
 
     // debug by takusagawa 2018/11/2
     for (int i = 0; i < futureListSize; i++)
