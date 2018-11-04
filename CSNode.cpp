@@ -299,7 +299,7 @@ void CSNode::createFutureWaitingTimeList()
         // 一番最初に待ち台数履歴が登録されたときの処理
         if (historySize == 1)
         {
-            for (int i = 0; i < futureSize; i++)
+            for (int i = 0; i < futureListSize; i++)
             {
                 futureWaitingTimeList.push_back(latestWaitingTime);
             }
