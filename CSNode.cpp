@@ -19,7 +19,6 @@
 #include "VehicleLaneShifter.h"
 #include "GVManager.h"
 #include "Random.h"
-//#include "TimeManager.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -45,7 +44,7 @@ CSNode::CSNode(const string& id,
     // by takusagawa 2018/11/1
     waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
 
-    futureWaitingTimeList.reserve(waitingTimeHistoryMaxSize-1);
+    // futureWaitingTimeList.reserve(waitingTimeHistoryMaxSize-1);
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
 //    _isWaitingToPushVehicle = false;
@@ -378,7 +377,9 @@ double estimatedFutureWaitingTime(double cost)
 
     assert(index>=0);
 
-    return futureWaitingTimeList[index];
+    cout << waitingTimeHistory[0] << endl;
+
+    return futureWaitingTimeList[0];
 }
 
 ////======================================================================
