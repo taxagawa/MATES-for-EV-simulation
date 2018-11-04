@@ -45,6 +45,7 @@ CSNode::CSNode(const string& id,
     // by takusagawa 2018/11/1
     waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
 
+    futureWaitingTimeList.reserve(waitingTimeHistoryMaxSize-1);
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
 //    _isWaitingToPushVehicle = false;
@@ -282,10 +283,10 @@ void CSNode::addWaitingTimeHistory(double estimatedTime)
 ////======================================================================
 void CSNode::createFutureWaitingTimeList()
 {
-    futureWaitingTimeList.clear();
+    // futureWaitingTimeList.clear();
 
     int futureListSize = waitingTimeHistoryMaxSize-1;
-    futureWaitingTimeList.reserve(futureListSize);
+    // futureWaitingTimeList.reserve(futureListSize);
 
     int historySize = waitingTimeHistory.size();
     assert(historySize > 0);
@@ -312,7 +313,7 @@ void CSNode::createFutureWaitingTimeList()
             double largeTimeDiff = latestWaitingTime - waitingTimeHistory[0];
             for (int i = 0; i < futureListSize; i++)
             {
-                futureWaitingTimeList.push_back(largeTimeDiff);
+                futureWaitingTimeList[i] = largeTimeDiff;
             }
             // fill(futureWaitingTimeList.begin(), futureWaitingTimeList.end(), largeTimeDiff);
 
