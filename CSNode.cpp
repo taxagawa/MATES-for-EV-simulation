@@ -43,7 +43,7 @@ CSNode::CSNode(const string& id,
     _estimatedWaitingTime = 0.0;
     // by takusagawa 2018/11/1
     waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
-    
+
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
 //    _isWaitingToPushVehicle = false;
@@ -267,12 +267,12 @@ void CSNode::addWaitingTimeHistory(double estimatedTime)
     }
 
     // debug by takusagawa 2018/11/1
-    int size = waitingTimeHistory.size();
-    for (int i = 0; i < size; i++)
-    {
-        cout << waitingTimeHistory[i] << ", ";
-    }
-    cout << endl;
+    // int size = waitingTimeHistory.size();
+    // for (int i = 0; i < size; i++)
+    // {
+    //     cout << waitingTimeHistory[i] << ", ";
+    // }
+    // cout << endl;
 
     return;
 }
