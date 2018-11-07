@@ -467,7 +467,7 @@ bool Simulator::timeIncrement()
 
     // by takusagawa 2018/10/8
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //  CSNodeの待ち行列の出力
+    //  CSNodeの待ち行列と捌き台数の出力
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     if (GVManager::getFlag("FLAG_OUTPUT_WAITING_LINE"))
@@ -503,6 +503,30 @@ bool Simulator::timeIncrement()
                         outLogFile << csNodes[i]->waitingLineSize() << ",";
                     }
                     outLogFile << endl;
+                }
+
+                string gLog = outputDir + "Line/servedEV000.csv";
+                ofstream outgLogFile(gLog.c_str(), ios::app);
+
+                if (!outgLogFile.fail())
+                {
+                    if (TimeManager::time() == interval)
+                    {
+                        outgLogFile << " ,";
+                        for (int i = 0; i < csNodes.size(); i++)
+                        {
+                            outgLogFile << csNodes[i]->id() << ",";
+                        }
+                        outgLogFile << endl;
+                    }
+
+
+                    outgLogFile << TimeManager::time() << ",";
+                    for (int i = 0; i < csNodes.size(); i++)
+                    {
+                        outgLogFile << csNodes[i]->servedEV() << ",";
+                    }
+                    outgLogFile << endl;
                 }
             }
         }

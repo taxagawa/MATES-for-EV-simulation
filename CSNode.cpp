@@ -44,6 +44,9 @@ CSNode::CSNode(const string& id,
     // by takusagawa 2018/11/1
     waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
 
+    // by takusagwa 2018/11/6
+    _servedEV = 0;
+
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
 //    _isWaitingToPushVehicle = false;
@@ -143,6 +146,7 @@ void CSNode::removeEV()
 //        << (*itr)->id() << " : restart from " << _id << endl;
 
     waitingLine.erase(itr);
+    _servedEV++;
 
     // 削除直後にも充電すべきEVの指定
     if (waitingLine.size() != 0)
@@ -372,11 +376,18 @@ double CSNode::estimatedFutureWaitingTime(double cost)
     }
 
     // debug
-    cout << "Use " << ((index + 1) * CS_WAITING_TIME_UPDATE_INTERVAL) / 1000 << "seconds ago" << endl;
+    // cout << "Use " << ((index + 1) * CS_WAITING_TIME_UPDATE_INTERVAL) / 1000 << "seconds ago" << endl;
 
     assert(index>=0);
 
     return futureWaitingTimeList[index];
+}
+
+// by takusagwa 2018/11/6
+////======================================================================
+int CSNode::servedEV() const
+{
+    return _servedEV;
 }
 
 ////======================================================================
