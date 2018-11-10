@@ -401,6 +401,10 @@ void Vehicle::_runSection2CS()
     _lane = _section->lanesFrom(_intersection)[0];
     _stopCS = "";
 
+    // by takusagawa 2018/11/9
+    // CSのwaitingLienに入庫した時刻の登録
+    setWaitingLineEntryTime(TimeManager::time());
+    
     dynamic_cast<CSNode*>(_intersection)->addEV(this);
 
 //    _runCS2Section();
@@ -475,7 +479,7 @@ void Vehicle::_runCS2Section()
 
     // by uchida 2017/2/8
     // CS入庫時刻の登録
-    setStartChargingTime(TimeManager::time());
+    // setStartChargingTime(TimeManager::time());
 
 }
 

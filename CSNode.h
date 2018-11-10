@@ -123,11 +123,11 @@ public:
 
     // by takusagwa 2018/11/6
     // 捌け台数
-    int _servedEV;
+    // int _servedEV;
 
     // by takusagwa 2018/11/6
     // 捌け台数を返す
-    int servedEV() const;
+    // int servedEV() const;
 
 //    //====================================================================
 //    /** @name 車両の発生と消去にかかわる関数 */

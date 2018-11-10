@@ -45,7 +45,7 @@ CSNode::CSNode(const string& id,
     waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
 
     // by takusagwa 2018/11/6
-    _servedEV = 0;
+    // _servedEV = 0;
 
 //    _lastGenTime = 0;
 //    _nodeGvd.clear();
@@ -129,6 +129,8 @@ void CSNode::addEV(Vehicle* vehicle)
         }
         else
         {
+            // debug by takusagawa 2018/11/10
+            // cout << "CSid: " << id() << " ID: " << (*itr)->id() << endl;
             (*itr)->setonCharging(true);
             itr++;
         }
@@ -140,13 +142,35 @@ void CSNode::removeEV()
 {
     vector<Vehicle*>::iterator itr = waitingLine.begin();
     (*itr)->setWaiting(false);
+    // debug by takusagawa 2018/11/10
+    // cout << "erase vehicle ID: " << (*itr)->id() << " SOC: " << (*itr)->SOC() << endl;
 
     // debug by uchida 2017/6/23
-//    cout << "~ " << TimeManager::time() / 1000 << " [s] "
-//        << (*itr)->id() << " : restart from " << _id << endl;
+    // cout << "~ " << TimeManager::time() / 1000 << " [s] "
+    //     << (*itr)->id() << " : restart from " << _id << endl;
 
-    waitingLine.erase(itr);
-    _servedEV++;
+    // by takusagawa 2018/11/10
+    // waitingLine内において,removeEV()を呼び出した車両より前にまだ充電が終わっていない
+    // 車両が存在する場合の処理を追加
+    for (int i = 0; i < _capacity; i++)
+    {
+        if ((*itr)-> SOC() < 0.8)
+        {
+            itr++;
+            continue;
+        }
+        else if (itr == waitingLine.end())
+        {
+            break;
+        }
+        else
+        {
+            waitingLine.erase(itr);
+            break;
+        }
+    }
+
+    // _servedEV++;
 
     // 削除直後にも充電すべきEVの指定
     if (waitingLine.size() != 0)
@@ -160,6 +184,8 @@ void CSNode::removeEV()
             }
             else
             {
+                // debug by takusagawa 2018/11/10
+                // cout << "CSid: " << id() << " *ID: " << (*itr)->id() << endl;
                 (*itr)->setonCharging(true);
                 itr++;
             }
@@ -242,7 +268,7 @@ void CSNode::estimatedWaitingTimeCalc()
         addWaitingTimeHistory(_estimatedWaitingTime);
         createFutureWaitingTimeList();
     }
-    //cout << "@@@@@@@@@@@@@@@@@@@@@@  test: " << _estimatedWaitingTime << endl;
+
     return;
 }
 
@@ -361,7 +387,8 @@ void CSNode::createFutureWaitingTimeList()
 
 // by takusagawa 2018/11/4
 // 30秒間隔で待ち時間情報を更新するので,現状では最大29秒のズレが生じる.
-// より正確を期するのであれば,CS探索リクエストが出た瞬間の時刻からの到着予想時刻と最新の待ち時間情報登録時刻の差を考慮するべき.
+// より正確を期するのであれば,CS探索リクエストが出た瞬間の時刻からの到着予想時刻と
+// 最新の待ち時間情報登録時刻の差を考慮するべき.
 ////======================================================================
 double CSNode::estimatedFutureWaitingTime(double cost)
 {
@@ -385,10 +412,10 @@ double CSNode::estimatedFutureWaitingTime(double cost)
 
 // by takusagwa 2018/11/6
 ////======================================================================
-int CSNode::servedEV() const
-{
-    return _servedEV;
-}
+// int CSNode::servedEV() const
+// {
+//     return _servedEV;
+// }
 
 ////======================================================================
 //bool ODNode::hasWaitingVehicles() const

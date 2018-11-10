@@ -481,6 +481,7 @@ bool Simulator::timeIncrement()
 
             if (!outputDir.empty())
             {
+                // 待ち行列長出力
                 string fLog = outputDir + "Line/waitingLine000.csv";
                 ofstream outLogFile(fLog.c_str(), ios::app);
 
@@ -505,29 +506,30 @@ bool Simulator::timeIncrement()
                     outLogFile << endl;
                 }
 
-                string gLog = outputDir + "Line/servedEV000.csv";
-                ofstream outgLogFile(gLog.c_str(), ios::app);
-
-                if (!outgLogFile.fail())
-                {
-                    if (TimeManager::time() == interval)
-                    {
-                        outgLogFile << " ,";
-                        for (int i = 0; i < csNodes.size(); i++)
-                        {
-                            outgLogFile << csNodes[i]->id() << ",";
-                        }
-                        outgLogFile << endl;
-                    }
-
-
-                    outgLogFile << TimeManager::time() << ",";
-                    for (int i = 0; i < csNodes.size(); i++)
-                    {
-                        outgLogFile << csNodes[i]->servedEV() << ",";
-                    }
-                    outgLogFile << endl;
-                }
+                // 捌いた台数の出力
+                // string gLog = outputDir + "Line/servedEV000.csv";
+                // ofstream outgLogFile(gLog.c_str(), ios::app);
+                //
+                // if (!outgLogFile.fail())
+                // {
+                //     if (TimeManager::time() == interval)
+                //     {
+                //         outgLogFile << " ,";
+                //         for (int i = 0; i < csNodes.size(); i++)
+                //         {
+                //             outgLogFile << csNodes[i]->id() << ",";
+                //         }
+                //         outgLogFile << endl;
+                //     }
+                //
+                //
+                //     outgLogFile << TimeManager::time() << ",";
+                //     for (int i = 0; i < csNodes.size(); i++)
+                //     {
+                //         outgLogFile << csNodes[i]->servedEV() << ",";
+                //     }
+                //     outgLogFile << endl;
+                // }
             }
         }
     }

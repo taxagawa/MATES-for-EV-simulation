@@ -415,6 +415,11 @@ public:
     void setRestartTime(ulint restartTime);
     /// CSからの再出発時刻を取得する
     ulint restartTime() const;
+    // by takusagawa 2018/11/9
+    // CSのwaitingLineに入庫した時刻を登録する
+    void setWaitingLineEntryTime(ulint waitingLineEntryTime);
+    // CSのwaitingLineに入庫した時刻を取得する
+    ulint waitingLineEntryTime() const;
 
     /// 出発ステップを返す
     ulint startStep() const;
@@ -644,6 +649,9 @@ protected:
     ulint _startChargingTime;
 
     ulint _restartTime;
+
+    // by takusagawa 2018/11/9
+    ulint _waitingLineEntryTime;
 
     /// 発生時刻
     ulint _genTime;

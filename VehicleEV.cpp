@@ -343,7 +343,6 @@ void VehicleEV::charge()
             // by uchida 2017/2/8
             // CS出庫時刻の登録
             setRestartTime(TimeManager::time());
-
         }
         else
         {

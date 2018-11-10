@@ -381,15 +381,30 @@ bool VehicleIO::writeVehicleDistanceData(Vehicle* vehicle)
                  << TimeManager::time() << ","
                  // by uchida 2017/2/8
                  // CSでの充電時間を記録
+                 // まずCSの待ち行列に追加された時刻
+                 << vehicle->waitingLineEntryTime() << ","
+                 // 充電開始時刻(上下の２つは同じ値になることもある)
                  << vehicle->startChargingTime() << ","
+                 // CSの出庫時刻
                  << vehicle->restartTime() << ","
                  // それにあわせて全旅行時間から割り引く
                  << (TimeManager::time() - vehicle->startTime())
-                    - (vehicle->restartTime() - vehicle->startChargingTime())<< ","
+                    - (vehicle->restartTime() - vehicle->waitingLineEntryTime())<< ","
                  << vehicle->route()->start()->id() << ","
                  << vehicle->route()->goal()->id() << ","
-                 << vehicle->tripLength()
-                 << endl;
+                 << vehicle->tripLength() << ",";
+
+        // by takusagawa 2018/11/10
+        // 待ち時間情報を受け取れるかどうか.
+        // 受け取れる場合は1,受け取れない場合は0
+        if (vehicle->receiveWaitingInfo())
+        {
+            _tripOut << "1" << endl;
+        }
+        else
+        {
+            _tripOut << "0" << endl;
+        }
 
         _tripOut.close();
         result = true;
@@ -416,26 +431,42 @@ bool VehicleIO::writeAllVehiclesDistanceData()
                      << "******" << ","
                      // by uchida 2017/2/8
                      // CSでの充電時間を記録
+                     << (*vehicles)[i]->waitingLineEntryTime() << ","
                      << (*vehicles)[i]->startChargingTime() << ","
                      << (*vehicles)[i]->restartTime() << ",";
 
-            if ((*vehicles)[i]->onCharging())
+            // by takusagawa 2018/11/10
+            // 条件式の後半部分を追加
+            // これはシミュレーション終了時に待ち行列中にいるが,充電中ではない車両の条件
+            // この車両もrestartTimeが0なので,else以下の式にはならない.
+            if ((*vehicles)[i]->onCharging() || (*vehicles)[i]->isWaiting())
             {
                 // 充電中であれば
                 _tripOut <<
-                ((*vehicles)[i]->startChargingTime() - (*vehicles)[i]->startTime()) << ",";
+                ((*vehicles)[i]->waitingLineEntryTime() - (*vehicles)[i]->startTime()) << ",";
             }
             else
             {
                 // 充電中でなければ
                 _tripOut <<
-                (TimeManager::time() - (*vehicles)[i]->startTime()) - ((*vehicles)[i]->restartTime() - (*vehicles)[i]->startChargingTime()) << ",";
+                (TimeManager::time() - (*vehicles)[i]->startTime()) - ((*vehicles)[i]->restartTime() - (*vehicles)[i]->waitingLineEntryTime()) << ",";
             }
 
             _tripOut << (*vehicles)[i]->route()->start()->id() << ","
                      << (*vehicles)[i]->route()->goal()->id() << ","
-                     << (*vehicles)[i]->tripLength()
-                     << endl;
+                     << (*vehicles)[i]->tripLength() << ",";
+
+            // by takusagawa 2018/11/10
+            // 待ち時間情報を受け取れるかどうか.
+            // 受け取れる場合は1,受け取れない場合は0
+            if ((*vehicles)[i]->receiveWaitingInfo())
+            {
+                _tripOut << "1" << endl;
+            }
+            else
+            {
+                _tripOut << "0" << endl;
+            }
         }
 
         _tripOut.close();

@@ -168,7 +168,7 @@ void GVInitializer::init(const string& dataPath)
 
     // 交差点属性指定ファイル
     GVManager::setNewString("INTERSECTION_ATTRIBUTE_DIRECTORY",
-                            dataPath+"intersection/");
+                            dataPath + "intersection/");
 
     // 道路形状に関するファイル
     GVManager::setNewString("INTERSECTION_STRUCT_FILE",
@@ -205,7 +205,7 @@ void GVInitializer::init(const string& dataPath)
     GVManager::setNewString("RESULT_VEHICLE_ATTRIBUTE_FILE",
                             resultPath + "vehicleAttribute.txt");
     GVManager::setNewString("RESULT_VEHICLE_TRIP_FILE",
-                            resultPath + "vehicleTrip.txt");
+                            resultPath + "Trip/vehicleTrip0000.txt");
     GVManager::setNewString("RESULT_VEHICLE_COUNT_FILE",
                             resultPath + "vehicleCount.txt");
 

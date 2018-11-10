@@ -63,6 +63,7 @@ Vehicle::Vehicle():_id()
     _startTime     = 0;
     _startChargingTime = 0;
     _restartTime   = 0;
+    _waitingLineEntryTime = 0;
     _genTime       = TimeManager::time();
 
     _rnd = Random::randomGenerator();
@@ -532,6 +533,20 @@ void Vehicle::setRestartTime(ulint restartTime)
 ulint Vehicle::restartTime() const
 {
     return _restartTime;
+}
+
+// by takusagawa 2018/11/9
+//======================================================================
+void Vehicle::setWaitingLineEntryTime(ulint waitingLineEntryTime)
+{
+    _waitingLineEntryTime = waitingLineEntryTime;
+}
+
+// by takusagawa 2018/11/9
+//======================================================================
+ulint Vehicle::waitingLineEntryTime() const
+{
+    return _waitingLineEntryTime;
 }
 
 //======================================================================
@@ -1441,11 +1456,20 @@ void Vehicle::setonCharging(bool flag)
 {
     if (_onCharging != flag)
     {
+        // by takusagawa 2018/11/9
+        // chargeフラグがonになったとき,つまり充電開始時刻を登録
+        // （_runCS2Sectionに書かれていたが,こちらでは？）
+        if (flag == true)
+        {
+            // debug by takusagawa 2018/11/10
+            // cout << "id: " << id() << " SOC: " << SOC() << endl;
+            setStartChargingTime(TimeManager::time());
+        }
         _onCharging = flag;
         _swapTime = 1;
         // debug by uchida 2017/6/23
-//        cout << "~ " << TimeManager::time() / 1000 << " [s] "
-//             << _id << " : start charging at " << _intersection->id() << endl;
+        // cout << "~ " << TimeManager::time() / 1000 << " [s] "
+        //      << _id << " : start charging at " << _intersection->id() << endl;
     }
 }
 
