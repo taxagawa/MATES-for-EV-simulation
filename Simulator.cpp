@@ -506,6 +506,42 @@ bool Simulator::timeIncrement()
                     outLogFile << endl;
                 }
 
+                // 予測値の出力
+                if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
+                {
+                    string pLog = outputDir + "Line/predictionValue000.csv";
+                    ofstream outpLogFile(pLog.c_str(), ios::app);
+
+                    if (!outpLogFile.fail())
+                    {
+                        if (TimeManager::time() == interval)
+                        {
+                            outpLogFile << " ,";
+                            for (int i = 0; i < csNodes.size(); i++)
+                            {
+                                outpLogFile << csNodes[i]->id() << ",";
+                            }
+                            for (int i = 0; i < csNodes.size(); i++)
+                            {
+                                outpLogFile << csNodes[i]->id() << ",";
+                            }
+                            outpLogFile << endl;
+                        }
+
+
+                        outpLogFile << TimeManager::time() << ",";
+                        for (int i = 0; i < csNodes.size(); i++)
+                        {
+                            outpLogFile << csNodes[i]->estimatedWaitingTime() << ",";
+                        }
+                        for (int i = 0; i < csNodes.size(); i++)
+                        {
+                            outpLogFile << csNodes[i]->returnPredictionWaitingTime() << ",";
+                        }
+                        outpLogFile << endl;
+                    }
+                }
+
                 // 捌いた台数の出力
                 // string gLog = outputDir + "Line/servedEV000.csv";
                 // ofstream outgLogFile(gLog.c_str(), ios::app);

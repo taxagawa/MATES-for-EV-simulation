@@ -410,6 +410,14 @@ double CSNode::estimatedFutureWaitingTime(double cost)
     return futureWaitingTimeList[index];
 }
 
+// by takusagwa 2018/11/12
+////======================================================================
+double CSNode::returnPredictionWaitingTime() const
+{
+    // 要修正
+    return futureWaitingTimeList[19];
+}
+
 // by takusagwa 2018/11/6
 ////======================================================================
 // int CSNode::servedEV() const

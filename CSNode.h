@@ -121,6 +121,10 @@ public:
     // CSまでの推定旅行時間から,予想到着時刻における待ち時間を返す
     double estimatedFutureWaitingTime(double cost);
 
+    // by takusagwa 2018/11/12
+    // 呼びだされた時刻の10分後の予測値を返す
+    double returnPredictionWaitingTime() const;
+
     // by takusagwa 2018/11/6
     // 捌け台数
     // int _servedEV;
