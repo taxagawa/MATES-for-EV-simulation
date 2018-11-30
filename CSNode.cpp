@@ -396,10 +396,11 @@ double CSNode::estimatedFutureWaitingTime(double cost)
     int icost = round(cost);
 
     index = icost / CS_WAITING_TIME_UPDATE_INTERVAL;
-
-    if (index > 19)
+    // 要修正
+    // 修正完了
+    if (index > waitingTimeHistoryMaxSize-2)
     {
-        index = 19;
+        index = waitingTimeHistoryMaxSize-2;
     }
 
     // debug
@@ -415,7 +416,8 @@ double CSNode::estimatedFutureWaitingTime(double cost)
 double CSNode::returnPredictionWaitingTime() const
 {
     // 要修正
-    return futureWaitingTimeList[19];
+    // 修正完了
+    return futureWaitingTimeList[waitingTimeHistoryMaxSize-2];
 }
 
 // by takusagwa 2018/11/6
