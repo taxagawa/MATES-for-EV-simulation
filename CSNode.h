@@ -125,6 +125,10 @@ public:
     // 呼びだされた時刻の10分後の予測値を返す
     double returnPredictionWaitingTime() const;
 
+    // by takusagwa 2018/12/5
+    // 最小二乗近似法によって近似多項式の係数を求める
+    void lstsq(double x[], double y[], int n, int m, double c[]);
+
     // by takusagwa 2018/11/6
     // 捌け台数
     // int _servedEV;

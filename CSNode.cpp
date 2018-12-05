@@ -420,6 +420,85 @@ double CSNode::returnPredictionWaitingTime() const
     return futureWaitingTimeList[waitingTimeHistoryMaxSize-2];
 }
 
+// by takusagwa 2018/12/5
+////======================================================================
+void CSNode::lstsq(double x[], double y[], int n, int m, double c[])
+{
+	int i, j, k, m2, mp1, mp2;
+	double *a, aik, pivot, *w, w1, w2, w3;
+
+	if(m >= n || m < 1)
+	{
+		cerr << "Error : Illegal parameter in lstsq()" << endl;
+        assert(0);
+	}
+	mp1 = m + 1;
+	mp2 = m + 2;
+	m2 = 2 * m;
+	a = (double *)malloc(mp1 * mp2 * sizeof(double));
+	if(a == NULL)
+	{
+		cerr << "Error : Out of memory  in lstsq()" << endl;
+		assert(0);
+	}
+	w = (double *)malloc(mp1 * 2 * sizeof(double));
+	if(w == NULL)
+	{
+        free(a);
+		cerr << "Error : Out of memory  in lstsq()" << endl;
+		assert(0);
+	}
+	for(i = 0; i < m2; i++)
+	{
+		w1 = 0.;
+		for(j = 0; j < n; j++)
+		{
+			w2 = w3 = x[j];
+			for(k = 0; k < i; k++)	w2 *= w3;
+			w1 += w2;
+		}
+		w[i] = w1;
+	}
+	a[0] = n;
+	for(i = 0; i < mp1; i++)
+		for(j = 0; j < mp1; j++)	if(i || j)	a[i * mp2 + j] = w[i + j - 1];
+
+	w1 = 0.;
+	for(i = 0; i < n; i++)	w1 += y[i];
+	a[mp1] = w1;
+	for(i = 0; i < m; i++)
+	{
+		w1 = 0.;
+		for(j = 0; j < n; j++)
+		{
+			w2 = w3 = x[j];
+			for(k = 0; k < i; k++)	w2 *= w3;
+			w1 += y[j] * w2;
+		}
+		a[mp2 * (i + 1) + mp1] = w1;
+	}
+
+	for(k = 0; k < mp1; k++)
+	{
+		pivot = a[mp2 * k + k];
+		a[mp2 * k + k] = 1.0;
+		for(j = k + 1; j < mp2; j++)	a[mp2 * k + j] /= pivot;
+		for(i = 0; i < mp1; i++)
+		{
+			if(i != k)
+			{
+				aik = a[mp2 * i + k];
+				for(j = k; j < mp2; j++)
+					a[mp2 * i + j] -= aik * a[mp2 * k + j];
+			}
+		}
+	}
+	for(i = 0; i < mp1; i++)	c[i] = a[mp2 * i + mp1];
+	free(w);
+	free(a);
+	return;
+}
+
 // by takusagwa 2018/11/6
 ////======================================================================
 // int CSNode::servedEV() const
