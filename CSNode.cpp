@@ -241,7 +241,20 @@ void CSNode::estimatedWaitingTimeCalc()
         if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
         {
             addWaitingTimeHistory(_estimatedWaitingTime);
-            createFutureWaitingTimeList();
+            // by takusagawa 2018/12/7
+            // 複数のモードを追加
+            if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 0)
+            {
+                createFutureWaitingTimeList();
+            }
+            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
+            {
+                cout << "1" << endl;
+            }
+            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+            {
+                cout << "2" << endl;
+            }
         }
         return;
     }
@@ -266,7 +279,20 @@ void CSNode::estimatedWaitingTimeCalc()
     if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
     {
         addWaitingTimeHistory(_estimatedWaitingTime);
-        createFutureWaitingTimeList();
+        // by takusagawa 2018/12/7
+        // 複数のモードを追加
+        if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 0)
+        {
+            createFutureWaitingTimeList();
+        }
+        else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
+        {
+            cout << "1" << endl;
+        }
+        else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+        {
+            cout << "2" << endl;
+        }
     }
 
     return;
@@ -422,12 +448,12 @@ double CSNode::returnPredictionWaitingTime() const
 
 // by takusagwa 2018/12/5
 ////======================================================================
-void CSNode::lstsq(double x[], double y[], int n, int m, double c[])
+void CSNode::lstsq(vector<double> x, vector<double> y, int n, int m, double c[])
 {
 	int i, j, k, m2, mp1, mp2;
 	double *a, aik, pivot, *w, w1, w2, w3;
 
-	if(m >= n || m < 1)
+	if (m >= n || m < 1)
 	{
 		cerr << "Error : Illegal parameter in lstsq()" << endl;
         assert(0);
@@ -436,64 +462,64 @@ void CSNode::lstsq(double x[], double y[], int n, int m, double c[])
 	mp2 = m + 2;
 	m2 = 2 * m;
 	a = (double *)malloc(mp1 * mp2 * sizeof(double));
-	if(a == NULL)
+	if (a == NULL)
 	{
 		cerr << "Error : Out of memory  in lstsq()" << endl;
 		assert(0);
 	}
 	w = (double *)malloc(mp1 * 2 * sizeof(double));
-	if(w == NULL)
+	if (w == NULL)
 	{
         free(a);
 		cerr << "Error : Out of memory  in lstsq()" << endl;
 		assert(0);
 	}
-	for(i = 0; i < m2; i++)
+	for (i = 0; i < m2; i++)
 	{
 		w1 = 0.;
-		for(j = 0; j < n; j++)
+		for (j = 0; j < n; j++)
 		{
 			w2 = w3 = x[j];
-			for(k = 0; k < i; k++)	w2 *= w3;
+			for (k = 0; k < i; k++)	w2 *= w3;
 			w1 += w2;
 		}
 		w[i] = w1;
 	}
 	a[0] = n;
-	for(i = 0; i < mp1; i++)
-		for(j = 0; j < mp1; j++)	if(i || j)	a[i * mp2 + j] = w[i + j - 1];
+	for (i = 0; i < mp1; i++)
+		for (j = 0; j < mp1; j++)	if (i || j)	a[i * mp2 + j] = w[i + j - 1];
 
 	w1 = 0.;
-	for(i = 0; i < n; i++)	w1 += y[i];
+	for (i = 0; i < n; i++)	w1 += y[i];
 	a[mp1] = w1;
-	for(i = 0; i < m; i++)
+	for (i = 0; i < m; i++)
 	{
 		w1 = 0.;
-		for(j = 0; j < n; j++)
+		for (j = 0; j < n; j++)
 		{
 			w2 = w3 = x[j];
-			for(k = 0; k < i; k++)	w2 *= w3;
+			for (k = 0; k < i; k++)	w2 *= w3;
 			w1 += y[j] * w2;
 		}
 		a[mp2 * (i + 1) + mp1] = w1;
 	}
 
-	for(k = 0; k < mp1; k++)
+	for (k = 0; k < mp1; k++)
 	{
 		pivot = a[mp2 * k + k];
 		a[mp2 * k + k] = 1.0;
-		for(j = k + 1; j < mp2; j++)	a[mp2 * k + j] /= pivot;
-		for(i = 0; i < mp1; i++)
+		for (j = k + 1; j < mp2; j++)	a[mp2 * k + j] /= pivot;
+		for (i = 0; i < mp1; i++)
 		{
-			if(i != k)
+			if (i != k)
 			{
 				aik = a[mp2 * i + k];
-				for(j = k; j < mp2; j++)
+				for (j = k; j < mp2; j++)
 					a[mp2 * i + j] -= aik * a[mp2 * k + j];
 			}
 		}
 	}
-	for(i = 0; i < mp1; i++)	c[i] = a[mp2 * i + mp1];
+	for (i = 0; i < mp1; i++)	c[i] = a[mp2 * i + mp1];
 	free(w);
 	free(a);
 	return;

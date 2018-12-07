@@ -69,6 +69,12 @@ void GVInitializer::init(const string& dataPath)
     // eオプションを指定し,かつinit.txtにおいて上のFLAG_USE_FUTURE_WAITING_LINE_MODEを
     // trueにしておかなければならない.
     GVManager::setNewFlag("FLAG_USE_FUTURE_WAITING_LINE", false);
+    // by takusagawa 2018/12/7
+    // 予測待ち時間を算出方法を指定する.
+    // 0が一次点対称近似(default)
+    // 1が一次直線近似
+    // 2が二次曲線近似
+    GVManager::setNewNumeric("WAITING_TIME_APPROXIMATION_DEGREE", 0);
     //by uchida 2017/12/26
     //CSの充電出力を出力するか
     GVManager::setNewFlag("FLAG_OUTPUT_CSs", false);

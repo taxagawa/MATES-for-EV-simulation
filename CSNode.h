@@ -114,7 +114,7 @@ public:
 
     // by takusagawa 2018/11/2
     // 未来の予測待ち時間のリストを作成する.
-    // 予測はとりあえず一次近似.
+    // 予測はとりあえず一次点対称近似.
     void createFutureWaitingTimeList();
 
     // by takusagawa 2018/11/4
@@ -127,7 +127,8 @@ public:
 
     // by takusagwa 2018/12/5
     // 最小二乗近似法によって近似多項式の係数を求める
-    void lstsq(double x[], double y[], int n, int m, double c[]);
+    // 本当は別のファイルにしたい
+    void lstsq(vector<double> x, vector<double> y int n, int m, double c[]);
 
     // by takusagwa 2018/11/6
     // 捌け台数
