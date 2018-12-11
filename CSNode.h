@@ -125,10 +125,18 @@ public:
     // 呼びだされた時刻の10分後の予測値を返す
     double returnPredictionWaitingTime() const;
 
+    // by takusagawa 2018/12/10
+    // 現在の履歴から近似関数の係数を求める
+    void predictByApproximationFunc(int degree);
+
+    // by takusagawa 2018/12/10
+    // 係数のベクトル
+    vector<double> _coefficient;
+
     // by takusagwa 2018/12/5
     // 最小二乗近似法によって近似多項式の係数を求める
     // 本当は別のファイルにしたい
-    void lstsq(vector<double> x, vector<double> y int n, int m, double c[]);
+    void lstsq(vector<double> x, vector<double> y int n, int m, vector<double> c);
 
     // by takusagwa 2018/11/6
     // 捌け台数

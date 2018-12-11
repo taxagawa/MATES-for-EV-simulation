@@ -249,11 +249,11 @@ void CSNode::estimatedWaitingTimeCalc()
             }
             else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
             {
-                cout << "1" << endl;
+                predictByApproximationFunc(1);
             }
             else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
             {
-                cout << "2" << endl;
+                predictByApproximationFunc(2);
             }
         }
         return;
@@ -287,11 +287,11 @@ void CSNode::estimatedWaitingTimeCalc()
         }
         else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
         {
-            cout << "1" << endl;
+            predictByApproximationFunc(1);
         }
         else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
         {
-            cout << "2" << endl;
+            predictByApproximationFunc(2);
         }
     }
 
@@ -446,9 +446,16 @@ double CSNode::returnPredictionWaitingTime() const
     return futureWaitingTimeList[waitingTimeHistoryMaxSize-2];
 }
 
+// by takusagwa 2018/12/10
+////======================================================================
+void CSNode::predictByApproximationFunc(int degree)
+{
+    _coefficient.clear();
+}
+
 // by takusagwa 2018/12/5
 ////======================================================================
-void CSNode::lstsq(vector<double> x, vector<double> y, int n, int m, double c[])
+void CSNode::lstsq(vector<double> x, vector<double> y, int n, int m, vector<double> c)
 {
 	int i, j, k, m2, mp1, mp2;
 	double *a, aik, pivot, *w, w1, w2, w3;
