@@ -133,10 +133,16 @@ public:
     // 係数のベクトル
     vector<double> _coefficient;
 
+    // by takusagawa 2018/12/11
+    // 最小二乗法におけるx
+    vector<double> _xdata;
+
     // by takusagwa 2018/12/5
-    // 最小二乗近似法によって近似多項式の係数を求める
-    // 本当は別のファイルにしたい
-    void lstsq(vector<double> x, vector<double> y int n, int m, vector<double> c);
+    // 最小二乗近似法によって近似多項式の係数を求める.
+    // 結果出力後,たとえば3分後の予測値を計算するときは,x=6とする.
+    // x=1が30秒後,x=2が1分後…となる.
+    // (本当は別のファイルにしたい)
+    void lstsq(vector<double>* x, vector<double>* y int n, int m, vector<double>* c);
 
     // by takusagwa 2018/11/6
     // 捌け台数

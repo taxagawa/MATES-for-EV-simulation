@@ -44,6 +44,9 @@ CSNode::CSNode(const string& id,
     // by takusagawa 2018/11/1
     waitingTimeHistoryMaxSize = (CS_WAITING_TIME_HISTORY_LIMIT / (CS_WAITING_TIME_UPDATE_INTERVAL / 1000)) + 1;
 
+    for (int i = -1 * (waitingTimeHistoryMaxSize-1); i <= 0; i+=2) _xdata.push_back(double(i));
+    assert(_xdata.size() == ((waitingTimeHistoryMaxSize+1) / 2));
+
     // by takusagwa 2018/11/6
     // _servedEV = 0;
 
@@ -451,11 +454,28 @@ double CSNode::returnPredictionWaitingTime() const
 void CSNode::predictByApproximationFunc(int degree)
 {
     _coefficient.clear();
+
+    // データ数
+    int num = (waitingTimeHistoryMaxSize + 1) / 2;
+
+    // y
+    vector<double> _ydata;
+
+    if (waitingTimeHistory.size() < waitingTimeHistoryMaxSize)
+    {
+        ;
+    }
+    else
+    {
+        ;
+    }
+
+    lstsq(&_xdata, , num, degree, &_coefficient);
 }
 
 // by takusagwa 2018/12/5
 ////======================================================================
-void CSNode::lstsq(vector<double> x, vector<double> y, int n, int m, vector<double> c)
+void CSNode::lstsq(vector<double>* x, vector<double>* y, int n, int m, vector<double>* c)
 {
 	int i, j, k, m2, mp1, mp2;
 	double *a, aik, pivot, *w, w1, w2, w3;
