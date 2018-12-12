@@ -425,7 +425,7 @@ double CSNode::estimatedFutureWaitingTime(double cost)
     int icost = round(cost);
 
     index = icost / CS_WAITING_TIME_UPDATE_INTERVAL;
-    
+
     if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 0)
     {
         if (index > waitingTimeHistoryMaxSize-2)
@@ -450,7 +450,7 @@ double CSNode::estimatedFutureWaitingTime(double cost)
             {
                 return 0.0;
             }
-            else 
+            else
             {
                 return val;
             }
@@ -463,7 +463,7 @@ double CSNode::estimatedFutureWaitingTime(double cost)
             {
                 return 0.0;
             }
-            else 
+            else
             {
                 return val;
             }
@@ -492,7 +492,7 @@ double CSNode::returnApproximationWaitingTime()
         {
             return 0.0;
         }
-        else 
+        else
         {
             return val;
         }
@@ -505,7 +505,7 @@ double CSNode::returnApproximationWaitingTime()
         {
             return 0.0;
         }
-        else 
+        else
         {
             return val;
         }
@@ -550,15 +550,15 @@ void CSNode::predictByApproximationFunc(int degree)
             _ydata.push_back(waitingTimeHistory[i]);
         }
     }
-    assert(_ydata.size() == num)
+    assert(_ydata.size() == num);
 
     // 本当は_xdataを渡す必要はない
-    lstsq(&_xdata, &_ydata, num, degree, &_coefficient);
+    lstsq(_xdata, _ydata, num, degree, _coefficient);
 }
 
 // by takusagwa 2018/12/5
 ////======================================================================
-void CSNode::lstsq(vector<double>* x, vector<double>* y, int n, int m, vector<double>* c)
+void CSNode::lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<double>& c)
 {
 	int i, j, k, m2, mp1, mp2;
 	double *a, aik, pivot, *w, w1, w2, w3;

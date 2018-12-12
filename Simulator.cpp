@@ -540,7 +540,10 @@ bool Simulator::timeIncrement()
                             {
                                 outpLogFile << csNodes[i]->returnPredictionWaitingTime() << ",";
                             }
-                            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1 || )
+                            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1 || GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+                            {
+                                outpLogFile << csNodes[i]->returnApproximationWaitingTime() << ",";
+                            }
                         }
                         outpLogFile << endl;
                     }

@@ -146,7 +146,7 @@ public:
     // 結果出力後,たとえば3分後の予測値を計算するときは,x=6とする.
     // x=1が30秒後,x=2が1分後…となる.
     // (本当は別のファイルにしたい)
-    void lstsq(vector<double>* x, vector<double>* y int n, int m, vector<double>* c);
+    void lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<double>& c);
 
     // by takusagwa 2018/11/6
     // 捌け台数
