@@ -536,7 +536,11 @@ bool Simulator::timeIncrement()
                         }
                         for (int i = 0; i < csNodes.size(); i++)
                         {
-                            outpLogFile << csNodes[i]->returnPredictionWaitingTime() << ",";
+                            if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 0)
+                            {
+                                outpLogFile << csNodes[i]->returnPredictionWaitingTime() << ",";
+                            }
+                            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1 || )
                         }
                         outpLogFile << endl;
                     }

@@ -425,28 +425,91 @@ double CSNode::estimatedFutureWaitingTime(double cost)
     int icost = round(cost);
 
     index = icost / CS_WAITING_TIME_UPDATE_INTERVAL;
-    // 要修正
-    // 修正完了
-    if (index > waitingTimeHistoryMaxSize-2)
+    
+    if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 0)
     {
-        index = waitingTimeHistoryMaxSize-2;
-    }
+        if (index > waitingTimeHistoryMaxSize-2)
+        {
+            index = waitingTimeHistoryMaxSize-2;
+        }
 
     // debug
     // cout << "Use " << ((index + 1) * CS_WAITING_TIME_UPDATE_INTERVAL) / 1000 << "seconds ago" << endl;
 
-    assert(index>=0);
+        assert(index>=0);
 
-    return futureWaitingTimeList[index];
+        return futureWaitingTimeList[index];
+    }
+    else
+    {
+        if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
+        {
+            double val = _coefficient[1] * index + _coefficient[0];
+
+            if (val < 0)
+            {
+                return 0.0;
+            }
+            else 
+            {
+                return val;
+            }
+        }
+        else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+        {
+            double val = _coefficient[2] * index * index + _coefficient[1] * index + _coefficient[0];
+
+            if (val < 0)
+            {
+                return 0.0;
+            }
+            else 
+            {
+                return val;
+            }
+        }
+    }
 }
 
 // by takusagwa 2018/11/12
 ////======================================================================
 double CSNode::returnPredictionWaitingTime() const
 {
-    // 要修正
-    // 修正完了
     return futureWaitingTimeList[waitingTimeHistoryMaxSize-2];
+}
+
+// by takusagwa 2018/12/12
+////======================================================================
+double CSNode::returnApproximationWaitingTime()
+{
+    int tmp = waitingTimeHistoryMaxSize - 1;
+
+    if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
+    {
+        double val = _coefficient[1] * tmp + _coefficient[0];
+
+        if (val < 0)
+        {
+            return 0.0;
+        }
+        else 
+        {
+            return val;
+        }
+    }
+    else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+    {
+        double val = _coefficient[2] * tmp * tmp + _coefficient[1] * tmp + _coefficient[0];
+
+        if (val < 0)
+        {
+            return 0.0;
+        }
+        else 
+        {
+            return val;
+        }
+    }
 }
 
 // by takusagwa 2018/12/10
@@ -457,20 +520,40 @@ void CSNode::predictByApproximationFunc(int degree)
 
     // データ数
     int num = (waitingTimeHistoryMaxSize + 1) / 2;
-
+    int size = waitingTimeHistory.size();
     // y
     vector<double> _ydata;
 
-    if (waitingTimeHistory.size() < waitingTimeHistoryMaxSize)
+    if (size < waitingTimeHistoryMaxSize)
     {
-        ;
+        // まず足りない部分を0で埋める
+        if (size % 2 == 0)
+        {
+            int tmp = num - (size / 2);
+            for (int i = 0; i < tmp; i++) _ydata.push_back(0.0);
+        }
+        else
+        {
+            int tmp = num - ((size + 1) / 2);
+            for (int i = 0; i < tmp; i++) _ydata.push_back(0.0);
+        }
+        // 新しい順かつ1分おきのデータを入れる
+        for (int i = size-1; i >= 0 ; i-=2)
+        {
+            _ydata.push_back(waitingTimeHistory[i]);
+        }
     }
     else
     {
-        ;
+        for (int i = 0; i < waitingTimeHistoryMaxSize; i+=2)
+        {
+            _ydata.push_back(waitingTimeHistory[i]);
+        }
     }
+    assert(_ydata.size() == num)
 
-    lstsq(&_xdata, , num, degree, &_coefficient);
+    // 本当は_xdataを渡す必要はない
+    lstsq(&_xdata, &_ydata, num, degree, &_coefficient);
 }
 
 // by takusagwa 2018/12/5
