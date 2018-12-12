@@ -122,8 +122,12 @@ public:
     double estimatedFutureWaitingTime(double cost);
 
     // by takusagwa 2018/11/12
-    // 呼びだされた時刻の10分後の予測値を返す
+    // 呼びだされた時刻の最長予測値を返す
     double returnPredictionWaitingTime() const;
+
+    // by takusagawa 2018/12/10
+    // 近似関数を使用した場合の予測値を返す
+    double returnApproximationWaitingTime();
 
     // by takusagawa 2018/12/10
     // 現在の履歴から近似関数の係数を求める
