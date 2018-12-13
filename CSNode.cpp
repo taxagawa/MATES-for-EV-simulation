@@ -487,7 +487,7 @@ double CSNode::returnApproximationWaitingTime()
     if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
     {
         double val = _coefficient[1] * tmp + _coefficient[0];
-
+        
         if (val < 0)
         {
             return 0.0;
@@ -584,6 +584,7 @@ void CSNode::lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<do
 		cerr << "Error : Out of memory  in lstsq()" << endl;
 		assert(0);
 	}
+
 	for (i = 0; i < m2; i++)
 	{
 		w1 = 0.;
@@ -613,7 +614,6 @@ void CSNode::lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<do
 		}
 		a[mp2 * (i + 1) + mp1] = w1;
 	}
-
 	for (k = 0; k < mp1; k++)
 	{
 		pivot = a[mp2 * k + k];
@@ -629,7 +629,10 @@ void CSNode::lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<do
 			}
 		}
 	}
-	for (i = 0; i < mp1; i++)	c[i] = a[mp2 * i + mp1];
+	for (i = 0; i < mp1; i++)
+    {
+        c.push_back(a[mp2 * i + mp1]);
+    }
 	free(w);
 	free(a);
 	return;
