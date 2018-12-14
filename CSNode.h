@@ -102,7 +102,7 @@ public:
     // 2018/11/2 やはりint型に.
     int waitingTimeHistoryMaxSize;
 
-    // by takusagwa 2018/11/1
+    // by takusagawa 2018/11/1
     // waitingTimeHistoryに推定待ち時間を追加
     void addWaitingTimeHistory(double estimatedTime);
 
@@ -121,7 +121,7 @@ public:
     // CSまでの推定旅行時間から,予想到着時刻における待ち時間を返す
     double estimatedFutureWaitingTime(double cost);
 
-    // by takusagwa 2018/11/12
+    // by takusagawa 2018/11/12
     // 呼びだされた時刻の最長予測値を返す
     double returnPredictionWaitingTime() const;
 
@@ -141,18 +141,22 @@ public:
     // 最小二乗法におけるx
     vector<double> _xdata;
 
-    // by takusagwa 2018/12/5
+    // by takusagawa 2018/12/5
     // 最小二乗近似法によって近似多項式の係数を求める.
     // 結果出力後,たとえば3分後の予測値を計算するときは,x=6とする.
     // x=1が30秒後,x=2が1分後…となる.
     // (本当は別のファイルにしたい)
     void lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<double>& c);
 
-    // by takusagwa 2018/11/6
+    // by takusagawa 2018/12/14
+    // 予測値の制御に必要な勾配を返す
+    double getPredictiveGradient(double cost);
+
+    // by takusagawa 2018/11/6
     // 捌け台数
     // int _servedEV;
 
-    // by takusagwa 2018/11/6
+    // by takusagawa 2018/11/6
     // 捌け台数を返す
     // int servedEV() const;
 

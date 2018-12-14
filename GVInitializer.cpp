@@ -75,6 +75,10 @@ void GVInitializer::init(const string& dataPath)
     // 1が一次直線近似
     // 2が二次曲線近似
     GVManager::setNewNumeric("WAITING_TIME_APPROXIMATION_DEGREE", 0);
+    // by takusagawa 2018/12/14
+    // 予測に対して制御を行うか
+    // FLAG_USE_FUTURE_WAITING_LINEがtrueの時のみ値が反映される
+    GVManager::setNewFlag("FLAG_USE_PREDICTION_WITH_CONTROLLER", false);
     //by uchida 2017/12/26
     //CSの充電出力を出力するか
     GVManager::setNewFlag("FLAG_OUTPUT_CSs", false);

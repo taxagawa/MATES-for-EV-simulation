@@ -50,7 +50,7 @@
 /** @name 特殊なEVの発生割合 */
 //@{
 #ifndef CAN_RECEIVE_WAITING_INFO_RATE
-#define CAN_RECEIVE_WAITING_INFO_RATE   0.0
+#define CAN_RECEIVE_WAITING_INFO_RATE   1.0
 #endif
 //@}
 
@@ -67,6 +67,14 @@
 //@{
 #ifndef CS_WAITING_TIME_HISTORY_LIMIT
 #define CS_WAITING_TIME_HISTORY_LIMIT   600
+#endif
+//@}
+
+// by takusagawa 2018/12/14
+/** @name 待ち台数制御におけるパラメータ */
+//@{
+#ifndef FUTURE_WAITING_TIME_CONTROL_PARAMETER
+#define FUTURE_WAITING_TIME_CONTROL_PARAMETER   1.0
 #endif
 //@}
 

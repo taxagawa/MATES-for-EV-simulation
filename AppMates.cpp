@@ -320,8 +320,9 @@ void AppMates::parseArgument(int argc, char** argv)
             GVManager::resetFlag("FLAG_GEN_EVs", true);
             GVManager::resetFlag("FLAG_GEN_CSs", true);
             // by takusagawa
+            // 待ち行列を出力
             GVManager::resetFlag("FLAG_OUTPUT_WAITING_LINE", true);
-            
+
             if (atoi((optarg)) >= 1 && atoi((optarg)) <= 9)
             {
                 GVManager::resetFlag("FLAG_OUTPUT_SCORE", true);

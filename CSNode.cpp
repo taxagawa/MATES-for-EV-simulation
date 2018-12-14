@@ -47,7 +47,7 @@ CSNode::CSNode(const string& id,
     for (int i = -1 * (waitingTimeHistoryMaxSize-1); i <= 0; i+=2) _xdata.push_back(double(i));
     assert(_xdata.size() == ((waitingTimeHistoryMaxSize+1) / 2));
 
-    // by takusagwa 2018/11/6
+    // by takusagawa 2018/11/6
     // _servedEV = 0;
 
 //    _lastGenTime = 0;
@@ -436,7 +436,7 @@ double CSNode::estimatedFutureWaitingTime(double cost)
     // debug
     // cout << "Use " << ((index + 1) * CS_WAITING_TIME_UPDATE_INTERVAL) / 1000 << "seconds ago" << endl;
 
-        assert(index>=0);
+        assert(index >= 0);
 
         return futureWaitingTimeList[index];
     }
@@ -471,14 +471,14 @@ double CSNode::estimatedFutureWaitingTime(double cost)
     }
 }
 
-// by takusagwa 2018/11/12
+// by takusagawa 2018/11/12
 ////======================================================================
 double CSNode::returnPredictionWaitingTime() const
 {
     return futureWaitingTimeList[waitingTimeHistoryMaxSize-2];
 }
 
-// by takusagwa 2018/12/12
+// by takusagawa 2018/12/12
 ////======================================================================
 double CSNode::returnApproximationWaitingTime()
 {
@@ -487,7 +487,7 @@ double CSNode::returnApproximationWaitingTime()
     if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
     {
         double val = _coefficient[1] * tmp + _coefficient[0];
-        
+
         if (val < 0)
         {
             return 0.0;
@@ -512,7 +512,7 @@ double CSNode::returnApproximationWaitingTime()
     }
 }
 
-// by takusagwa 2018/12/10
+// by takusagawa 2018/12/10
 ////======================================================================
 void CSNode::predictByApproximationFunc(int degree)
 {
@@ -556,7 +556,7 @@ void CSNode::predictByApproximationFunc(int degree)
     lstsq(_xdata, _ydata, num, degree, _coefficient);
 }
 
-// by takusagwa 2018/12/5
+// by takusagawa 2018/12/5
 ////======================================================================
 void CSNode::lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<double>& c)
 {
@@ -638,7 +638,28 @@ void CSNode::lstsq(vector<double>& x, vector<double>& y, int n, int m, vector<do
 	return;
 }
 
-// by takusagwa 2018/11/6
+// by takusagawa 2018/12/14
+////======================================================================
+double CSNode::getPredictiveGradient(double cost)
+{
+    int x = -1;
+    int icost = round(cost);
+
+    x = icost / CS_WAITING_TIME_UPDATE_INTERVAL;
+    assert(x >= 0);
+
+    if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
+    {
+        return _coefficient[1];
+    }
+    else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+    {
+        double val = 2 *_coefficient[2] * x + _coefficient[1];
+        return val;
+    }
+}
+
+// by takusagawa 2018/11/6
 ////======================================================================
 // int CSNode::servedEV() const
 // {
