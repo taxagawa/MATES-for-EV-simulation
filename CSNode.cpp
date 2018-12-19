@@ -480,9 +480,9 @@ double CSNode::returnPredictionWaitingTime() const
 
 // by takusagawa 2018/12/12
 ////======================================================================
-double CSNode::returnApproximationWaitingTime()
+double CSNode::returnApproximationWaitingTime(int min)
 {
-    int tmp = waitingTimeHistoryMaxSize - 1;
+    int tmp = min * 2;
 
     if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
     {

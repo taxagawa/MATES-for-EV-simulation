@@ -74,7 +74,7 @@
 /** @name 待ち台数制御におけるパラメータ */
 //@{
 #ifndef FUTURE_WAITING_TIME_CONTROL_PARAMETER
-#define FUTURE_WAITING_TIME_CONTROL_PARAMETER   1.0
+#define FUTURE_WAITING_TIME_CONTROL_PARAMETER   0.0
 #endif
 //@}
 

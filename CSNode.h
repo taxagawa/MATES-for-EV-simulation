@@ -127,7 +127,7 @@ public:
 
     // by takusagawa 2018/12/10
     // 近似関数を使用した場合の予測値を返す
-    double returnApproximationWaitingTime();
+    double returnApproximationWaitingTime(int min);
 
     // by takusagawa 2018/12/10
     // 現在の履歴から近似関数の係数を求める

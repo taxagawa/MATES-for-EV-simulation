@@ -1070,10 +1070,10 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
             GV = tmpCost
                + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
                + csNodes[i]->estimatedFutureWaitingTime(tmpCost)
-               - FUTURE_WAITING_TIME_CONTROL_PARAMETER * csNodes[i]->getPredictiveGradient(tmpCost);
-
+               - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
+            
             // debug by takusagawa 2018/12/14
-            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * csNodes[i]->getPredictiveGradient(tmpCost) << endl;
+            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << endl;
         }
         else
         {
@@ -1164,10 +1164,10 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
             GV = tmpCost
                + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
                + csNodes[i]->estimatedFutureWaitingTime(tmpCost)
-               - FUTURE_WAITING_TIME_CONTROL_PARAMETER * csNodes[i]->getPredictiveGradient(tmpCost);
+               - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
 
             // debug by takusagawa 2018/12/14
-            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * csNodes[i]->getPredictiveGradient(tmpCost) << endl;
+            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << endl;
         }
         else
         {
