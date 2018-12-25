@@ -482,7 +482,7 @@ bool Simulator::timeIncrement()
             if (!outputDir.empty())
             {
                 // 待ち行列長出力
-                string fLog = outputDir + "Line1/waitingLine000.csv";
+                string fLog = outputDir + "test/Line_test_change_negative_value_100_para2.0/waitingLine1000.csv";
                 ofstream outLogFile(fLog.c_str(), ios::app);
 
                 if (!outLogFile.fail())
@@ -509,7 +509,7 @@ bool Simulator::timeIncrement()
                 // 予測値の出力
                 if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
                 {
-                    string pLog = outputDir + "Line1/predictionValue000.csv";
+                    string pLog = outputDir + "test/Line_test_change_negative_value_100_para2.0/predictionValue1000.csv";
                     ofstream outpLogFile(pLog.c_str(), ios::app);
 
                     if (!outpLogFile.fail())

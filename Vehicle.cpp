@@ -770,8 +770,13 @@ void Vehicle::_searchCSSumCost()
         step = 100000;
         goal = dynamic_cast<Intersection*>(csNodes[i]);
 
+        // 現在地点から候補CSまでのコスト
+        double tmpCost = _router->searchSegmentGV(start, goal, past, step, goal->id());
+
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id());
+
+        cout << "gradient:" << csNodes[i]->getPredictiveGradient(tmpCost) << endl;
 
         // debug by takusagawa 2018/10/25
         // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
@@ -841,8 +846,13 @@ std::string Vehicle::_searchCSSumCost(RoadMap* roadMap,
         step = 10000;
         goal = dynamic_cast<Intersection*>(csNodes[i]);
 
+        // 現在地点から候補CSまでのコスト
+        double tmpCost = _router->searchSegmentGV(start, goal, past, step, goal->id());
+
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id());
+
+        cout << "gradient:" << csNodes[i]->getPredictiveGradient(tmpCost) << endl;
 
         // debug by takusagawa 2018/10/25
         // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
@@ -1067,13 +1077,20 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
         // 制御パラメータはConf.hで管理する.
         if (GVManager::getFlag("FLAG_USE_PREDICTION_WITH_CONTROLLER"))
         {
+            double tmpWait = csNodes[i]->estimatedFutureWaitingTime(tmpCost)
+                             - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
+
+            if (tmpWait < 0.0)
+            {
+              tmpWait = 0.0;
+            }
+
             GV = tmpCost
                + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
-               + csNodes[i]->estimatedFutureWaitingTime(tmpCost)
-               - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
-            
+               + tmpWait;
+
             // debug by takusagawa 2018/12/14
-            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << endl;
+            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << ", gradient: " << csNodes[i]->getPredictiveGradient(tmpCost) << ", arrival: " << tmpCost / 60000 << ", tmpWait: " << tmpWait << endl;
         }
         else
         {
@@ -1092,7 +1109,7 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
         }
     }
     // debug by takusagawa 2018/11/4
-    // cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
 
     assert(min_index >= 0);
 
@@ -1161,13 +1178,20 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
         // 制御パラメータはConf.hで管理する.
         if (GVManager::getFlag("FLAG_USE_PREDICTION_WITH_CONTROLLER"))
         {
+            double tmpWait = csNodes[i]->estimatedFutureWaitingTime(tmpCost)
+            - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
+
+            if (tmpWait < 0.0)
+            {
+              tmpWait = 0.0;
+            }
+
             GV = tmpCost
                + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
-               + csNodes[i]->estimatedFutureWaitingTime(tmpCost)
-               - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
+               + tmpWait;
 
             // debug by takusagawa 2018/12/14
-            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << endl;
+            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << ", gradient: " << csNodes[i]->getPredictiveGradient(tmpCost) << ", arrival: " << tmpCost / 60000 << ", tmpWait: " << tmpWait << endl;
         }
         else
         {
@@ -1189,7 +1213,7 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
     assert(min_index >= 0);
 
     // debug by takusagawa 2018/11/4
-    // cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
 
     // 暫定的に選択されたCSまでのコスト
     step = 10000;
