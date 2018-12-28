@@ -258,6 +258,10 @@ void CSNode::estimatedWaitingTimeCalc()
             {
                 predictByApproximationFunc(2);
             }
+            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 3)
+            {
+                predictByApproximationFunc(3);
+            }
         }
         return;
     }
@@ -295,6 +299,10 @@ void CSNode::estimatedWaitingTimeCalc()
         else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
         {
             predictByApproximationFunc(2);
+        }
+        else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 3)
+        {
+            predictByApproximationFunc(3);
         }
     }
 
@@ -445,28 +453,17 @@ double CSNode::estimatedFutureWaitingTime(double cost)
         if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
         {
             double val = _coefficient[1] * index + _coefficient[0];
-
-            if (val < 0)
-            {
-                return 0.0;
-            }
-            else
-            {
-                return val;
-            }
+            return val;
         }
         else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
         {
             double val = _coefficient[2] * index * index + _coefficient[1] * index + _coefficient[0];
-
-            if (val < 0)
-            {
-                return 0.0;
-            }
-            else
-            {
-                return val;
-            }
+            return val;
+        }
+        else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 3)
+        {
+            double val = _coefficient[3] * index * index * index + _coefficient[2] * index * index + _coefficient[1] * index + _coefficient[0];
+            return val;
         }
     }
 }
@@ -487,28 +484,17 @@ double CSNode::returnApproximationWaitingTime(int min)
     if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1)
     {
         double val = _coefficient[1] * tmp + _coefficient[0];
-
-        if (val < 0)
-        {
-            return 0.0;
-        }
-        else
-        {
-            return val;
-        }
+        return val;
     }
     else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
     {
         double val = _coefficient[2] * tmp * tmp + _coefficient[1] * tmp + _coefficient[0];
-
-        if (val < 0)
-        {
-            return 0.0;
-        }
-        else
-        {
-            return val;
-        }
+        return val;
+    }
+    else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 3)
+    {
+        double val = _coefficient[3] * tmp * tmp * tmp + _coefficient[2] * tmp * tmp + _coefficient[1] * tmp + _coefficient[0];
+        return val;
     }
 }
 
@@ -655,6 +641,11 @@ double CSNode::getPredictiveGradient(double cost)
     else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
     {
         double val = 2 *_coefficient[2] * x + _coefficient[1];
+        return val;
+    }
+    else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 3)
+    {
+        double val = 3 * _coefficient[3] * x * x + 2 *_coefficient[2] * x + _coefficient[1];
         return val;
     }
 }

@@ -482,7 +482,7 @@ bool Simulator::timeIncrement()
             if (!outputDir.empty())
             {
                 // 待ち行列長出力
-                string fLog = outputDir + "test/Line_test_change_negative_value_100_para0.8/waitingLine1000.csv";
+                string fLog = outputDir + "test/Line_test_tri_100_para0.5/waitingLine1000.csv";
                 ofstream outLogFile(fLog.c_str(), ios::app);
 
                 if (!outLogFile.fail())
@@ -509,7 +509,7 @@ bool Simulator::timeIncrement()
                 // 予測値の出力
                 if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
                 {
-                    string pLog = outputDir + "test/Line_test_change_negative_value_100_para0.8/predictionValue1000.csv";
+                    string pLog = outputDir + "test/Line_test_tri_100_para0.5/predictionValue1000.csv";
                     ofstream outpLogFile(pLog.c_str(), ios::app);
 
                     if (!outpLogFile.fail())
@@ -542,19 +542,20 @@ bool Simulator::timeIncrement()
                         {
                             outpLogFile << csNodes[i]->estimatedWaitingTime() << ",";
                         }
+                        // 非常に無駄な記述になっているのでいつか直したい.
                         for (int i = 0; i < csNodes.size(); i++)
                         {
                             if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 0)
                             {
                                 outpLogFile << csNodes[i]->returnPredictionWaitingTime() << ",";
                             }
-                            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1 || GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+                            else if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1 || GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2 || GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 3)
                             {
                                 // 1分後の予測値
                                 outpLogFile << csNodes[i]->returnApproximationWaitingTime(1) << ",";
                             }
                         }
-                        if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1 || GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2)
+                        if (GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 1 || GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 2 || GVManager::getNumeric("WAITING_TIME_APPROXIMATION_DEGREE") == 3)
                         {
                             for (int i = 0; i < csNodes.size(); i++)
                             {
