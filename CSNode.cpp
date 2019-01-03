@@ -381,7 +381,7 @@ void CSNode::addUnlimitedWaitingTimeHistory(double estimatedTime)
 void CSNode::calcIV()
 {
     int size = unlimitedWaitingTimeHistory.size();
-    double tmp = 0.0
+    double tmp = 0.0;
 
     if (size == 1) return;
 
@@ -401,7 +401,7 @@ void CSNode::calcIV()
 
 // by takusagawa 2019/1/4
 ////======================================================================
-void CSNode::IV() const
+double CSNode::IV() const
 {
     return _IV;
 }
