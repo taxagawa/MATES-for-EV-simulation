@@ -48,7 +48,7 @@ CSNode::CSNode(const string& id,
     assert(_xdata.size() == ((waitingTimeHistoryMaxSize+1) / 2));
 
     // by takusagawa 2019/1/4
-    IV = 0.0;
+    _IV = 0.0;
 
     // by takusagawa 2018/11/6
     // _servedEV = 0;
@@ -393,9 +393,9 @@ void CSNode::calcIV()
     }
 
     // debug
-    // cout << "IV: " << tmp << endl;
+    // cout << "_IV: " << tmp << endl;
 
-    IV = tmp;
+    _IV = tmp;
     return;
 }
 
@@ -403,7 +403,7 @@ void CSNode::calcIV()
 ////======================================================================
 void CSNode::IV() const
 {
-    return IV;
+    return _IV;
 }
 
 // by takusagawa 2018/11/2

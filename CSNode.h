@@ -117,7 +117,7 @@ public:
 
     // by takusagawa 2019/1/4
     // I制御による残差
-    double IV;
+    double _IV;
 
     // by takusagawa 2019/1/4
     // IV(Integral Value)を計算
