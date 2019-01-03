@@ -79,6 +79,10 @@ void GVInitializer::init(const string& dataPath)
     // 予測に対して制御を行うか
     // FLAG_USE_FUTURE_WAITING_LINEがtrueの時のみ値が反映される
     GVManager::setNewFlag("FLAG_USE_PREDICTION_WITH_CONTROLLER", false);
+    // by takusagawa 2019/1/4
+    // I制御を行うか
+    // FLAG_USE_PREDICTION_WITH_CONTROLLERがtrueの時のみ利用できる
+    GVManager::setNewFlag("FLAG_USE_INTEGRAL_CONTROLLER", false);
     //by uchida 2017/12/26
     //CSの充電出力を出力するか
     GVManager::setNewFlag("FLAG_OUTPUT_CSs", false);

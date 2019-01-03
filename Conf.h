@@ -71,10 +71,18 @@
 //@}
 
 // by takusagawa 2018/12/14
-/** @name 待ち台数制御におけるパラメータ */
+/** @name 待ち台数制御におけるパラメータ(Dゲイン) */
 //@{
 #ifndef FUTURE_WAITING_TIME_CONTROL_PARAMETER
 #define FUTURE_WAITING_TIME_CONTROL_PARAMETER   0.5
+#endif
+//@}
+
+// by takusagawa 2019/1/4
+/** @name 待ち台数制御におけるパラメータ(Iゲイン) */
+//@{
+#ifndef FUTURE_WAITING_TIME_INTEGRAL_PARAMETER
+#define FUTURE_WAITING_TIME_INTEGRAL_PARAMETER   1.0
 #endif
 //@}
 

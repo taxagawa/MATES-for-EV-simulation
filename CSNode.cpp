@@ -47,6 +47,9 @@ CSNode::CSNode(const string& id,
     for (int i = -1 * (waitingTimeHistoryMaxSize-1); i <= 0; i+=2) _xdata.push_back(double(i));
     assert(_xdata.size() == ((waitingTimeHistoryMaxSize+1) / 2));
 
+    // by takusagawa 2019/1/4
+    IV = 0.0;
+
     // by takusagawa 2018/11/6
     // _servedEV = 0;
 
@@ -262,6 +265,12 @@ void CSNode::estimatedWaitingTimeCalc()
             {
                 predictByApproximationFunc(3);
             }
+
+            if (GVManager::getFlag("FLAG_USE_INTEGRAL_CONTROLLER"))
+            {
+                addUnlimitedWaitingTimeHistory(_estimatedWaitingTime);
+                calcIV();
+            }
         }
         return;
     }
@@ -304,6 +313,12 @@ void CSNode::estimatedWaitingTimeCalc()
         {
             predictByApproximationFunc(3);
         }
+
+        if (GVManager::getFlag("FLAG_USE_INTEGRAL_CONTROLLER"))
+        {
+            addUnlimitedWaitingTimeHistory(_estimatedWaitingTime);
+            calcIV();
+        }
     }
 
     return;
@@ -342,6 +357,53 @@ void CSNode::addWaitingTimeHistory(double estimatedTime)
     // cout << endl;
 
     return;
+}
+
+// by takusagawa 2019/1/4
+////======================================================================
+void CSNode::addUnlimitedWaitingTimeHistory(double estimatedTime)
+{
+    unlimitedWaitingTimeHistory.push_back(estimatedTime);
+
+    // debug by takusagawa 2019/1/4
+    // int size = unlimitedWaitingTimeHistory.size();
+    // for (int i = 0; i < size; i++)
+    // {
+    //     cout << unlimitedWaitingTimeHistory[i] << ", ";
+    // }
+    // cout << endl;
+
+    return;
+}
+
+// by takusagawa 2019/1/4
+////======================================================================
+void CSNode::calcIV()
+{
+    int size = unlimitedWaitingTimeHistory.size();
+    double tmp = 0.0
+
+    if (size == 1) return;
+
+    double current = unlimitedWaitingTimeHistory[size-1];
+
+    for (int i = 0; i < size-1; i++)
+    {
+        tmp += current - unlimitedWaitingTimeHistory[i];
+    }
+
+    // debug
+    // cout << "IV: " << tmp << endl;
+
+    IV = tmp;
+    return;
+}
+
+// by takusagawa 2019/1/4
+////======================================================================
+void CSNode::IV() const
+{
+    return IV;
 }
 
 // by takusagawa 2018/11/2

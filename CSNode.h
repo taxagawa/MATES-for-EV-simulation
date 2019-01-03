@@ -96,6 +96,11 @@ public:
     // 過去の待ち時間履歴
     vector<double> waitingTimeHistory;
 
+    // by takusagawa 2019/1/4
+    // I制御用のキャパシティ制限なし推定待ち時間履歴ベクトル
+    // 本当は上のベクトルを無制限にすればよかったが面倒だった
+    vector<double> unlimitedWaitingTimeHistory;
+
     // by takusagawa 2018/11/1
     // 待ち時間履歴の最大保持数
     // 一応double型にする.
@@ -105,6 +110,22 @@ public:
     // by takusagawa 2018/11/1
     // waitingTimeHistoryに推定待ち時間を追加
     void addWaitingTimeHistory(double estimatedTime);
+
+    // by takusagawa 2019/1/4
+    // unlimitedWaitingTimeHistoryに推定待ち時間を追加
+    void addUnlimitedWaitingTimeHistory(double estimatedTime);
+
+    // by takusagawa 2019/1/4
+    // I制御による残差
+    double IV;
+
+    // by takusagawa 2019/1/4
+    // IV(Integral Value)を計算
+    void calcIV();
+
+    // by takusagawa 2019/1/4
+    // IVを返す
+    double IV() const;
 
     // by takusagawa 2018/11/2
     // 未来の予測待ち時間のリスト.

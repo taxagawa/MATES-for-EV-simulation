@@ -1075,10 +1075,13 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
         // 制御ありの場合の関数をあらためて作成しようとしたが,
         // これ以上似たような関数が増えると分かりづらい気がするのでここで条件分岐する.
         // 制御パラメータはConf.hで管理する.
+        // by takusagawa 2019/1/4
+        // I制御項を追加
         if (GVManager::getFlag("FLAG_USE_PREDICTION_WITH_CONTROLLER"))
         {
             double tmpWait = csNodes[i]->estimatedFutureWaitingTime(tmpCost)
-                             - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
+                           - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost)
+                           + FUTURE_WAITING_TIME_INTEGRAL_PARAMETER * csNodes[i]->IV();
 
             if (tmpWait < 0.0)
             {
@@ -1090,7 +1093,7 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
                + tmpWait;
 
             // debug by takusagawa 2018/12/14
-            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << ", gradient: " << csNodes[i]->getPredictiveGradient(tmpCost) << ", arrival: " << tmpCost / 60000 << ", tmpWait: " << tmpWait << endl;
+            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << ", gradient: " << csNodes[i]->getPredictiveGradient(tmpCost) << ", arrival: " << tmpCost / 60000 << ", tmpWait: " << tmpWait << ", IV: " << csNodes[i]->IV() << endl;
         }
         else
         {
@@ -1176,10 +1179,13 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
         // 制御ありの場合の関数をあらためて作成しようとしたが,
         // これ以上似たような関数が増えると分かりづらい気がするのでここで条件分岐する.
         // 制御パラメータはConf.hで管理する.
+        // by takusagawa 2019/1/4
+        // I制御項を追加
         if (GVManager::getFlag("FLAG_USE_PREDICTION_WITH_CONTROLLER"))
         {
             double tmpWait = csNodes[i]->estimatedFutureWaitingTime(tmpCost)
-            - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost);
+                           - FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost)
+                           + FUTURE_WAITING_TIME_INTEGRAL_PARAMETER * csNodes[i]->IV();
 
             if (tmpWait < 0.0)
             {
@@ -1191,7 +1197,7 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
                + tmpWait;
 
             // debug by takusagawa 2018/12/14
-            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << ", gradient: " << csNodes[i]->getPredictiveGradient(tmpCost) << ", arrival: " << tmpCost / 60000 << ", tmpWait: " << tmpWait << endl;
+            cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << ",later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", control: " << FUTURE_WAITING_TIME_CONTROL_PARAMETER * (tmpCost / 60000) * csNodes[i]->getPredictiveGradient(tmpCost) << ", gradient: " << csNodes[i]->getPredictiveGradient(tmpCost) << ", arrival: " << tmpCost / 60000 << ", tmpWait: " << tmpWait << ", IV: " << csNodes[i]->IV() << endl;
         }
         else
         {
