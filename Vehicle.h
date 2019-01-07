@@ -583,6 +583,13 @@ protected:
     // by takusagawa 2018/01/05
     double _odDistance;
 
+    // by takusagawa 2019/1/7
+    double _estimatedArrivalTime;
+
+    // by takusagawa 2019/1/7
+    // 充電行動開始時刻
+    ulint _chargeFlagTime;
+
     /// 電池容量[Wsec]
     // CSNode::estimatedWaitingTimeCalc()内でgetするためにVehicle.hに移動
     // by takusagawa 2018/9/27
@@ -844,6 +851,22 @@ public:
     // by takusagawa 2018/9/27
     // _batteryCapacityを返す仮想関数
     virtual double getBatteryCapacity() const;
+
+    // by takusagawa 2019/1/7
+    // 選択したFCSまでの予想移動時間をセットする
+    void setEstimatedArrivalTime(double _time);
+
+    // by takusagawa 2019/1/7
+    // 選択したFCSまでの予想移動時間を返す
+    double getEstimatedArrivalTime() const;
+
+    // by takusagawa 2019/1/7
+    // 充電行動開始時刻をセットする
+    void setChargeFlagTime(ulint _time);
+
+    // by takusagawa 2019/1/7
+    // 充電行動開始時刻を返す
+    ulint getChargeFlagTime() const;
 
 };
 

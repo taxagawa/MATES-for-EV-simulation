@@ -17,7 +17,7 @@
 #include <zlib.h>
 #else // USE_ZLIB
 #include <cstdio>
-#endif // USE_ZLIB   
+#endif // USE_ZLIB
 
 class RoadMap;
 class Vehicle;
@@ -78,7 +78,7 @@ private:
     gzFile _dynamicOut;
 #else // USE_ZLIB
     FILE* _dynamicOut;
-#endif // USE_ZLIB   
+#endif // USE_ZLIB
 
     /// 車両属性データファイル名
     std::string _attributeOutFileName;
@@ -91,6 +91,14 @@ private:
 
     /// 走行距離データの出力ストリーム
     std::ofstream _tripOut;
+
+    /// by takusagawa 2019/1/7
+    /// EV関連の時間データファイル名
+    std::string _timeOutFileName;
+
+    /// by takusagawa 2019/1/7
+    /// EV関連の時間データの出力ストリーム
+    std::ofstream _timeOut;
 
     /// 追加情報出力、0:なし、1:ウィンカ、2:先行者ID
     int _extension;

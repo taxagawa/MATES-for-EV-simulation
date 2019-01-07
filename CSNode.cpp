@@ -176,7 +176,7 @@ void CSNode::removeEV()
         }
     }
 
-    // _servedEV++;
+    _servedEV++;
 
     // 削除直後にも充電すべきEVの指定
     if (waitingLine.size() != 0)
@@ -364,6 +364,12 @@ void CSNode::addWaitingTimeHistory(double estimatedTime)
 void CSNode::addUnlimitedWaitingTimeHistory(double estimatedTime)
 {
     unlimitedWaitingTimeHistory.push_back(estimatedTime);
+
+    if (unlimitedWaitingTimeHistory.size() > (waitingTimeHistoryMaxSize-1) * 2)
+    {
+        vector<double>::iterator itr = unlimitedWaitingTimeHistory.begin();
+        unlimitedWaitingTimeHistory.erase(itr);
+    }
 
     // debug by takusagawa 2019/1/4
     // int size = unlimitedWaitingTimeHistory.size();
@@ -713,11 +719,11 @@ double CSNode::getPredictiveGradient(double cost)
 }
 
 // by takusagawa 2018/11/6
-////======================================================================
-// int CSNode::servedEV() const
-// {
-//     return _servedEV;
-// }
+//======================================================================
+int CSNode::servedEV() const
+{
+    return _servedEV;
+}
 
 ////======================================================================
 //bool ODNode::hasWaitingVehicles() const

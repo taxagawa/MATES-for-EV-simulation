@@ -64,6 +64,9 @@ VehicleEV::VehicleEV():_parent(){
   // by takusagawa 2018/10/2
   _maxOD = 0.0;
 
+  // by takusagawa 2019/1/7
+  _chargeFlagTime = 0;
+
   //充電走行開始時の閾値の設定
   _threshold = 0.3;
 

@@ -74,7 +74,7 @@
 /** @name 待ち台数制御におけるパラメータ(Dゲイン) */
 //@{
 #ifndef FUTURE_WAITING_TIME_CONTROL_PARAMETER
-#define FUTURE_WAITING_TIME_CONTROL_PARAMETER   0.5
+#define FUTURE_WAITING_TIME_CONTROL_PARAMETER   1.0
 #endif
 //@}
 
@@ -82,7 +82,7 @@
 /** @name 待ち台数制御におけるパラメータ(Iゲイン) */
 //@{
 #ifndef FUTURE_WAITING_TIME_INTEGRAL_PARAMETER
-#define FUTURE_WAITING_TIME_INTEGRAL_PARAMETER   1.0
+#define FUTURE_WAITING_TIME_INTEGRAL_PARAMETER   0.02
 #endif
 //@}
 

@@ -482,7 +482,7 @@ bool Simulator::timeIncrement()
             if (!outputDir.empty())
             {
                 // 待ち行列長出力
-                string fLog = outputDir + "test/Line_test_tri_100_para0.5/waitingLine1000.csv";
+                string fLog = outputDir + "check/linear/waitingLine1000.csv";
                 ofstream outLogFile(fLog.c_str(), ios::app);
 
                 if (!outLogFile.fail())
@@ -509,7 +509,7 @@ bool Simulator::timeIncrement()
                 // 予測値の出力
                 if (GVManager::getFlag("FLAG_USE_FUTURE_WAITING_LINE"))
                 {
-                    string pLog = outputDir + "test/Line_test_tri_100_para0.5/predictionValue1000.csv";
+                    string pLog = outputDir + "check/linear/predictionValue1000.csv";
                     ofstream outpLogFile(pLog.c_str(), ios::app);
 
                     if (!outpLogFile.fail())
@@ -574,29 +574,29 @@ bool Simulator::timeIncrement()
                 }
 
                 // 捌いた台数の出力
-                // string gLog = outputDir + "Line/servedEV000.csv";
-                // ofstream outgLogFile(gLog.c_str(), ios::app);
-                //
-                // if (!outgLogFile.fail())
-                // {
-                //     if (TimeManager::time() == interval)
-                //     {
-                //         outgLogFile << " ,";
-                //         for (int i = 0; i < csNodes.size(); i++)
-                //         {
-                //             outgLogFile << csNodes[i]->id() << ",";
-                //         }
-                //         outgLogFile << endl;
-                //     }
-                //
-                //
-                //     outgLogFile << TimeManager::time() << ",";
-                //     for (int i = 0; i < csNodes.size(); i++)
-                //     {
-                //         outgLogFile << csNodes[i]->servedEV() << ",";
-                //     }
-                //     outgLogFile << endl;
-                // }
+                string gLog = outputDir + "check/linear/servedEV1000.csv";
+                ofstream outgLogFile(gLog.c_str(), ios::app);
+
+                if (!outgLogFile.fail())
+                {
+                    if (TimeManager::time() == interval)
+                    {
+                        outgLogFile << " ,";
+                        for (int i = 0; i < csNodes.size(); i++)
+                        {
+                            outgLogFile << csNodes[i]->id() << ",";
+                        }
+                        outgLogFile << endl;
+                    }
+
+
+                    outgLogFile << TimeManager::time() << ",";
+                    for (int i = 0; i < csNodes.size(); i++)
+                    {
+                        outgLogFile << csNodes[i]->servedEV() << ",";
+                    }
+                    outgLogFile << endl;
+                }
             }
         }
     }

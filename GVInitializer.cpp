@@ -219,9 +219,13 @@ void GVInitializer::init(const string& dataPath)
     GVManager::setNewString("RESULT_VEHICLE_ATTRIBUTE_FILE",
                             resultPath + "vehicleAttribute.txt");
     GVManager::setNewString("RESULT_VEHICLE_TRIP_FILE",
-                            resultPath + "Trip/vehicleTrip0000.txt");
+                            resultPath + "check/linear/vehicleTrip0000.txt");
     GVManager::setNewString("RESULT_VEHICLE_COUNT_FILE",
                             resultPath + "vehicleCount.txt");
+    // by takusagawa 2019/1/7
+    // GVとCS到着までに実際にかかった時間の比較のため
+    GVManager::setNewString("RESULT_VEHICLE_TIME_FILE",
+                            resultPath + "check/linear/entryTime.csv");
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // 定数の定義

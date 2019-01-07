@@ -111,6 +111,10 @@ Vehicle::Vehicle():_id()
     // by takusagawa 2018/01/05
     _odDistance = 0;
 
+    // by takusagawa 2019/1/7
+    _estimatedArrivalTime = 0.0;
+    _chargeFlagTime = 0;
+
     _startSN  = NULL;
     _startSec = NULL;
 
@@ -776,7 +780,7 @@ void Vehicle::_searchCSSumCost()
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id());
 
-        cout << "gradient:" << csNodes[i]->getPredictiveGradient(tmpCost) << endl;
+        // cout << "gradient:" << csNodes[i]->getPredictiveGradient(tmpCost) << endl;
 
         // debug by takusagawa 2018/10/25
         // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
@@ -813,6 +817,9 @@ void Vehicle::_searchCSSumCost()
     else
     {
         _stopCS = csNodes[min_index]->id();
+        // by takusagawa
+        // setChargeFlagTime(TimeManager::time());
+        // setEstimatedArrivalTime(min);
     }
 }
 
@@ -852,7 +859,7 @@ std::string Vehicle::_searchCSSumCost(RoadMap* roadMap,
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id());
 
-        cout << "gradient:" << csNodes[i]->getPredictiveGradient(tmpCost) << endl;
+        // cout << "gradient:" << csNodes[i]->getPredictiveGradient(tmpCost) << endl;
 
         // debug by takusagawa 2018/10/25
         // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", other: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << _router->searchSegmentGV(start, goal, past, step, goal->id()) << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
@@ -893,6 +900,9 @@ std::string Vehicle::_searchCSSumCost(RoadMap* roadMap,
     else
     {
         _stopCS = csNodes[min_index]->id();
+        // by takusagawa
+        // setChargeFlagTime(TimeManager::time());
+        // setEstimatedArrivalTime(min);
     }
 
     return _stopCS;
@@ -914,6 +924,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     int min_index = 0;
     int step;
     double GV;
+    double arrivalTime = 0.0;
 
     // cout << "Start: " << start->id() << ", goal:" << _router->goal()->id() << endl;
 
@@ -921,6 +932,8 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     {
         step = 100000;
         goal = dynamic_cast<Intersection*>(csNodes[i]);
+
+        double tmp = _router->searchSegmentGV(start, goal, past, step, goal->id());
 
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
@@ -933,6 +946,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
         {
             min = GV;
             min_index = i;
+            arrivalTime = tmp;
         }
     }
     // debug by takusagawa 2018/9/26
@@ -952,7 +966,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagawa
-    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     if (min_cs >= GV)
     {
@@ -961,6 +975,9 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     else
     {
         _stopCS = csNodes[min_index]->id();
+        // by takusagawa
+        setChargeFlagTime(TimeManager::time());
+        setEstimatedArrivalTime(arrivalTime);
     }
 }
 
@@ -990,11 +1007,14 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
     int min_index = -1;
     int step;
     double GV;
+    double arrivalTime;
 
     for (int i = 0; i < csNodes.size(); i++)
     {
         step = 10000;
         goal = dynamic_cast<Intersection*>(csNodes[i]);
+
+        double tmp = _router->searchSegmentGV(start, goal, past, step, goal->id());
 
         GV = _router->searchSegmentGV(start, goal, past, step, goal->id())
            + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id())
@@ -1007,6 +1027,7 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
         {
             min = GV;
             min_index = i;
+            arrivalTime = tmp;
         }
     }
     assert(min_index >= 0);
@@ -1026,7 +1047,7 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagawa 2018/10/25
-    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     // by uchida 2016/5/30
     // ここでNULLに戻す
@@ -1039,6 +1060,9 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
     else
     {
         _stopCS = csNodes[min_index]->id();
+        // by takusagawa
+        setChargeFlagTime(TimeManager::time());
+        setEstimatedArrivalTime(arrivalTime);
     }
 
     return _stopCS;
@@ -1060,6 +1084,7 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
     int min_index = 0;
     int step;
     double GV;
+    double arrivalTime;
 
     // cout << "Start: " << start->id() << ", goal:" << _router->goal()->id() << endl;
 
@@ -1109,6 +1134,7 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
         {
             min = GV;
             min_index = i;
+            arrivalTime = tmpCost;
         }
     }
     // debug by takusagawa 2018/11/4
@@ -1128,7 +1154,7 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagawa
-    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     if (min_cs >= GV)
     {
@@ -1137,6 +1163,9 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
     else
     {
         _stopCS = csNodes[min_index]->id();
+        // by takusagawa
+        setChargeFlagTime(TimeManager::time());
+        setEstimatedArrivalTime(arrivalTime);
     }
 }
 
@@ -1166,6 +1195,7 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
     int min_index = -1;
     int step;
     double GV;
+    double arrivalTime;
 
     for (int i = 0; i < csNodes.size(); i++)
     {
@@ -1209,11 +1239,11 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
             // cout << "id: " << csNodes[i]->id() << ", GV: " << GV << ", estimatedFutureWaitingTime: " << csNodes[i]->estimatedFutureWaitingTime(tmpCost) << ", other: " << tmpCost + _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << ", former: " << tmpCost << " ,later: " << _router->searchSegmentGV(goal, _router->goal(), NULL, step, goal->id()) << endl;
         }
 
-
         if (min >= GV)
         {
             min = GV;
             min_index = i;
+            arrivalTime = tmpCost;
         }
     }
     assert(min_index >= 0);
@@ -1233,7 +1263,7 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagawa 2018/11/4
-    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     // by uchida 2016/5/30
     // ここでNULLに戻す
@@ -1246,6 +1276,9 @@ std::string Vehicle::_searchCSFutureWaitingTimeSumCost(RoadMap* roadMap,
     else
     {
         _stopCS = csNodes[min_index]->id();
+        // by takusagawa
+        setChargeFlagTime(TimeManager::time());
+        setEstimatedArrivalTime(arrivalTime);
     }
 
     return _stopCS;
@@ -2052,4 +2085,32 @@ bool Vehicle::receiveWaitingInfo() const
 double Vehicle::getBatteryCapacity() const
 {
     return _batteryCapacity;
+}
+
+// by takusagawa 2019/1/7
+//====================================================================
+void Vehicle::setEstimatedArrivalTime(double _time)
+{
+    _estimatedArrivalTime = _time;
+}
+
+// by takusagawa 2019/1/7
+//====================================================================
+double Vehicle::getEstimatedArrivalTime() const
+{
+    return _estimatedArrivalTime;
+}
+
+// by takusagawa 2019/1/7
+//====================================================================
+void Vehicle::setChargeFlagTime(ulint _time)
+{
+    _chargeFlagTime = _time;
+}
+
+// by takusagawa 2019/1/7
+//====================================================================
+ulint Vehicle::getChargeFlagTime() const
+{
+    return _chargeFlagTime;
 }
