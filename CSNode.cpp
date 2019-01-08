@@ -136,7 +136,7 @@ void CSNode::addEV(Vehicle* vehicle)
         else
         {
             // debug by takusagawa 2018/11/10
-            // cout << "CSid: " << id() << " ID: " << (*itr)->id() << endl;
+            // cout << "CSid: " << id() << " Vehicle ID: " << (*itr)->id() << endl;
             (*itr)->setonCharging(true);
             itr++;
         }
@@ -147,7 +147,7 @@ void CSNode::addEV(Vehicle* vehicle)
 void CSNode::removeEV()
 {
     vector<Vehicle*>::iterator itr = waitingLine.begin();
-    (*itr)->setWaiting(false);
+    // (*itr)->setWaiting(false);
     // debug by takusagawa 2018/11/10
     // cout << "erase vehicle ID: " << (*itr)->id() << " SOC: " << (*itr)->SOC() << endl;
 
@@ -171,12 +171,14 @@ void CSNode::removeEV()
         }
         else
         {
+            // cout << "remove vehicle id: " << (*itr)->id() << endl;
+            (*itr)->setWaiting(false);
             waitingLine.erase(itr);
             break;
         }
     }
 
-    _servedEV++;
+    // _servedEV++;
 
     // 削除直後にも充電すべきEVの指定
     if (waitingLine.size() != 0)
@@ -718,12 +720,12 @@ double CSNode::getPredictiveGradient(double cost)
     }
 }
 
-// by takusagawa 2018/11/6
-//======================================================================
-int CSNode::servedEV() const
-{
-    return _servedEV;
-}
+// // by takusagawa 2018/11/6
+// //======================================================================
+// int CSNode::servedEV() const
+// {
+//     return _servedEV;
+// }
 
 ////======================================================================
 //bool ODNode::hasWaitingVehicles() const

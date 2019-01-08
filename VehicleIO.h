@@ -92,13 +92,13 @@ private:
     /// 走行距離データの出力ストリーム
     std::ofstream _tripOut;
 
-    /// by takusagawa 2019/1/7
-    /// EV関連の時間データファイル名
-    std::string _timeOutFileName;
-
-    /// by takusagawa 2019/1/7
-    /// EV関連の時間データの出力ストリーム
-    std::ofstream _timeOut;
+    // /// by takusagawa 2019/1/7
+    // /// EV関連の時間データファイル名
+    // std::string _timeOutFileName;
+    // 
+    // /// by takusagawa 2019/1/7
+    // /// EV関連の時間データの出力ストリーム
+    // std::ofstream _timeOut;
 
     /// 追加情報出力、0:なし、1:ウィンカ、2:先行者ID
     int _extension;

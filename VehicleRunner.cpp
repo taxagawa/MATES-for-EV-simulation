@@ -233,7 +233,12 @@ void Vehicle::_runIntersection2Section()
             // CS新入直後、どの方向の出口から出てくるかを決めたいので
             CSreroute(_section, _intersection, _stopCS);
         }
-        else if (_stopCS == "")
+        // by takusagawa 2019/1/7
+        // このif文をコメントアウトするだけで,EVがIntersectionからSectionへ移ろうとする
+        // 度に再経路探索をするようになる.
+        // 現状では情報参照エージェントでなくても再経路探索してしまう
+        // (再経路探索しても非情報参照エージェントの目的CSは変わらないと思うが・・・).
+        else // if (_stopCS == "")
         {
 
             // by uchida     2016/5/24
@@ -404,7 +409,7 @@ void Vehicle::_runSection2CS()
     // by takusagawa 2018/11/9
     // CSのwaitingLienに入庫した時刻の登録
     setWaitingLineEntryTime(TimeManager::time());
-    
+
     dynamic_cast<CSNode*>(_intersection)->addEV(this);
 
 //    _runCS2Section();

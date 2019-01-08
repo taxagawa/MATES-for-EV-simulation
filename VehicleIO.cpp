@@ -53,14 +53,14 @@ VehicleIO::VehicleIO()
     GVManager::getVariable("RESULT_OUTPUT_DIRECTORY", &resultDir);
     GVManager::getVariable("RESULT_VEHICLE_ATTRIBUTE_FILE", &attributeFile);
     GVManager::getVariable("RESULT_VEHICLE_TRIP_FILE", &tripFile);
-    GVManager::getVariable("RESULT_VEHICLE_TIME_FILE", &timeFile);
+    // GVManager::getVariable("RESULT_VEHICLE_TIME_FILE", &timeFile);
     _extension
         = static_cast<int>(
             GVManager::getNumeric("OUTPUT_VEHICLE_EXTENSION"));
 
     _attributeOutFileName = attributeFile;
     _tripOutFileName  = tripFile;
-    _timeOutFileName  = timeFile;
+    // _timeOutFileName  = timeFile;
 
     // 以前の結果を消去する
     _attributeOut.open(_attributeOutFileName.c_str(), ios::trunc);
@@ -73,12 +73,12 @@ VehicleIO::VehicleIO()
     {
         _tripOut.close();
     }
-    // by takusagawa
-    _timeOut.open(_timeOutFileName.c_str(), ios::trunc);
-    if (_timeOut.good())
-    {
-        _timeOut.close();
-    }
+    // by takusagawa 2019/1/7
+    // _timeOut.open(_timeOutFileName.c_str(), ios::trunc);
+    // if (_timeOut.good())
+    // {
+    //     _timeOut.close();
+    // }
 }
 
 //======================================================================
@@ -421,15 +421,18 @@ bool VehicleIO::writeVehicleDistanceData(Vehicle* vehicle)
     }
 
     // by takusagawa
-    _timeOut.open(_timeOutFileName.c_str(), ios::app);
-    if (_timeOut.good())
-    {
-        if (vehicle->type() >= 80)
-        {
-            _timeOut << vehicle->waitingLineEntryTime() << "," <<  vehicle->getChargeFlagTime() << "," << vehicle->getEstimatedArrivalTime() << endl;
-        }
-        _timeOut.close();
-    }
+    // _timeOut.open(_timeOutFileName.c_str(), ios::app);
+    // if (_timeOut.good())
+    // {
+    //     if (vehicle->type() >= 80)
+    //     {
+    //         _timeOut << vehicle->id() << ","
+    //                  << vehicle->waitingLineEntryTime() << ","
+    //                  << vehicle->getChargeFlagTime() << ","
+    //                  << vehicle->getEstimatedArrivalTime() << endl;
+    //     }
+    //     _timeOut.close();
+    // }
     return result;
 }
 
@@ -495,19 +498,22 @@ bool VehicleIO::writeAllVehiclesDistanceData()
     }
 
     // by takusagawa 2019/1/7
-    _timeOut.open(_timeOutFileName.c_str(), ios::app);
-    if (_timeOut.good())
-    {
-        vector<Vehicle*>* vehicles = ObjManager::vehicles();
-
-        for (unsigned int i=0; i<vehicles->size(); i++)
-        {
-            if ((*vehicles)[i]->type() >= 80)
-            {
-                _timeOut << (*vehicles)[i]->waitingLineEntryTime() << "," << (*vehicles)[i]->getChargeFlagTime() << "," << (*vehicles)[i]->getEstimatedArrivalTime() << endl;
-            }
-        }
-        _timeOut.close();
-    }
+    // _timeOut.open(_timeOutFileName.c_str(), ios::app);
+    // if (_timeOut.good())
+    // {
+    //     vector<Vehicle*>* vehicles = ObjManager::vehicles();
+    //
+    //     for (unsigned int i=0; i<vehicles->size(); i++)
+    //     {
+    //         if ((*vehicles)[i]->type() >= 80)
+    //         {
+    //             _timeOut << (*vehicles)[i]->id() << ","
+    //                      << (*vehicles)[i]->waitingLineEntryTime() << ","
+    //                      << (*vehicles)[i]->getChargeFlagTime() << ","
+    //                      << (*vehicles)[i]->getEstimatedArrivalTime() << endl;
+    //         }
+    //     }
+    //     _timeOut.close();
+    // }
     return result;
 }

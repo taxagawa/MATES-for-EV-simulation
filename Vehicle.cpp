@@ -966,7 +966,7 @@ void Vehicle::_searchCSWaitingTimeSumCost()
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagawa
-    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     if (min_cs >= GV)
     {
@@ -1047,7 +1047,7 @@ std::string Vehicle::_searchCSWaitingTimeSumCost(RoadMap* roadMap,
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagawa 2018/10/25
-    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    // cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
 
     // by uchida 2016/5/30
     // ここでNULLに戻す
@@ -1138,7 +1138,7 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
         }
     }
     // debug by takusagawa 2018/11/4
-    cout << "selected CS id: " << csNodes[min_index]->id() << endl;
+    cout << "Vehicle ID: " << id() << ", selected CS id: " << csNodes[min_index]->id() << endl;
 
     assert(min_index >= 0);
 
@@ -1154,7 +1154,7 @@ void Vehicle::_searchCSFutureWaitingTimeSumCost()
     GV = _router->searchSegmentGV(start, goal, past, step, "");
 
     // debug by takusagawa
-    cout << "min_cs: " << min_cs << ", GV: " << GV << endl;
+    cout << "Vehicle ID: " << id() << ", min_cs: " << min_cs << ", GV: " << GV << endl;
 
     if (min_cs >= GV)
     {

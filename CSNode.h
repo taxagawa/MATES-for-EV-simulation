@@ -173,13 +173,13 @@ public:
     // 予測値の制御に必要な勾配を返す
     double getPredictiveGradient(double cost);
 
-    // by takusagawa 2018/11/6
-    // 捌け台数
-    int _servedEV;
-
-    // by takusagawa 2018/11/6
-    // 捌け台数を返す
-    int servedEV() const;
+    // // by takusagawa 2018/11/6
+    // // 捌け台数
+    // int _servedEV;
+    //
+    // // by takusagawa 2018/11/6
+    // // 捌け台数を返す
+    // int servedEV() const;
 
 //    //====================================================================
 //    /** @name 車両の発生と消去にかかわる関数 */
