@@ -1,0 +1,19 @@
+name: Test
+
+on:
+  pull_request:
+    types:
+    - opened
+    - edited
+    branches:
+    - staging
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@master
+    - name: Run a test
+      run: echo if necessary, write a test in .github/workflows/stagin-test.yml
